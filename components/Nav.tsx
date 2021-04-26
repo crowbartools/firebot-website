@@ -30,7 +30,7 @@ export const Nav = (): JSX.Element => {
                     <>
                         <div className="py-3">
                             <nav
-                                className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6"
+                                className="relative max-w-7xl xl:max-w-8xl mx-auto flex items-center justify-between px-4 sm:px-6"
                                 aria-label="Global"
                             >
                                 <div className="flex items-center justify-between flex-1">
@@ -44,7 +44,7 @@ export const Nav = (): JSX.Element => {
                                                     width={45}
                                                     height={45}
                                                 />
-                                                <div className="text-yellow-300 text-3xl font-extralight ml-3">
+                                                <div className="text-yellow-300 text-3xl xl:text-4xl font-extralight ml-3">
                                                     Firebot
                                                 </div>
                                             </a>
@@ -81,7 +81,7 @@ export const Nav = (): JSX.Element => {
                                                 <a
                                                     key={item.name}
                                                     href={item.href}
-                                                    className="text-base font-medium hover:text-gray-200"
+                                                    className="text-base xl:text-lg font-medium hover:text-gray-200"
                                                 >
                                                     {item.name}
                                                 </a>

@@ -79,22 +79,22 @@ const features: Feature[] = [
 const AllFeaturesSection: React.FC = () => {
     return (
         <>
-            <div className="mt-12 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl py-4 pb-5 ">
+            <div className="mt-12 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl xl:max-w-8xl py-4 pb-5 ">
                 <ScrollArrow />
-                <div className="text-blue-400 text-xl text-center tracking-wide">
+                <div className="text-blue-400 text-xl xl:text-2xl text-center tracking-wide">
                     ALL FEATURES
                 </div>
-                <div className="text-4xl font-bold text-center mt-3 mb-7">
+                <div className="text-4xl xl:text-5xl font-bold text-center mt-3 mb-7">
                     Everything you need to run your stream
                 </div>
-                <div className="text-xl text-gray-300 text-center px-6 md:px-36 mt-1 font-light">
+                <div className="text-xl xl:text-2xl text-gray-300 text-center px-6 md:px-36 mt-1 font-light">
                     Firebot is a free, open source, all-in-one bot for Twitch.
                     It's packed full of everything you need to make your stream
                     fun and interactive.
                 </div>
             </div>
-            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl py-4">
-                <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl xl:max-w-8xl py-4">
+                <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 xl:gap-x-10 xl:gap-y-12">
                     {features.map((feature) => (
                         <Tilt
                             options={{ max: 25, scale: 1.1 }}
@@ -110,10 +110,10 @@ const AllFeaturesSection: React.FC = () => {
                                         aria-hidden="true"
                                     />
                                 </div>
-                                <p className="mt-14 text-xl leading-6 font-medium text-white text-center">
+                                <p className="mt-14 text-xl xl:text-2xl leading-6 font-medium text-white text-center">
                                     {feature.name}
                                 </p>
-                                <div className="my-7 text-base text-gray-400 text-center">
+                                <div className="my-7 text-base xl:text-lg text-gray-400 text-center">
                                     {feature.description}
                                 </div>
                             </div>
