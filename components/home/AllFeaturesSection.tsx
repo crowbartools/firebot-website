@@ -11,7 +11,7 @@ import {
     ShieldCheckIcon,
 } from '@heroicons/react/outline';
 import Tilt from 'react-tilt';
-import { ScrollArrow } from '.';
+import { ScrollArrow } from '..';
 
 type Feature = {
     name: string;

@@ -2,8 +2,8 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
 import { useObserver } from 'mobx-react-lite';
 import React from 'react';
-import { useStores } from '../stores';
-import { ScrollAnchor } from './ScrollAnchor';
+import { ScrollAnchor } from '..';
+import { useStores } from '../../stores';
 
 export default function HeroSection() {
     const { githubStore } = useStores();

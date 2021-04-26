@@ -1,11 +1,11 @@
 import React from 'react';
-import HeroSection from '../components/HeroSection';
+import HeroSection from '../components/home/HeroSection';
 import { ScrollAnchor } from '../components';
-import FeatureShowcaseSection from '../components/FeatureShowcaseSection';
-import FAQSection from '../components/FAQSection';
-import HelpSection from '../components/HelpSection';
-import AllFeaturesSection from '../components/AllFeaturesSection';
-import TeamSection from '../components/TeamSection';
+import FeatureShowcaseSection from '../components/home/FeatureShowcaseSection';
+import FAQSection from '../components/home/FAQSection';
+import HelpSection from '../components/home/HelpSection';
+import AllFeaturesSection from '../components/home/AllFeaturesSection';
+import TeamSection from '../components/home/TeamSection';
 
 export const Home: React.FC = () => {
     return (
