@@ -19,10 +19,10 @@ const cards = [
             'https://i.ytimg.com/vi/QllhrNGFuwM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCGXi1w_TgMail_uDhV7LEOsBtnKg',
     },
     {
-        title: 'Wiki, Issue Tracking, & Code',
+        title: 'Wiki, Issue Tracking, Source Code',
         href: 'https://github.com/crowbartools/Firebot',
         description:
-            "Firebot's wiki, issue tracking, and code are all on GitHub. Go here to dig through the wiki, report bugs/submit feature request, or contribute code!",
+            "Firebot's wiki, issue tracking, and source code are all on GitHub. Go here to dig through the wiki, report bugs/submit feature request, or contribute code!",
         imageUrl: '/gh-repo.png',
     },
 ];
