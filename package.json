@@ -11,7 +11,7 @@
         "format": "prettier --write .",
         "lint": "eslint . --ext ts --ext tsx --ext js",
         "test": "jest",
-        "test-all": "npm lint && npm type-check && npm test"
+        "test-all": "npm run lint && npm run type-check && npm run test"
     },
     "husky": {
         "hooks": {
@@ -21,8 +21,8 @@
     },
     "lint-staged": {
         "*.@(ts|tsx)": [
-            "npm lint",
-            "npm format"
+            "npm run lint",
+            "npm run format"
         ]
     },
     "dependencies": {
