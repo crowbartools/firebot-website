@@ -93,8 +93,8 @@ const AllFeaturesSection: React.FC = () => {
                     fun and interactive.
                 </div>
             </div>
-            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl xl:max-w-8xl py-4">
-                <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 xl:gap-x-10 xl:gap-y-12">
+            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl  py-4">
+                <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 ">
                     {features.map((feature) => (
                         <Tilt
                             options={{ max: 25, scale: 1.1 }}
@@ -110,10 +110,10 @@ const AllFeaturesSection: React.FC = () => {
                                         aria-hidden="true"
                                     />
                                 </div>
-                                <p className="mt-14 text-xl xl:text-2xl leading-6 font-medium text-white text-center">
+                                <p className="mt-14 text-xl  leading-6 font-medium text-white text-center">
                                     {feature.name}
                                 </p>
-                                <div className="my-7 text-base xl:text-lg text-gray-400 text-center">
+                                <div className="my-7 text-base  text-gray-400 text-center">
                                     {feature.description}
                                 </div>
                             </div>

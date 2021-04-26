@@ -33,7 +33,7 @@ const HelpSection: React.FC = () => {
             <div className="absolute inset-0">
                 <div className="h-1/3 sm:h-2/3" />
             </div>
-            <div className="relative max-w-7xl xl:max-w-8xl mx-auto">
+            <div className="relative max-w-7xl mx-auto">
                 <div className="text-center">
                     <h2 className="text-3xl xl:text-5xl tracking-tight font-extrabold text-gray-50 sm:text-4xl">
                         Get the most out of Firebot
