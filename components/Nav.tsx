@@ -44,7 +44,7 @@ export const Nav = (): JSX.Element => {
                                                     width={45}
                                                     height={45}
                                                 />
-                                                <div className="text-yellow-300 text-3xl xl:text-4xl font-extralight ml-3">
+                                                <div className="text-yellow-300 text-3xl font-extralight ml-3">
                                                     Firebot
                                                 </div>
                                             </a>
