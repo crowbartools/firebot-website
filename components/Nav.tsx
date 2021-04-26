@@ -74,7 +74,7 @@ export const Nav = (): JSX.Element => {
                                                 'team-section',
                                             ]}
                                             currentClassName="text-gray-100"
-                                            offset={-200}
+                                            offset={-300}
                                             componentTag="div"
                                         >
                                             {navigation.map((item) => (
