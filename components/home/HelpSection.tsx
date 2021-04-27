@@ -35,10 +35,10 @@ const HelpSection: React.FC = () => {
             </div>
             <div className="relative max-w-7xl mx-auto">
                 <div className="text-center">
-                    <h2 className="text-3xl xl:text-5xl tracking-tight font-extrabold text-gray-50 sm:text-4xl">
+                    <h2 className="text-3xl 2xl:text-5xl tracking-tight font-extrabold text-gray-50 sm:text-4xl">
                         Get the most out of Firebot
                     </h2>
-                    <p className="mt-3 max-w-2xl mx-auto text-xl xl:max-w-3xl xl:text-2xl text-gray-400 sm:mt-4">
+                    <p className="mt-3 max-w-2xl mx-auto text-xl 2xl:max-w-3xl 2xl:text-2xl text-gray-400 sm:mt-4">
                         Have a question or want to learn how to use Firebot? No
                         worries! Check out the options below.
                     </p>

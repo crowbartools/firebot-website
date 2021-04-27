@@ -23,14 +23,14 @@ export const Nav = (): JSX.Element => {
     return (
         <Sticky
             stickyClassName="sticky border-b border-gray-800 bg-gray-900 z-50 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90 "
-            className="xl:mb-5"
+            className="2xl:mb-5"
         >
             <Popover as="header" className="relative">
                 {({ open }) => (
                     <>
                         <div className="py-3">
                             <nav
-                                className="relative max-w-7xl xl:max-w-8xl mx-auto flex items-center justify-between px-4 sm:px-6"
+                                className="relative max-w-7xl 2xl:max-w-8xl mx-auto flex items-center justify-between px-4 sm:px-6"
                                 aria-label="Global"
                             >
                                 <div className="flex items-center justify-between flex-1">
@@ -81,7 +81,7 @@ export const Nav = (): JSX.Element => {
                                                 <a
                                                     key={item.name}
                                                     href={item.href}
-                                                    className="text-base xl:text-lg font-medium hover:text-gray-200"
+                                                    className="text-base 2xl:text-lg font-medium hover:text-gray-200"
                                                 >
                                                     {item.name}
                                                 </a>

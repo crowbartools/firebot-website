@@ -79,15 +79,15 @@ const features: Feature[] = [
 const AllFeaturesSection: React.FC = () => {
     return (
         <>
-            <div className="mt-12 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl xl:max-w-8xl py-4 pb-5 ">
+            <div className="mt-12 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl 2xl:max-w-8xl py-4 pb-5 ">
                 <ScrollArrow />
-                <div className="text-blue-400 text-xl xl:text-2xl text-center tracking-wide">
+                <div className="text-blue-400 text-xl 2xl:text-2xl text-center tracking-wide">
                     ALL FEATURES
                 </div>
-                <div className="text-4xl xl:text-5xl font-bold text-center mt-3 mb-7">
+                <div className="text-4xl 2xl:text-5xl font-bold text-center mt-3 mb-7">
                     Everything you need to run your stream
                 </div>
-                <div className="text-xl xl:text-2xl text-gray-300 text-center px-6 md:px-36 mt-1 font-light">
+                <div className="text-xl 2xl:text-2xl text-gray-300 text-center px-6 md:px-36 mt-1 font-light">
                     Firebot is a free, open source, all-in-one bot for Twitch.
                     It's packed full of everything you need to make your stream
                     fun and interactive.

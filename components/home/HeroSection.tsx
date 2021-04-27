@@ -8,17 +8,17 @@ import { useStores } from '../../stores';
 export default function HeroSection() {
     const { githubStore } = useStores();
     return useObserver(() => (
-        <div className="pb-8 sm:pb-12 xl:pb-14">
+        <div className="pb-8 sm:pb-12 2xl:pb-14">
             <ScrollAnchor anchorId="download" />
-            <div className="pt-8 overflow-hidden sm:pt-12 lg:relative lg:py-48 xl:py-56">
-                <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl xl:max-w-8xl lg:grid lg:grid-cols-2 lg:gap-24">
+            <div className="pt-8 overflow-hidden sm:pt-12 lg:relative lg:py-48 2xl:py-56">
+                <div className="mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl 2xl:max-w-8xl lg:grid lg:grid-cols-2 lg:gap-24">
                     <div id="download-section">
                         <div>
                             <div className="sm:max-w-xl">
-                                <h1 className="text-4xl xl:text-5xl font-extrabold text-white tracking-tight sm:text-5xl">
+                                <h1 className="text-4xl 2xl:text-5xl font-extrabold text-white tracking-tight sm:text-5xl">
                                     All-in-one bot for Twitch streamers
                                 </h1>
-                                <p className="mt-6 text-xl xl:text-2xl text-gray-500">
+                                <p className="mt-6 text-xl 2xl:text-2xl text-gray-500">
                                     Firebot is a fully featured open-source bot
                                     that can help level up your streams.
                                 </p>

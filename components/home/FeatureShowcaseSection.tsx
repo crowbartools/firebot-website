@@ -4,8 +4,8 @@ export default function FeatureShowcaseSection() {
     return (
         <div className="relative pt-16 pb-32 overflow-hidden">
             <div>
-                <div className="lg:mx-auto lg:max-w-7xl xl:max-w-8xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 xl:gap-28">
-                    <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 xl:py-44 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
+                <div className="lg:mx-auto lg:max-w-7xl 2xl:max-w-8xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 2xl:gap-28">
+                    <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 2xl:py-44 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
                         <div>
                             <div>
                                 <span className="h-12 w-12 rounded-md flex items-center justify-center bg-blue-500">
@@ -16,10 +16,10 @@ export default function FeatureShowcaseSection() {
                                 </span>
                             </div>
                             <div className="mt-6">
-                                <h2 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white">
+                                <h2 className="text-3xl 2xl:text-4xl font-extrabold tracking-tight text-white">
                                     Modern, easy-to-use UI
                                 </h2>
-                                <p className="mt-4 text-lg xl:text-xl text-gray-400">
+                                <p className="mt-4 text-lg 2xl:text-xl text-gray-400">
                                     Why choose function over form when you can
                                     have both! Utilizing modern technologies,
                                     Firebot has been built from the ground up
@@ -42,8 +42,8 @@ export default function FeatureShowcaseSection() {
             </div>
 
             <div className="relative mt-24">
-                <div className="lg:mx-auto lg:max-w-7xl xl:max-w-8xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 xl:gap-28">
-                    <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-40 xl:py-48 lg:max-w-none lg:mx-0 lg:px-0">
+                <div className="lg:mx-auto lg:max-w-7xl 2xl:max-w-8xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 2xl:gap-28">
+                    <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-40 2xl:py-48 lg:max-w-none lg:mx-0 lg:px-0">
                         <div>
                             <div>
                                 <span className="h-12 w-12 rounded-md flex items-center justify-center bg-blue-500">
@@ -54,10 +54,10 @@ export default function FeatureShowcaseSection() {
                                 </span>
                             </div>
                             <div className="mt-6">
-                                <h2 className="text-3xl xl:text-4xl font-extrabold tracking-tight">
+                                <h2 className="text-3xl 2xl:text-4xl font-extrabold tracking-tight">
                                     Powerful Effects System
                                 </h2>
-                                <p className="mt-4 text-lg xl:text-2xl text-gray-500">
+                                <p className="mt-4 text-lg 2xl:text-2xl text-gray-500">
                                     At the core of Firebot is a simple, yet
                                     powerful Effect system that allows you to
                                     program the bot to do just about anything

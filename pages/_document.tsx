@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html className="bg-gray-900 text-white xl:text-lg">
+            <Html className="bg-gray-900 text-white 2xl:text-lg">
                 <Head />
                 <body className="scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb">
                     <Main />
