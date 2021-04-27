@@ -10,7 +10,7 @@ class MyDocument extends Document {
         return (
             <Html className="bg-gray-900 text-white xl:text-lg">
                 <Head />
-                <body>
+                <body className="scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb">
                     <Main />
                     <NextScript />
                 </body>

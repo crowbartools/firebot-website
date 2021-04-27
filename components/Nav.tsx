@@ -23,7 +23,7 @@ export const Nav = (): JSX.Element => {
     return (
         <Sticky
             stickyClassName="sticky border-b border-gray-800 bg-gray-900 z-50 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90 "
-            className=""
+            className="xl:mb-5"
         >
             <Popover as="header" className="relative">
                 {({ open }) => (

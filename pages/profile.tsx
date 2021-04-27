@@ -16,7 +16,7 @@ export const Profile: React.FC = observer(() => {
     }, []);
 
     return (
-        <div className="h-full text-white relative mx-3 lg:mx-40 mt-8 lg:mt-16">
+        <div className="h-full text-white relative mx-3 lg:mx-auto lg:max-w-7xl mt-8 lg:mt-16">
             <AnimatePresence>
                 {profileStore.isLoading && (
                     <motion.div
