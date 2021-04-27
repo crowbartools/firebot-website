@@ -21,6 +21,10 @@ module.exports = {
                 '10xl': '128rem',
             },
         },
+        screens: {
+            ...defaultTheme.screens,
+            '2xl': '1600px',
+        },
     },
     variants: {
         extend: {},
