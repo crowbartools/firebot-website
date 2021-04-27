@@ -13,12 +13,26 @@ export default function App({ Component, pageProps }) {
                 <meta property="og:url" content="https://firebot.app" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Firebot" />
-                <meta name="twitter:card" content="summary" />
                 <meta
                     property="og:description"
-                    content="All-in-one bot for Twitch streamers"
+                    content="Powerful all-in-one bot for Twitch streamers"
                 />
-                <meta property="og:image" content="/link-preview-img.png" />
+                <meta
+                    property="og:image"
+                    content="https://firebot.app/link-preview-img.png"
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@firebotapp" />
+                <meta name="twitter:title" content="Firebot" />
+                <meta
+                    name="twitter:description"
+                    content="Powerful all-in-one bot for Twitch streamers"
+                />
+                <meta
+                    name="twitter:image"
+                    content="https://firebot.app/link-preview-img.png"
+                />
+
                 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
             </Head>
             <>
