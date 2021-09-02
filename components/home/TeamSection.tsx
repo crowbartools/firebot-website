@@ -30,10 +30,16 @@ const people: Person[] = [
             'https://static-cdn.jtvnw.net/jtv_user_pictures/b379a82f-5e93-4e20-a37d-81b96a5294d6-profile_image-300x300.png',
     },
     {
+        name: 'CaveMobster',
+        role: 'Developer',
+        imageUrl:
+            'https://static-cdn.jtvnw.net/jtv_user_pictures/1456976e-5ff9-424c-a1db-6eb1670a284b-profile_image-300x300.png',
+    },
+    {
         name: 'Heyaapl',
         role: 'Tutorials / Support',
         imageUrl:
-            'https://static-cdn.jtvnw.net/jtv_user_pictures/31af8729-dea7-4ac9-b0bb-622a5d377b86-profile_image-300x300.png',
+            'https://static-cdn.jtvnw.net/jtv_user_pictures/a9bbd63c-aea0-4d45-8633-2042087a81a3-profile_image-300x300.png',
     },
     {
         name: 'CorporalGigglesworth',
@@ -46,12 +52,6 @@ const people: Person[] = [
         role: 'Support / Tester',
         imageUrl:
             'https://static-cdn.jtvnw.net/jtv_user_pictures/1f5bad3f-08ed-4eb7-95c3-e788342be35a-profile_image-300x300.png',
-    },
-    {
-        name: 'CaveMobster',
-        role: 'Developer',
-        imageUrl:
-            'https://static-cdn.jtvnw.net/jtv_user_pictures/1456976e-5ff9-424c-a1db-6eb1670a284b-profile_image-300x300.png',
     },
     {
         name: 'Kateract',
