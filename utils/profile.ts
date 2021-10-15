@@ -70,6 +70,7 @@ export default function getMappedRoles(roleIds: string[]) {
                         case 'broadcaster':
                         case 'Streamer':
                         case 'Owner':
+                            return "Streamer";
                         case 'ChannelEditor':
                         case 'Mod':
                         case 'mod':
