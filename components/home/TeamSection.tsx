@@ -6,10 +6,10 @@ type Person = {
 
 const people: Person[] = [
     {
-        name: 'MageEnclave',
+        name: 'Firebottle',
         role: 'Creator / Developer',
         imageUrl:
-            'https://static-cdn.jtvnw.net/jtv_user_pictures/fc361bfa-c5e4-46c5-affb-1e0bf45c500d-profile_image-300x300.png',
+            'https://static-cdn.jtvnw.net/jtv_user_pictures/2b6b7c93-5034-435d-905d-237026633a97-profile_image-300x300.png',
     },
     {
         name: 'ebiggz',
@@ -33,7 +33,7 @@ const people: Person[] = [
         name: 'CaveMobster',
         role: 'Developer',
         imageUrl:
-            'https://static-cdn.jtvnw.net/jtv_user_pictures/1456976e-5ff9-424c-a1db-6eb1670a284b-profile_image-300x300.png',
+            'https://static-cdn.jtvnw.net/jtv_user_pictures/c26ffc94-e760-40b6-ba0a-72a9b2b9ccb5-profile_image-300x300.png',
     },
     {
         name: 'Heyaapl',
