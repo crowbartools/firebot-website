@@ -113,10 +113,10 @@ export const Testimonial: React.FC = observer(() => {
                                 Submit a Testimonial
                             </p>
                             <p className="max-w-xl mt-5 mx-auto text-xl text-gray-400">
-                                Has Firebot improved your experience as a
-                                streamer? We'd love to hear from you! Your
-                                testimonial may be featured on our site in the
-                                future.
+                                Has Firebot improved your live streaming
+                                experience? We'd love to hear from you! Your
+                                testimonial and channel may be showcased on our
+                                site in the future.
                             </p>
                         </div>
                     </div>
