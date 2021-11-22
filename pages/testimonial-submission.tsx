@@ -77,7 +77,7 @@ export const Testimonial: React.FC = observer(() => {
                             value: (session.user as any).follows ?? 'Unknown',
                             inline: true,
                         },
-                        ...(!discordUser
+                        ...(discordUser.length
                             ? [
                                   {
                                       name: 'Discord',
