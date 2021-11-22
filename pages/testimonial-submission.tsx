@@ -18,6 +18,7 @@ export const Testimonial: React.FC = observer(() => {
     const [testimonial, setTestimonial] = useState('');
     const [streamerType, setStreamerType] = useState('');
     const [discordUser, setDiscordUser] = useState('');
+    const [twitterUser, setTwitterUser] = useState('');
     const [discordUserValid, setDiscordUserValid] = useState(true);
 
     const [submitting, setSubmitting] = useState(false);
@@ -28,6 +29,7 @@ export const Testimonial: React.FC = observer(() => {
         setStreamerType('');
         setDiscordUser('');
         setDiscordUserValid(true);
+        setTwitterUser('');
         setSuccessfulSubmission(false);
     };
 
@@ -75,6 +77,15 @@ export const Testimonial: React.FC = observer(() => {
                                   {
                                       name: 'Discord',
                                       value: discordUser,
+                                      inline: true,
+                                  },
+                              ]
+                            : []),
+                        ...(twitterUser.length
+                            ? [
+                                  {
+                                      name: 'Twitter',
+                                      value: `@${twitterUser.replace('@', '')}`,
                                       inline: true,
                                   },
                               ]
@@ -253,6 +264,40 @@ export const Testimonial: React.FC = observer(() => {
                                     Invalid Discord username
                                 </span>
                             )}
+
+                            <div className="flex justify-between mt-6">
+                                <label
+                                    htmlFor="message"
+                                    className="block text-base font-medium text-warm-gray-900"
+                                >
+                                    Twitter Handle
+                                </label>
+                            </div>
+                            <div>
+                                <p className="text-sm text-gray-400">
+                                    Are you okay with us potentially tweeting
+                                    your testimonial as well? If so, provide
+                                    your twitter handle so we can tag you!
+                                    Otherwise, please feel free to leave this
+                                    blank.
+                                </p>
+                            </div>
+                            <div className="mt-1">
+                                <input
+                                    id="twitterName"
+                                    name="twitterName"
+                                    type="text"
+                                    className="py-3 px-4 block text-base w-full shadow-sm outline-none focus:ring-2 focus:ring-blue-400 border border-gray-900 rounded-md bg-gray-700"
+                                    value={twitterUser}
+                                    onChange={(event) => {
+                                        setTwitterUser(event.target.value);
+                                    }}
+                                    placeholder="@username"
+                                />
+                            </div>
+                            <span className="text-gray-500 text-sm">
+                                Optional
+                            </span>
 
                             <div className="mt-10">
                                 <button
