@@ -3,9 +3,13 @@ import React from 'react';
 import { Nav } from '../components';
 import { ToastProvider } from '../components/toasts';
 import { initialStore, Provider as StoreProvider } from '../stores';
+import { SessionProvider } from 'next-auth/react';
 import '../styles/globals.css';
 
-export default function App({ Component, pageProps }) {
+export default function App({
+    Component,
+    pageProps: { session, ...pageProps },
+}) {
     return (
         <>
             <Head>
@@ -36,13 +40,15 @@ export default function App({ Component, pageProps }) {
                 <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
             </Head>
             <>
-                <StoreProvider value={initialStore}>
-                    <ToastProvider>
-                        <Nav />
-                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                        <Component {...pageProps} />
-                    </ToastProvider>
-                </StoreProvider>
+                <SessionProvider session={session}>
+                    <StoreProvider value={initialStore}>
+                        <ToastProvider>
+                            <Nav />
+                            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                            <Component {...pageProps} />
+                        </ToastProvider>
+                    </StoreProvider>
+                </SessionProvider>
             </>
         </>
     );
