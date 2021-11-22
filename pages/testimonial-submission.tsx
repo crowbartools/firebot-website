@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import React, { useState } from 'react';
-import { useDebounce } from 'react-use';
 import { User } from '../components/testimonial/User';
 
 const WEBHOOK_URL =
@@ -19,31 +18,25 @@ export const Testimonial: React.FC = observer(() => {
     const [testimonial, setTestimonial] = useState('');
     const [streamerType, setStreamerType] = useState('');
     const [discordUser, setDiscordUser] = useState('');
+    const [discordUserValid, setDiscordUserValid] = useState(true);
 
     const [submitting, setSubmitting] = useState(false);
     const [successfulSubmission, setSuccessfulSubmission] = useState(false);
-
-    const [discordUserDebounced, setDiscordUserDebounced] = useState('');
 
     const reset = () => {
         setTestimonial('');
         setStreamerType('');
         setDiscordUser('');
+        setDiscordUserValid(true);
         setSuccessfulSubmission(false);
     };
 
-    useDebounce(
-        () => {
-            setDiscordUserDebounced(discordUser);
-        },
-        1000,
-        [discordUser]
-    );
-
-    const discordUserValid =
-        (!discordUserDebounced.length ||
-            DISCORD_USERNAME_REGEX.test(discordUserDebounced)) &&
-        discordUserDebounced.length < 100;
+    const validateDiscordUser = () => {
+        setDiscordUserValid(
+            (!discordUser.length || DISCORD_USERNAME_REGEX.test(discordUser)) &&
+                discordUser.length < 100
+        );
+    };
 
     const formValid =
         testimonial.length > 0 &&
@@ -244,6 +237,9 @@ export const Testimonial: React.FC = observer(() => {
                                     value={discordUser}
                                     onChange={(event) => {
                                         setDiscordUser(event.target.value);
+                                    }}
+                                    onBlur={() => {
+                                        validateDiscordUser();
                                     }}
                                     placeholder="Username#0001"
                                 />
