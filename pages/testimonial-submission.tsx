@@ -73,10 +73,19 @@ export const Testimonial: React.FC = observer(() => {
                             inline: true,
                         },
                         {
-                            name: 'Discord',
-                            value: discordUser || 'Not provided',
+                            name: 'Follows',
+                            value: (session.user as any).follows ?? 'Unknown',
                             inline: true,
                         },
+                        ...(!discordUser
+                            ? [
+                                  {
+                                      name: 'Discord',
+                                      value: discordUser,
+                                      inline: true,
+                                  },
+                              ]
+                            : []),
                     ],
                     author: {
                         name: session.user.name,
@@ -111,10 +120,10 @@ export const Testimonial: React.FC = observer(() => {
                                 Submit a Testimonial
                             </p>
                             <p className="max-w-xl mt-5 mx-auto text-xl text-gray-400">
-                                Has Firebot improved the live streaming
-                                experience for you and/or your viewers? We'd
-                                love to hear from you! Your testimonial may be
-                                featured on our site.
+                                Has Firebot improved your experience as a
+                                streamer? We'd love to hear from you! Your
+                                testimonial may be featured on our site in the
+                                future.
                             </p>
                         </div>
                     </div>
