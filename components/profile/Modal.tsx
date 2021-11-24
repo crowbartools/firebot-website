@@ -3,17 +3,20 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { withoutSsr } from '../../utils/withoutSsr';
 
 interface Props {
     children: ReactNode;
     isOpen: boolean;
+    widthClass?: string;
     onClickAway: () => void;
     onClose: () => void;
 }
 
-export const Modal: React.FC<Props> = ({
+const ModalComponent: React.FC<Props> = ({
     children,
     isOpen,
+    widthClass = 'w-96',
     onClickAway,
     onClose,
 }) => {
@@ -48,7 +51,7 @@ export const Modal: React.FC<Props> = ({
                     }}
                     className={clsx(
                         'fixed top-0 bottom-0 left-0 right-0',
-                        'z-50 overflow-auto flex justify-center items-center'
+                        'z-50 overflow-auto flex justify-center'
                     )}
                     onClick={onBackdropClick}
                 >
@@ -72,7 +75,7 @@ export const Modal: React.FC<Props> = ({
                                 type: 'spring',
                             },
                         }}
-                        className="w-96 relative shadow"
+                        className={clsx('relative shadow my-10', widthClass)}
                     >
                         <div
                             ref={modalRef}
@@ -99,3 +102,5 @@ export const Modal: React.FC<Props> = ({
         'report-modal'
     );
 };
+
+export const Modal = withoutSsr(ModalComponent);

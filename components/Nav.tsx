@@ -10,6 +10,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 const navigation = [
     { name: 'Download', href: '#download' },
     { name: 'Features', href: '#features' },
+    { name: 'Testimonials', href: '#testimonials' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Help', href: '#help' },
     { name: 'Team', href: '#team' },
@@ -69,12 +70,13 @@ export const Nav = (): JSX.Element => {
                                             items={[
                                                 'download-section',
                                                 'features-section',
+                                                'testimonial-section',
                                                 'faq-section',
                                                 'help-section',
                                                 'team-section',
                                             ]}
                                             currentClassName="text-gray-100"
-                                            offset={-300}
+                                            offset={-100}
                                             componentTag="div"
                                         >
                                             {navigation.map((item) => (
