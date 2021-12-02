@@ -7,6 +7,12 @@ import { Searchbar } from '../components/profile/Searchbar';
 import { Tabs } from '../components/profile/Tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
+import { Select } from '../components/profile/Select';
+
+const ALL_COMMANDS_TAG = {
+    id: 'allCommands',
+    name: 'All commands',
+};
 
 export const Profile: React.FC = observer(() => {
     const { profileStore } = useStores();
@@ -16,7 +22,7 @@ export const Profile: React.FC = observer(() => {
     }, []);
 
     return (
-        <div className="h-full text-white relative mx-3 lg:mx-auto lg:max-w-7xl mt-8 lg:mt-16">
+        <div className="h-full text-white relative mx-3 lg:mx-auto lg:max-w-6xl mt-8 lg:mt-16">
             <AnimatePresence>
                 {profileStore.isLoading && (
                     <motion.div
@@ -69,18 +75,59 @@ export const Profile: React.FC = observer(() => {
                     config={{
                         Commands: {
                             content: <Commands />,
-                            searchbar: (
-                                <Searchbar
-                                    onSearch={profileStore.setCommandQuery}
-                                />
+                            toolbar: (mobile) => (
+                                <div
+                                    className={clsx('flex justify-end', {
+                                        'flex-col': mobile,
+                                    })}
+                                >
+                                    {!!profileStore.profileData?.sortTags
+                                        ?.length && (
+                                        <div
+                                            className={clsx({
+                                                'w-52 mr-3': !mobile,
+                                                'w-full order-last mt-3': mobile,
+                                            })}
+                                        >
+                                            <Select
+                                                options={[
+                                                    ALL_COMMANDS_TAG,
+                                                    ...profileStore.profileData
+                                                        ?.sortTags,
+                                                ]}
+                                                selected={
+                                                    profileStore.selectedCommandSortTag ??
+                                                    ALL_COMMANDS_TAG
+                                                }
+                                                onSelected={
+                                                    profileStore.setSelectedCommandSortTag
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                    <div
+                                        className={clsx({
+                                            'w-96': !mobile,
+                                            'w-full': mobile,
+                                        })}
+                                    >
+                                        <Searchbar
+                                            onSearch={
+                                                profileStore.setCommandQuery
+                                            }
+                                        />
+                                    </div>
+                                </div>
                             ),
                         },
                         Quotes: {
                             content: <Quotes />,
-                            searchbar: (
-                                <Searchbar
-                                    onSearch={profileStore.setQuoteQuery}
-                                />
+                            toolbar: (mobile) => (
+                                <div className={mobile ? 'w-full' : 'w-96'}>
+                                    <Searchbar
+                                        onSearch={profileStore.setQuoteQuery}
+                                    />
+                                </div>
                             ),
                         },
                     }}

@@ -29,7 +29,7 @@ export const Searchbar: React.FC<Props> = ({ onSearch }) => {
     const variants = {
         notFocused: { scale: 1, boxShadow: 'none' },
         focused: {
-            scale: 1.02,
+            scale: 1.0,
             boxShadow:
                 '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         },
@@ -63,8 +63,9 @@ export const Searchbar: React.FC<Props> = ({ onSearch }) => {
                         id="search"
                         className={clsx(
                             'block w-full pl-10 pr-3 py-3 rounded-lg text-white',
-                            'leading-5 bg-gray-700 placeholder-gray-200',
-                            'outline-none text-base focus:shadow-focus border-none'
+                            'bg-gray-700 placeholder-gray-200',
+                            'outline-none text-base md:text-sm focus:shadow-focus border-none',
+                            'focus:ring-2 ring-blue-400'
                         )}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}

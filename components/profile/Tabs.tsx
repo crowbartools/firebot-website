@@ -8,7 +8,7 @@ interface Props {
         string,
         {
             content: React.ReactElement;
-            searchbar: React.ReactElement;
+            toolbar: (mobile: boolean) => React.ReactElement;
         }
     >;
     onTabClick: (tabIndex: number) => void;
@@ -20,7 +20,7 @@ export const Tabs: React.FC<Props> = ({
 }) => (
     <>
         <nav className="flex justify-center md:justify-start">
-            {Object.entries(config).map(([tabName, { searchbar }], index) => (
+            {Object.entries(config).map(([tabName, { toolbar }], index) => (
                 <>
                     <a
                         key={index}
@@ -42,7 +42,7 @@ export const Tabs: React.FC<Props> = ({
                             <AnimatePresence>
                                 {index === activeTabIndex && (
                                     <motion.span
-                                        className="rounded h-1 bg-blue-300"
+                                        className="rounded h-1 bg-blue-500"
                                         initial={{ width: 0 }}
                                         animate={{ width: '100%' }}
                                         exit={{ width: 0 }}
@@ -59,19 +59,19 @@ export const Tabs: React.FC<Props> = ({
                     {index === activeTabIndex && (
                         <div
                             key={tabName}
-                            className="order-last ml-auto w-96 md:block hidden"
+                            className="order-last ml-auto md:block hidden"
                         >
-                            {searchbar}
+                            {toolbar(false)}
                         </div>
                     )}
                 </>
             ))}
         </nav>
         {Object.entries(config).map(
-            ([tabName, { searchbar }], index) =>
+            ([tabName, { toolbar }], index) =>
                 index === activeTabIndex && (
                     <div key={tabName} className="md:hidden block mt-4">
-                        {searchbar}
+                        {toolbar(true)}
                     </div>
                 )
         )}

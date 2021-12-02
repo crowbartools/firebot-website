@@ -3,7 +3,7 @@ import moment from 'moment';
 import { ChannelInfo, ProfileData } from '../types/profile';
 import getMappedRoles, {
     getChannelInfo,
-    getProfileData,
+    getProfileData
 } from '../utils/profile';
 
 class ProfileStore {
@@ -15,13 +15,15 @@ class ProfileStore {
 
     quotesPagination = {
         currentPage: 1,
-        pageSize: 25,
+        pageSize: 25
     };
 
     commandsPagination = {
         currentPage: 1,
-        pageSize: 25,
+        pageSize: 25
     };
+
+    selectedCommandSortTag: this['profileData']['sortTags'][0] | null = null;
 
     commandQuery = '';
     quoteQuery = '';
@@ -51,13 +53,27 @@ class ProfileStore {
         this.quoteQuery = query;
     }
 
+    setSelectedCommandSortTag(sortTag: this['selectedCommandSortTag']) {
+        if (sortTag.id === 'allCommands') {
+            this.selectedCommandSortTag = null;
+        } else {
+            this.selectedCommandSortTag = sortTag;
+        }
+    }
+
     get filteredCommands() {
         return (
-            this.profileData?.commands.allowedCmds.filter((c) =>
-                c.trigger
+            this.profileData?.commands.allowedCmds.filter((c) => {
+                if (
+                    this.selectedCommandSortTag &&
+                    !c.sortTags?.includes(this.selectedCommandSortTag.id)
+                ) {
+                    return false;
+                }
+                return c.trigger
                     .toLowerCase()
-                    .includes(this.commandQuery.toLowerCase())
-            ) ?? []
+                    .includes(this.commandQuery.toLowerCase());
+            }) ?? []
         );
     }
 
@@ -123,7 +139,7 @@ class ProfileStore {
                 );
                 if (permissionsRestriction?.roleIds?.length > 0) {
                     c.permissions = {
-                        roles: getMappedRoles(permissionsRestriction.roleIds),
+                        roles: getMappedRoles(permissionsRestriction.roleIds)
                     };
                 }
                 if (c.subCommands?.length > 0) {
@@ -137,9 +153,7 @@ class ProfileStore {
                         );
                         if (scPermRestriction?.roleIds?.length > 0) {
                             sc.permissions = {
-                                roles: getMappedRoles(
-                                    scPermRestriction.roleIds
-                                ),
+                                roles: getMappedRoles(scPermRestriction.roleIds)
                             };
                         }
                         return sc;

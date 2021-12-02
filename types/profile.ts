@@ -23,6 +23,7 @@ export type Command = {
     restrictionData?: {
         restrictions: Restriction[];
     };
+    sortTags?: string[];
     subCommands?: Subcommand[];
     fallbackSubcommand?: Subcommand;
 };
@@ -36,6 +37,7 @@ export interface ProfileData {
     owner: string;
     chatter: string;
     profilePage: 'commands' | 'quotes';
+    sortTags?: Array<{ id: string; name: string }>;
     commands: {
         allowedCmds: Command[];
     };
