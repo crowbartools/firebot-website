@@ -1,13 +1,15 @@
 import { createContext, useContext } from 'react';
 
+import { appStore } from './app-store';
 import { githubStore } from './github-store';
 import { profileStore } from './profile-store';
 import { toastStore } from './toasts-store';
 
 export const initialStore = {
+    appStore,
     githubStore,
     profileStore,
-    toastStore,
+    toastStore
 };
 
 const RootStoreContext = createContext(initialStore);

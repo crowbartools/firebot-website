@@ -71,7 +71,16 @@ export const Profile: React.FC = observer(() => {
             <div>
                 <Tabs
                     activeTabIndex={profileStore.activeTabIndex}
-                    onTabClick={profileStore.setActiveTabIndex}
+                    onTabClick={(index) => {
+                        if (profileStore.activeTabIndex === index) {
+                            window.scrollTo({
+                                behavior: 'smooth',
+                                top: 0,
+                            });
+                        } else {
+                            profileStore.setActiveTabIndex(index);
+                        }
+                    }}
                     config={{
                         Commands: {
                             content: <Commands />,

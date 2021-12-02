@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { cloneElement } from 'react';
+import Sticky from 'react-sticky-el';
+import { useStores } from '../../stores';
 
 interface Props {
     activeTabIndex: number;
@@ -17,70 +19,96 @@ export const Tabs: React.FC<Props> = ({
     activeTabIndex,
     config,
     onTabClick,
-}) => (
-    <>
-        <nav className="flex justify-center md:justify-start">
-            {Object.entries(config).map(([tabName, { toolbar }], index) => (
+}) => {
+    const { appStore } = useStores();
+    return (
+        <>
+            <Sticky
+                stickyClassName="sticky mb-5 mt-16 py-3 z-50 px-3 md:px-[13.7rem] z-50"
+                stickyStyle={{
+                    width: '100%',
+                    left: 0,
+                }}
+                onFixedToggle={appStore.setTabBarStuck}
+                topOffset={-100}
+            >
                 <>
-                    <a
-                        key={index}
-                        aria-current={
-                            index === activeTabIndex ? 'page' : 'false'
-                        }
-                        onClick={() => onTabClick(index)}
-                        className={clsx(
-                            `text-2xl font-light relative py-2 cursor-pointer hover:text-white select-none`,
-                            {
-                                'text-gray-200': index !== activeTabIndex,
-                                'text-white': index === activeTabIndex,
-                                'ml-14': index > 0,
-                            }
-                        )}
-                    >
-                        {tabName}
-                        <div className="absolute bottom-0 left-0 w-full flex justify-center">
-                            <AnimatePresence>
-                                {index === activeTabIndex && (
-                                    <motion.span
-                                        className="rounded h-1 bg-blue-500"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: '100%' }}
-                                        exit={{ width: 0 }}
-                                        transition={{
-                                            ease: 'easeOut',
-                                            duration: 0.05,
-                                        }}
-                                    ></motion.span>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    </a>
+                    <nav className="flex justify-center md:justify-start">
+                        {Object.entries(config).map(
+                            ([tabName, { toolbar }], index) => (
+                                <>
+                                    <a
+                                        key={index}
+                                        aria-current={
+                                            index === activeTabIndex
+                                                ? 'page'
+                                                : 'false'
+                                        }
+                                        onClick={() => onTabClick(index)}
+                                        className={clsx(
+                                            `text-2xl font-light relative py-2 cursor-pointer hover:text-white select-none`,
+                                            {
+                                                'text-gray-200':
+                                                    index !== activeTabIndex,
+                                                'text-white':
+                                                    index === activeTabIndex,
+                                                'ml-14': index > 0,
+                                            }
+                                        )}
+                                    >
+                                        {tabName}
+                                        <div className="absolute bottom-0 left-0 w-full flex justify-center">
+                                            <AnimatePresence>
+                                                {index === activeTabIndex && (
+                                                    <motion.span
+                                                        className="rounded h-1 bg-blue-500"
+                                                        initial={{ width: 0 }}
+                                                        animate={{
+                                                            width: '100%',
+                                                        }}
+                                                        exit={{ width: 0 }}
+                                                        transition={{
+                                                            ease: 'easeOut',
+                                                            duration: 0.05,
+                                                        }}
+                                                    ></motion.span>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    </a>
 
-                    {index === activeTabIndex && (
-                        <div
-                            key={tabName}
-                            className="order-last ml-auto md:block hidden"
-                        >
-                            {toolbar(false)}
-                        </div>
+                                    {index === activeTabIndex && (
+                                        <div
+                                            key={tabName}
+                                            className="order-last ml-auto md:block hidden"
+                                        >
+                                            {toolbar(false)}
+                                        </div>
+                                    )}
+                                </>
+                            )
+                        )}
+                    </nav>
+                    {Object.entries(config).map(
+                        ([tabName, { toolbar }], index) =>
+                            index === activeTabIndex && (
+                                <div
+                                    key={tabName}
+                                    className="md:hidden block mt-4"
+                                >
+                                    {toolbar(true)}
+                                </div>
+                            )
                     )}
                 </>
-            ))}
-        </nav>
-        {Object.entries(config).map(
-            ([tabName, { toolbar }], index) =>
-                index === activeTabIndex && (
-                    <div key={tabName} className="md:hidden block mt-4">
-                        {toolbar(true)}
-                    </div>
-                )
-        )}
-        <div className="mt-4 md:mt-10">
-            {Object.entries(config).map(
-                ([, { content }], index) =>
-                    index === activeTabIndex &&
-                    cloneElement(content, { key: index })
-            )}
-        </div>
-    </>
-);
+            </Sticky>
+            <div className="mt-4 md:mt-10">
+                {Object.entries(config).map(
+                    ([, { content }], index) =>
+                        index === activeTabIndex &&
+                        cloneElement(content, { key: index })
+                )}
+            </div>
+        </>
+    );
+};
