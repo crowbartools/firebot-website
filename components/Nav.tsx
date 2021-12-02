@@ -33,7 +33,7 @@ export const Nav = observer(
                     'sticky border-b border-gray-800 z-50',
                     ' bg-gray-900 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90',
                     {
-                        'pb-[12rem] md:pb-[5rem]': appStore.tabBarStuck,
+                        'pb-[12.75rem] md:pb-[5.5rem]': appStore.tabBarStuck,
                     }
                 )}
                 className="2xl:mb-5"

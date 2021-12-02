@@ -53,7 +53,7 @@ export const Profile: React.FC = observer(() => {
                             className={clsx(
                                 'rounded-full w-4 h-4 mr-2 flex-grow-0',
                                 {
-                                    'bg-red-300':
+                                    'bg-red-500':
                                         profileStore.channelInfo?.isLive,
                                     'bg-gray-200': !profileStore.channelInfo
                                         ?.isLive,

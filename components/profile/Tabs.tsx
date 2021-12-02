@@ -24,7 +24,7 @@ export const Tabs: React.FC<Props> = ({
     return (
         <>
             <Sticky
-                stickyClassName="sticky mb-5 mt-16 py-3 z-50 px-3 md:px-[13.7rem] z-50"
+                stickyClassName="sticky mb-5 mt-[5.5rem] z-50 px-3 md:px-[13.8rem] z-50"
                 stickyStyle={{
                     width: '100%',
                     left: 0,
