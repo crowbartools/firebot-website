@@ -6,9 +6,13 @@ import { useDebounce } from 'react-use';
 
 interface Props {
     onSearch: (query: string) => void;
+    placeholder?: string;
 }
 
-export const Searchbar: React.FC<Props> = ({ onSearch }) => {
+export const Searchbar: React.FC<Props> = ({
+    onSearch,
+    placeholder = 'Search',
+}) => {
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
 
@@ -69,7 +73,7 @@ export const Searchbar: React.FC<Props> = ({ onSearch }) => {
                         )}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        placeholder="Search"
+                        placeholder={placeholder}
                         type="text"
                         onChange={(event) => setQuery(event.target.value)}
                     />

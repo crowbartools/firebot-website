@@ -26,6 +26,7 @@ class ProfileStore {
     selectedCommandSortTag: this['profileData']['sortTags'][0] | null = null;
 
     commandQuery = '';
+    variableQuery = '';
     quoteQuery = '';
 
     constructor() {
@@ -51,6 +52,10 @@ class ProfileStore {
 
     setQuoteQuery(query: string) {
         this.quoteQuery = query;
+    }
+
+    setVariableQuery(query: string) {
+        this.variableQuery = query;
     }
 
     setSelectedCommandSortTag(sortTag: this['selectedCommandSortTag']) {
@@ -85,6 +90,28 @@ class ProfileStore {
             offset,
             offset + this.commandsPagination.pageSize
         );
+    }
+
+    get filteredVariables() {
+        const normalizedQuery = this.variableQuery
+            .trim()
+            .toLowerCase()
+            .replace('$', '');
+        return [...this.profileData.variables]
+            .sort((a, b) => {
+                if (a.handle < b.handle) {
+                    return -1;
+                }
+                if (a.handle > b.handle) {
+                    return 1;
+                }
+                return 0;
+            })
+            .filter(
+                (v) =>
+                    v.handle.toLowerCase().includes(normalizedQuery) ||
+                    v.description.toLowerCase().includes(normalizedQuery)
+            );
     }
 
     get filteredQuotes() {

@@ -6,6 +6,7 @@ import { Subcommands } from './Subcommands';
 import { CooldownsAndPermissions } from './CooldownsAndPermissions';
 import { CopyButton } from './CopyButton';
 import { observer } from 'mobx-react-lite';
+import { VariableBrowser } from './VariableBrowser';
 
 export const Commands = observer(() => {
     const { profileStore } = useStores();
@@ -43,6 +44,11 @@ export const Commands = observer(() => {
                                 permissions={c.permissions}
                             />
                             <Subcommands command={c} />
+                            {c.id === 'firebot:commandmanagement' && (
+                                <div className="mt-3">
+                                    <VariableBrowser />
+                                </div>
+                            )}
                         </div>
                     ))}
             </div>

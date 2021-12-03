@@ -10,6 +10,7 @@ interface Props {
      */
     content: string | React.ReactNode;
     wrapperClassName?: string;
+    disabled?: boolean;
 }
 
 const OFFSET = 10;
@@ -50,6 +51,7 @@ export const Tooltip: React.FC<Props> = ({
     children,
     content,
     wrapperClassName,
+    disabled = false,
 }) => {
     // if we don't wrap the children, useHover breaks
     // when root child is a custom component
@@ -77,7 +79,7 @@ export const Tooltip: React.FC<Props> = ({
     return (
         <div className={clsx('relative inline-flex', wrapperClassName)}>
             <AnimatePresence>
-                {hovered && (
+                {hovered && !disabled && (
                     <motion.div
                         ref={tooltipRef}
                         initial={{ opacity: 0 }}

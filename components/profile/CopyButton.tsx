@@ -3,12 +3,12 @@ import { useStores } from '../../stores';
 import { Tooltip } from './Tooltip';
 
 export const CopyButton: React.FC<{
-    tooltipText: string;
+    tooltipText?: string;
     copyText: string;
 }> = ({ tooltipText, copyText }) => {
     const { toastStore } = useStores();
     return (
-        <Tooltip content={tooltipText}>
+        <Tooltip content={tooltipText} disabled={!tooltipText}>
             <button
                 className="ml-1 text-blue-300 hover:text-blue-700"
                 onClick={() => {

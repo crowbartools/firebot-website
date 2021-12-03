@@ -8,6 +8,7 @@ export type Restriction = {
 };
 
 export type Command = {
+    id: string;
     active: boolean;
     trigger: string;
     description?: string;
@@ -51,6 +52,12 @@ export interface ProfileData {
             text: string;
         }>;
     };
+    variables: Array<{
+        handle: string;
+        usage?: string;
+        description: string;
+        examples?: Array<{ usage: string; description: string }>;
+    }>;
 }
 
 export interface ChannelInfo {
