@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Sticky from 'react-sticky-el';
+import Sticky from 'react-stickynode';
 import Scrollspy from 'react-scrollspy';
 import { Popover, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
@@ -29,14 +29,15 @@ export const Nav = observer(
 
         return (
             <Sticky
-                stickyClassName={clsx(
-                    'sticky border-b border-gray-800 z-50',
-                    ' bg-gray-900 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90',
+                enabled={true}
+                className="2xl:mb-5"
+                innerActiveClass={clsx(
+                    'border-b border-gray-800 z-50',
+                    'bg-gray-900 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90',
                     {
-                        'pb-[12.75rem] md:pb-[5.5rem]': appStore.tabBarStuck,
+                        'pb-[13.25rem] md:pb-[5.5rem]': appStore.tabBarStuck,
                     }
                 )}
-                className="2xl:mb-5"
             >
                 <Popover as="header" className="relative">
                     {({ open }) => (

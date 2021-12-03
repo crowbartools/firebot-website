@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { cloneElement } from 'react';
-import Sticky from 'react-sticky-el';
+import Sticky from 'react-stickynode';
 import { useStores } from '../../stores';
 
 interface Props {
@@ -24,13 +24,13 @@ export const Tabs: React.FC<Props> = ({
     return (
         <>
             <Sticky
-                stickyClassName="sticky mb-5 mt-[5.5rem] z-50 px-3 md:px-[13.8rem] z-50"
-                stickyStyle={{
-                    width: '100%',
-                    left: 0,
+                innerActiveClass="mb-5 z-50 px-3 md:px-[13.8rem] z-50 !w-[100%] left-0"
+                onStateChange={(state) => {
+                    appStore.setTabBarStuck(
+                        state.status === Sticky.STATUS_FIXED
+                    );
                 }}
-                onFixedToggle={appStore.setTabBarStuck}
-                topOffset={-100}
+                top={100}
             >
                 <>
                     <nav className="flex justify-center md:justify-start">
