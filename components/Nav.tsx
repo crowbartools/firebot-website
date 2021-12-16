@@ -45,9 +45,11 @@ export const Nav = observer(
         );
 
         useEffect(() => {
-            logEvent('Home Section View', {
-                Section: debouncedViewedSection,
-            });
+            if (debouncedViewedSection?.length > 0) {
+                logEvent('Home Section View', {
+                    Section: debouncedViewedSection,
+                });
+            }
         }, [debouncedViewedSection]);
 
         useEffect(() => {
