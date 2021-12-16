@@ -1,5 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/outline';
+import useAnalytics from '../../hooks/useAnalytics';
 
 const faqs: Array<{ question: string; answer: string }> = [
     {
@@ -32,6 +33,7 @@ function classNames(...classes) {
 }
 
 export default function FAQSection() {
+    const { logEvent } = useAnalytics();
     return (
         <div className="bg-gray-900">
             <div className="max-w-7xl 2xl:max-w-8xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
@@ -45,6 +47,11 @@ export default function FAQSection() {
                                 as="div"
                                 key={faq.question}
                                 className="pt-6"
+                                onClick={() => {
+                                    logEvent('FAQ Click', {
+                                        Question: faq.question,
+                                    });
+                                }}
                             >
                                 {({ open }) => (
                                     <>
