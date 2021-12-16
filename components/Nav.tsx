@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import Sticky from 'react-stickynode';
 import Scrollspy from 'react-scrollspy';
 import { Popover, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useStores } from '../stores';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import useAnalytics from '../hooks/useAnalytics';
+import { useDebounce } from 'react-use';
 
 const navigation = [
     { name: 'Download', href: '#download' },
@@ -26,13 +27,34 @@ export const Nav = observer(
 
         const { logEvent } = useAnalytics();
 
-        logEvent('Page View', {
-            Page: router.pathname,
-        });
-
         const { appStore } = useStores();
 
         const onHome = router.pathname === '/';
+
+        const [viewedSection, setViewedSection] = useState('');
+        const [debouncedViewedSection, setDebouncedViewedSection] = useState(
+            ''
+        );
+
+        useDebounce(
+            () => {
+                setDebouncedViewedSection(viewedSection);
+            },
+            250,
+            [viewedSection]
+        );
+
+        useEffect(() => {
+            logEvent('Home Section View', {
+                Section: debouncedViewedSection,
+            });
+        }, [debouncedViewedSection]);
+
+        useEffect(() => {
+            logEvent('Page View', {
+                Page: router.pathname,
+            });
+        }, []);
 
         return (
             <Sticky
@@ -98,6 +120,22 @@ export const Nav = observer(
                                                 currentClassName="text-gray-100"
                                                 offset={-100}
                                                 componentTag="div"
+                                                onUpdate={(sectionElement) => {
+                                                    if (
+                                                        sectionElement !=
+                                                            null &&
+                                                        sectionElement.id.includes(
+                                                            '-section'
+                                                        )
+                                                    ) {
+                                                        setViewedSection(
+                                                            sectionElement.id.replace(
+                                                                '-section',
+                                                                ''
+                                                            )
+                                                        );
+                                                    }
+                                                }}
                                             >
                                                 {navigation.map((item) => (
                                                     <a
