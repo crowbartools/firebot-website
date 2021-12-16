@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import React from 'react';
 import { useToggle } from 'react-use';
+import useAnalytics from '../../hooks/useAnalytics';
 import { ProfileData } from '../../types/profile';
 import { CopyButton } from './CopyButton';
 
@@ -10,6 +11,8 @@ export const VariableExamples: React.FC<{
     examples: ProfileData['variables'][0]['examples'];
 }> = ({ examples }) => {
     const [open, toggleOpen] = useToggle(false);
+
+    const { logEvent } = useAnalytics();
 
     const variantType = {
         hidden: 'hidden',
@@ -77,6 +80,11 @@ export const VariableExamples: React.FC<{
                                             ${e.usage}{' '}
                                             <CopyButton
                                                 copyText={'$' + e.usage}
+                                                onClick={() => {
+                                                    logEvent('Variable Copy', {
+                                                        Variable: '$' + e.usage,
+                                                    });
+                                                }}
                                             />
                                         </b>
                                         <div className="text-gray-400">

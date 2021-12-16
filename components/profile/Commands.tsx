@@ -7,9 +7,11 @@ import { CooldownsAndPermissions } from './CooldownsAndPermissions';
 import { CopyButton } from './CopyButton';
 import { observer } from 'mobx-react-lite';
 import { VariableBrowser } from './VariableBrowser';
+import useAnalytics from '../../hooks/useAnalytics';
 
 export const Commands = observer(() => {
     const { profileStore } = useStores();
+    const { logEvent } = useAnalytics();
     return (
         <>
             <div className="bg-gray-800 rounded-md mb-16 md:mb-9">
@@ -26,6 +28,11 @@ export const Commands = observer(() => {
                                 <CopyButton
                                     tooltipText="Copy command"
                                     copyText={c.trigger}
+                                    onClick={() =>
+                                        logEvent('Copy Command', {
+                                            Trigger: c.trigger,
+                                        })
+                                    }
                                 />
                                 <div className="font-light text-gray-200 text-sm block md:inline">
                                     <span className="hidden lg:inline-block mx-2">

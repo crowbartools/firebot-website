@@ -7,11 +7,16 @@ import { Pagination } from './Pagination';
 import { downloadDataAsCsv } from '../../utils/profile';
 import { observer } from 'mobx-react-lite';
 import { DownloadIcon } from '@heroicons/react/outline';
+import useAnalytics from '../../hooks/useAnalytics';
 
 export const Quotes = observer(() => {
     const { profileStore } = useStores();
 
+    const { logEvent } = useAnalytics();
+
     const downloadQuotesCsv = () => {
+        logEvent('Quote CSV Download');
+
         const quotes = profileStore.profileData.quotes.quotes.map((quote) => [
             quote._id,
             quote.text,

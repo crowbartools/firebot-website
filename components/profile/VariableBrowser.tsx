@@ -6,12 +6,14 @@ import { useStores } from '../../stores';
 import { Searchbar } from './Searchbar';
 import { CopyButton } from './CopyButton';
 import { VariableExamples } from './VariableExamples';
+import useAnalytics from '../../hooks/useAnalytics';
 
 export const VariableBrowser: React.FC = observer(() => {
     const { profileStore } = useStores();
     const [variableBrowserModalOpen, setVariableBrowserModalOpen] = useState(
         false
     );
+    const { logEvent } = useAnalytics();
     return (
         <section>
             <button
@@ -22,7 +24,10 @@ export const VariableBrowser: React.FC = observer(() => {
                     'bg-blue-500 hover:bg-blue-600 focus:outline-none',
                     'focus:ring-2 focus:ring-offset-2 focus:ring-blue-300'
                 )}
-                onClick={() => setVariableBrowserModalOpen(true)}
+                onClick={() => {
+                    logEvent('Variable Browser Open');
+                    setVariableBrowserModalOpen(true);
+                }}
             >
                 $vars
             </button>
@@ -35,7 +40,14 @@ export const VariableBrowser: React.FC = observer(() => {
                 <div className="rounded-lg overflow-hidden border-2 border-gray-700">
                     <div className="p-6 bg-gray-800 text-2xl border-b-2 border-gray-700">
                         <Searchbar
-                            onSearch={profileStore.setVariableQuery}
+                            onSearch={(query) => {
+                                if (query?.length > 0) {
+                                    logEvent('Variable Search', {
+                                        Query: query.toLowerCase(),
+                                    });
+                                }
+                                profileStore.setVariableQuery(query);
+                            }}
                             placeholder="Search variables"
                         />
                     </div>
@@ -46,6 +58,12 @@ export const VariableBrowser: React.FC = observer(() => {
                                     ${v.usage ?? v.handle}{' '}
                                     <CopyButton
                                         copyText={'$' + (v.usage ?? v.handle)}
+                                        onClick={() => {
+                                            logEvent('Variable Copy', {
+                                                Variable:
+                                                    '$' + (v.usage ?? v.handle),
+                                            });
+                                        }}
                                     />
                                 </b>
                                 <div className="text-gray-400">

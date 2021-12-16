@@ -5,7 +5,8 @@ import { Tooltip } from './Tooltip';
 export const CopyButton: React.FC<{
     tooltipText?: string;
     copyText: string;
-}> = ({ tooltipText, copyText }) => {
+    onClick?: () => void;
+}> = ({ tooltipText, copyText, onClick }) => {
     const { toastStore } = useStores();
     return (
         <Tooltip content={tooltipText} disabled={!tooltipText}>
@@ -16,6 +17,9 @@ export const CopyButton: React.FC<{
                     toastStore.addToast(
                         `'${copyText}' copied to the clipboard!`
                     );
+                    if (onClick) {
+                        onClick();
+                    }
                 }}
             >
                 <svg

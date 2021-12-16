@@ -11,6 +11,7 @@ import {
 } from '@heroicons/react/solid';
 import { shuffle } from '../../../utils';
 import { withoutSsr } from '../../../utils/withoutSsr';
+import useAnalytics from '../../../hooks/useAnalytics';
 
 const variants = {
     enter: (direction: number) => {
@@ -47,6 +48,8 @@ const swipePower = (offset: number, velocity: number) => {
 const TestimonialCarouselComponent: React.FC<{
     userData: Record<string, TwitchUser>;
 }> = ({ userData }) => {
+    const { logEvent } = useAnalytics();
+
     const [[page, direction], setPage] = useState([0, 0]);
 
     const [autoAdvance, setAutoAdvance] = useState(true);
@@ -75,6 +78,7 @@ const TestimonialCarouselComponent: React.FC<{
     const paginate = (newDirection: number, auto = false) => {
         if (!auto) {
             stopAutoAdvance();
+            logEvent('Testimonial Next Button Click');
         }
         setPage([page + newDirection, newDirection]);
     };

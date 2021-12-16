@@ -5,6 +5,7 @@ import { Modal } from '../../profile/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitch } from '@fortawesome/free-brands-svg-icons';
 import { motion } from 'framer-motion';
+import useAnalytics from '../../../hooks/useAnalytics';
 
 export const TestimonialCard: React.FC<{
     testimonial: Testimonial;
@@ -12,6 +13,7 @@ export const TestimonialCard: React.FC<{
     onReadMoreClicked: () => void;
 }> = ({ testimonial, user, onReadMoreClicked }) => {
     const [readMoreModalOpen, setReadMoreModalOpen] = useState(false);
+    const { logEvent } = useAnalytics();
     return (
         <section className="overflow-hidden">
             <div className="relative max-w-7xl mx-auto pt-20 pb-12 px-10 sm:px-6 lg:px-8 lg:py-20">
@@ -45,6 +47,13 @@ export const TestimonialCard: React.FC<{
                                                 onClick={() => {
                                                     onReadMoreClicked();
                                                     setReadMoreModalOpen(true);
+                                                    logEvent(
+                                                        'Testimonial Read More Click',
+                                                        {
+                                                            User:
+                                                                user.display_name,
+                                                        }
+                                                    );
                                                 }}
                                             >
                                                 Read full
@@ -88,6 +97,12 @@ export const TestimonialCard: React.FC<{
                                                     bounce: 0.8,
                                                 },
                                             }}
+                                            onClick={() =>
+                                                logEvent(
+                                                    'Testimonial Profile Click',
+                                                    { Channel: user.login }
+                                                )
+                                            }
                                             target="_blank"
                                             rel="noreferrer"
                                             href={`https://twitch.tv/${user.login}`}

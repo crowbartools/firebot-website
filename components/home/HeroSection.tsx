@@ -3,10 +3,13 @@ import { motion } from 'framer-motion';
 import { useObserver } from 'mobx-react-lite';
 import React from 'react';
 import { ScrollAnchor } from '..';
+import useAnalytics from '../../hooks/useAnalytics';
 import { useStores } from '../../stores';
 
 export default function HeroSection() {
     const { githubStore } = useStores();
+    const { logEvent } = useAnalytics();
+
     return useObserver(() => (
         <div className="pb-8 sm:pb-12 2xl:pb-14">
             <ScrollAnchor anchorId="download" />
@@ -27,6 +30,9 @@ export default function HeroSection() {
                                 <motion.a
                                     className="block text-center w-full sm:w-48 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-10"
                                     href={githubStore.downloadUrl}
+                                    onClick={() =>
+                                        logEvent('Download Button Click')
+                                    }
                                     whileHover={{
                                         scale: 1.02,
                                         transition: {
@@ -44,6 +50,11 @@ export default function HeroSection() {
                                         <a
                                             href="https://github.com/crowbartools/Firebot/releases/latest"
                                             className="inline-flex space-x-4"
+                                            onClick={() =>
+                                                logEvent(
+                                                    "What's New Button Clicked"
+                                                )
+                                            }
                                         >
                                             <span className="rounded bg-green-600 px-2.5 py-1 text-xs font-semibold tracking-wide uppercase">
                                                 What's new

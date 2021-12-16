@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import React from 'react';
 import { useToggle } from 'react-use';
+import useAnalytics from '../../hooks/useAnalytics';
 import { ProfileData } from '../../types/profile';
 import { CooldownsAndPermissions } from './CooldownsAndPermissions';
 import { CopyButton } from './CopyButton';
@@ -30,6 +31,8 @@ export const Subcommands: React.FC<{
             x: 0,
         }),
     };
+
+    const { logEvent } = useAnalytics();
 
     return (
         command.subCommands?.length > 0 && (
@@ -85,6 +88,13 @@ export const Subcommands: React.FC<{
                                         copyText={`${command.trigger} ${
                                             sc.regex ? sc.usage : sc.arg
                                         }`}
+                                        onClick={() =>
+                                            logEvent('Copy Command', {
+                                                Trigger: `${command.trigger} ${
+                                                    sc.regex ? sc.usage : sc.arg
+                                                }`,
+                                            })
+                                        }
                                     />
                                     <div className="font-light text-gray-200 text-sm block md:inline">
                                         <span className="hidden lg:inline-block mx-2">

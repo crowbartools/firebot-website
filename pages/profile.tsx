@@ -8,6 +8,7 @@ import { Tabs } from '../components/profile/Tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 import { Select } from '../components/profile/Select';
+import useAnalytics from '../hooks/useAnalytics';
 
 const ALL_COMMANDS_TAG = {
     id: 'allCommands',
@@ -17,9 +18,27 @@ const ALL_COMMANDS_TAG = {
 export const Profile: React.FC = observer(() => {
     const { profileStore } = useStores();
 
+    const { logEvent } = useAnalytics();
+
     useEffect(() => {
         profileStore.getProfileData();
     }, []);
+
+    useEffect(() => {
+        if (profileStore.commandQuery?.length > 0) {
+            logEvent('Command Search', {
+                Query: profileStore.commandQuery.toLowerCase(),
+            });
+        }
+    }, [profileStore.commandQuery]);
+
+    useEffect(() => {
+        if (profileStore.channelInfo?.displayName != null) {
+            logEvent('Profile View', {
+                Channel: profileStore.channelInfo.displayName,
+            });
+        }
+    }, [profileStore.channelInfo?.displayName]);
 
     return (
         <div className="h-full text-white relative mx-3 lg:mx-auto lg:max-w-6xl mt-8 lg:mt-16">
@@ -78,6 +97,9 @@ export const Profile: React.FC = observer(() => {
                                 top: 0,
                             });
                         } else {
+                            logEvent('Profile Tab Click', {
+                                Tab: index === 0 ? 'Commands' : 'Quotes',
+                            });
                             profileStore.setActiveTabIndex(index);
                         }
                     }}

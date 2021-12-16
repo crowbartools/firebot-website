@@ -9,6 +9,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useStores } from '../stores';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
+import useAnalytics from '../hooks/useAnalytics';
 
 const navigation = [
     { name: 'Download', href: '#download' },
@@ -22,6 +23,12 @@ const navigation = [
 export const Nav = observer(
     (): JSX.Element => {
         const router = useRouter();
+
+        const { logEvent } = useAnalytics();
+
+        logEvent('Page View', {
+            Page: router.pathname,
+        });
 
         const { appStore } = useStores();
 
@@ -96,6 +103,15 @@ export const Nav = observer(
                                                     <a
                                                         key={item.name}
                                                         href={item.href}
+                                                        onClick={() =>
+                                                            logEvent(
+                                                                'Nav Item Click',
+                                                                {
+                                                                    Item:
+                                                                        item.name,
+                                                                }
+                                                            )
+                                                        }
                                                         className="text-base 2xl:text-lg font-medium hover:text-gray-200"
                                                     >
                                                         {item.name}
@@ -107,6 +123,11 @@ export const Nav = observer(
                                             <a
                                                 className="text-gray-400 hover:text-white mr-2"
                                                 href="https://discord.gg/tTmMbrG"
+                                                onClick={() =>
+                                                    logEvent(
+                                                        'Discord Button Click'
+                                                    )
+                                                }
                                             >
                                                 <span className="sr-only">
                                                     Community Discord
@@ -123,6 +144,11 @@ export const Nav = observer(
                                             <a
                                                 className="text-gray-400 hover:text-white"
                                                 href="https://github.com/crowbartools/firebot"
+                                                onClick={() =>
+                                                    logEvent(
+                                                        'GitHub Button Click'
+                                                    )
+                                                }
                                             >
                                                 <span className="sr-only">
                                                     GitHub repository

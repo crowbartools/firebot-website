@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import useAnalytics from '../../hooks/useAnalytics';
 
 const cards = [
     {
@@ -28,6 +29,7 @@ const cards = [
 ];
 
 const HelpSection: React.FC = () => {
+    const { logEvent } = useAnalytics();
     return (
         <div className="relative pt-16 pb-20 px-4 sm:px-6 lg:pb-28 lg:px-8">
             <div className="absolute inset-0">
@@ -50,6 +52,11 @@ const HelpSection: React.FC = () => {
                             className="flex flex-col rounded-lg shadow-lg overflow-hidden"
                             href={post.href}
                             target="_blank"
+                            onClick={() =>
+                                logEvent('Help Card Click', {
+                                    Card: post.title,
+                                })
+                            }
                             whileHover={{
                                 scale: 1.04,
                                 transition: {

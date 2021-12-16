@@ -19,13 +19,13 @@ class ToastStore {
     toasts: Toast[] = [];
 
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {}, { autoBind: true });
     }
 
     addToast(message: string, options?: Options) {
         const defaultOptions: Options = {
             appearance: 'success',
-            autoDismiss: true,
+            autoDismiss: true
         };
 
         options = options ?? defaultOptions;
@@ -49,7 +49,7 @@ class ToastStore {
     }
 
     removeToast(id: string) {
-        const index = this.toasts.findIndex((t) => t.id === id);
+        const index = this.toasts?.findIndex((t) => t?.id === id);
         if (index > -1) {
             this.toasts.splice(index, 1);
         }

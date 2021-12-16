@@ -32,6 +32,7 @@
         "@fortawesome/react-fontawesome": "^0.1.16",
         "@headlessui/react": "^1.0.0",
         "@heroicons/react": "^1.0.1",
+        "amplitude-js": "^8.13.1",
         "axios": "^0.21.1",
         "clsx": "^1.1.1",
         "framer-motion": "^4.1.9",
@@ -54,6 +55,7 @@
     },
     "devDependencies": {
         "@testing-library/react": "^11.2.5",
+        "@types/amplitude-js": "^8.0.2",
         "@types/jest": "^26.0.20",
         "@types/node": "^14.14.25",
         "@types/react": "^17.0.1",
