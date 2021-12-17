@@ -109,12 +109,13 @@ export const TestimonialCard: React.FC<{
                                             className="md:ml-0 ml-3 inline-flex items-center border border-transparent shadow-sm text-sm leading-4 text-indigo-500 hover:text-indigo-400 font-medium rounded-md"
                                         >
                                             <FontAwesomeIcon
-                                                className="text-2xl"
+                                                className="text-2xl mr-1"
                                                 icon={faTwitch}
                                             />
+                                            View Channel
                                         </motion.a>
                                         {user.stream?.type == 'live' && (
-                                            <div className="ml-3">
+                                            <div className="ml-3 hidden md:block">
                                                 <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-700 text-gray-50">
                                                     <svg
                                                         className="-ml-1 mr-1.5 h-3 w-3 text-red-500"
@@ -133,6 +134,21 @@ export const TestimonialCard: React.FC<{
                                         )}
                                     </div>
                                 </div>
+
+                                {user.stream?.type == 'live' && (
+                                    <div className="mt-3 block md:hidden">
+                                        <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-700 text-gray-50">
+                                            <svg
+                                                className="-ml-1 mr-1.5 h-3 w-3 text-red-500"
+                                                fill="currentColor"
+                                                viewBox="0 0 8 8"
+                                            >
+                                                <circle cx={4} cy={4} r={3} />
+                                            </svg>
+                                            Live now
+                                        </span>
+                                    </div>
+                                )}
                             </footer>
                         </blockquote>
                     </div>
