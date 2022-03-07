@@ -123,8 +123,7 @@ export const Profile: React.FC = observer(() => {
                                             <Select
                                                 options={[
                                                     ALL_COMMANDS_TAG,
-                                                    ...profileStore.profileData
-                                                        ?.sortTags,
+                                                    ...profileStore.commandSortTags,
                                                 ]}
                                                 selected={
                                                     profileStore.selectedCommandSortTag ??

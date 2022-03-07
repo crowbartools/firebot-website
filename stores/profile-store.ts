@@ -5,7 +5,6 @@ import getMappedRoles, {
     getChannelInfo,
     getProfileData
 } from '../utils/profile';
-
 class ProfileStore {
     profileData: ProfileData = null;
     channelInfo: ChannelInfo = null;
@@ -28,6 +27,8 @@ class ProfileStore {
     commandQuery = '';
     variableQuery = '';
     quoteQuery = '';
+
+    commandSortTags: ProfileData['sortTags'] = [];
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
@@ -188,6 +189,14 @@ class ProfileStore {
                 }
                 return c;
             });
+
+            this.commandSortTags =
+                this.profileData.sortTags?.filter((st) =>
+                    this.profileData.commands.allowedCmds.some((c) =>
+                        c.sortTags?.includes(st.id)
+                    )
+                ) ?? [];
+
             if (this.profileData.profilePage === 'quotes') {
                 this.activeTabIndex = 1;
             }
