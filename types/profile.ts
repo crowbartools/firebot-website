@@ -11,6 +11,7 @@ export type Command = {
     id: string;
     active: boolean;
     trigger: string;
+    aliases: string[];
     description?: string;
     usage?: string;
     baseCommandDescription?: string;
