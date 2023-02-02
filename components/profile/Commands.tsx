@@ -8,6 +8,7 @@ import { CopyButton } from './CopyButton';
 import { observer } from 'mobx-react-lite';
 import { VariableBrowser } from './VariableBrowser';
 import useAnalytics from '../../hooks/useAnalytics';
+import { Aliases } from './Aliases';
 
 export const Commands = observer(() => {
     const { profileStore } = useStores();
@@ -46,6 +47,9 @@ export const Commands = observer(() => {
                                     </span>
                                 </div>
                             </div>
+                            <Aliases
+                                aliases={c.aliases}
+                            />
                             <CooldownsAndPermissions
                                 cooldowns={c.cooldown}
                                 permissions={c.permissions}
