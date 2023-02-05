@@ -10,8 +10,8 @@ import {
     IdentificationIcon,
     ShieldCheckIcon,
 } from '@heroicons/react/outline';
-import Tilt from 'react-tilt';
-import { ScrollArrow } from '..';
+import Tilt from 'react-parallax-tilt';
+import { ScrollArrow } from '../';
 
 type Feature = {
     name: string;
@@ -93,29 +93,48 @@ const AllFeaturesSection: React.FC = () => {
                     fun and interactive.
                 </div>
             </div>
-            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl  py-4">
+            <div className="mt-16 mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl py-4">
                 <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 ">
                     {features.map((feature) => (
                         <Tilt
-                            options={{ max: 25, scale: 1.1 }}
+                            scale={1.05}
+                            perspective={1000}
                             key={feature.name}
+                            className="relative bg-gray-800 flex flex-col rounded-lg px-7 min-h-full"
+                            style={{
+                                transformStyle: 'preserve-3d',
+                            }}
+                            glareEnable
+                            glareBorderRadius="0.5rem"
+                            glareMaxOpacity={0.1}
                         >
                             <div
-                                key={feature.name}
-                                className="relative bg-gray-800 flex flex-col rounded-lg px-7 min-h-full"
+                                className="absolute flex transform left-1/2 items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white shadow"
+                                style={{
+                                    transform:
+                                        'translateX(-50%) translateY(-50%) translateZ(35px)',
+                                }}
                             >
-                                <div className="absolute flex transform -translate-x-1/2 -translate-y-1/2 left-1/2 items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white shadow">
-                                    <feature.icon
-                                        className="h-8 w-8"
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <p className="mt-14 text-xl  leading-6 font-medium text-white text-center">
-                                    {feature.name}
-                                </p>
-                                <div className="my-7 text-base  text-gray-400 text-center">
-                                    {feature.description}
-                                </div>
+                                <feature.icon
+                                    className="h-8 w-8"
+                                    aria-hidden="true"
+                                />
+                            </div>
+                            <p
+                                className="mt-14 text-xl leading-6 font-medium text-white text-center"
+                                style={{
+                                    transform: 'translateZ(35px)',
+                                }}
+                            >
+                                {feature.name}
+                            </p>
+                            <div
+                                className="my-7 text-base text-gray-400 text-center"
+                                style={{
+                                    transform: 'translateZ(35px)',
+                                }}
+                            >
+                                {feature.description}
                             </div>
                         </Tilt>
                     ))}

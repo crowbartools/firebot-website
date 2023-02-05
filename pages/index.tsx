@@ -1,5 +1,5 @@
 import React from 'react';
-import HeroSection from '../components/home/HeroSection';
+import { HeroSection } from '../components/home/HeroSection';
 import { ScrollAnchor } from '../components';
 import FeatureShowcaseSection from '../components/home/FeatureShowcaseSection';
 import FAQSection from '../components/home/FAQSection';

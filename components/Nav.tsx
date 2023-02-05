@@ -80,19 +80,20 @@ export const Nav = observer(
                                 >
                                     <div className="flex items-center justify-between flex-1">
                                         <div className="flex items-center justify-between w-full md:w-auto flex-1">
-                                            <Link href="/">
-                                                <a className="flex items-center">
-                                                    <Image
-                                                        src="/firebot-logo-stroke.png"
-                                                        alt="Picture of the author"
-                                                        className="ring-2 ring-blue-300"
-                                                        width={45}
-                                                        height={45}
-                                                    />
-                                                    <div className="text-yellow-300 text-3xl font-extralight ml-3">
-                                                        Firebot
-                                                    </div>
-                                                </a>
+                                            <Link
+                                                href="/"
+                                                className="flex items-center"
+                                            >
+                                                <Image
+                                                    src="/firebot-logo-stroke.png"
+                                                    alt="Picture of the author"
+                                                    // className="ring-2 ring-blue-300"
+                                                    width={45}
+                                                    height={45}
+                                                />
+                                                <div className="text-yellow-300 text-3xl font-extralight ml-3">
+                                                    Firebot
+                                                </div>
                                             </Link>
                                             {onHome && (
                                                 <div className="-mr-2 flex items-center md:hidden">
@@ -147,8 +148,7 @@ export const Nav = observer(
                                                             logEvent(
                                                                 'Nav Item Click',
                                                                 {
-                                                                    Item:
-                                                                        item.name,
+                                                                    Item: item.name,
                                                                 }
                                                             )
                                                         }

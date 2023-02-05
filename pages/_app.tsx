@@ -36,8 +36,6 @@ export default function App({
                     name="twitter:image"
                     content="https://firebot.app/link-preview-img.png"
                 />
-
-                <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
             </Head>
             <>
                 <SessionProvider session={session}>

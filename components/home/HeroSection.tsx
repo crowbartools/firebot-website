@@ -1,16 +1,64 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
-import { useObserver } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { ScrollAnchor } from '..';
 import useAnalytics from '../../hooks/useAnalytics';
 import { useStores } from '../../stores';
+import { withoutSsr } from '../../utils/withoutSsr';
 
-export default function HeroSection() {
-    const { githubStore } = useStores();
-    const { logEvent } = useAnalytics();
+const DownloadButton = withoutSsr(
+    observer(() => {
+        const { githubStore } = useStores();
+        const { logEvent } = useAnalytics();
+        return (
+            <motion.a
+                className="block text-center w-full sm:w-48 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-10"
+                href={githubStore.downloadUrl}
+                onClick={() => logEvent('Download Button Click')}
+                whileHover={{
+                    scale: 1.02,
+                    transition: {
+                        type: 'spring',
+                        bounce: 0.5,
+                    },
+                }}
+            >
+                Download
+            </motion.a>
+        );
+    })
+);
 
-    return useObserver(() => (
+const WhatsNewButton = withoutSsr(
+    observer(() => {
+        const { githubStore } = useStores();
+        const { logEvent } = useAnalytics();
+        return (
+            githubStore.currentVersion && (
+                <a
+                    href="https://github.com/crowbartools/Firebot/releases/latest"
+                    className="inline-flex space-x-4"
+                    onClick={() => logEvent("What's New Button Clicked")}
+                >
+                    <span className="rounded bg-green-600 px-2.5 py-1 text-xs font-semibold tracking-wide uppercase">
+                        What's new
+                    </span>
+                    <span className="inline-flex items-center text-sm font-medium text-blue-400 space-x-1">
+                        <span>Just shipped {githubStore.currentVersion}</span>
+                        <ChevronRightIcon
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                        />
+                    </span>
+                </a>
+            )
+        );
+    })
+);
+
+export const HeroSection: React.FC = () => {
+    return (
         <div className="pb-8 sm:pb-12 2xl:pb-14">
             <ScrollAnchor anchorId="download" />
             <div className="pt-8 overflow-hidden sm:pt-12 lg:relative lg:py-48 2xl:py-56">
@@ -27,50 +75,11 @@ export default function HeroSection() {
                                 </p>
                             </div>
                             <div className="mt-6">
-                                <motion.a
-                                    className="block text-center w-full sm:w-48 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-10"
-                                    href={githubStore.downloadUrl}
-                                    onClick={() =>
-                                        logEvent('Download Button Click')
-                                    }
-                                    whileHover={{
-                                        scale: 1.02,
-                                        transition: {
-                                            type: 'spring',
-                                            bounce: 0.5,
-                                        },
-                                    }}
-                                >
-                                    Download
-                                </motion.a>
+                                <DownloadButton />
                             </div>
                             <div className="mt-6">
                                 <div className="block h-7">
-                                    {githubStore.currentVersion && (
-                                        <a
-                                            href="https://github.com/crowbartools/Firebot/releases/latest"
-                                            className="inline-flex space-x-4"
-                                            onClick={() =>
-                                                logEvent(
-                                                    "What's New Button Clicked"
-                                                )
-                                            }
-                                        >
-                                            <span className="rounded bg-green-600 px-2.5 py-1 text-xs font-semibold tracking-wide uppercase">
-                                                What's new
-                                            </span>
-                                            <span className="inline-flex items-center text-sm font-medium text-blue-400 space-x-1">
-                                                <span>
-                                                    Just shipped{' '}
-                                                    {githubStore.currentVersion}
-                                                </span>
-                                                <ChevronRightIcon
-                                                    className="h-5 w-5"
-                                                    aria-hidden="true"
-                                                />
-                                            </span>
-                                        </a>
-                                    )}
+                                    <WhatsNewButton />
                                 </div>
                             </div>
                         </div>
@@ -125,5 +134,5 @@ export default function HeroSection() {
                 </div>
             </div>
         </div>
-    ));
-}
+    );
+};
