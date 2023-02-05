@@ -1,17 +1,21 @@
 import { makeAutoObservable, reaction, toJS } from 'mobx';
 import moment from 'moment';
-import { ChannelInfo, ProfileData } from '../types/profile';
+import { ChannelInfo, ProfileData, StreamVariant } from '../types/profile';
 import getMappedRoles, {
     getChannelInfo,
-    getProfileData
+    getProfileData,
 } from '../utils/profile';
+
 class ProfileStore {
     profileData: ProfileData = null;
     channelInfo: ChannelInfo = null;
     isLoading = true;
     unableToLoad = false;
     showStream = true;
+    streamInFront = false;
     activeTabIndex = 0;
+
+    streamVariant: StreamVariant = 'hide';
 
     quotesPagination = {
         currentPage: 1,
@@ -158,6 +162,16 @@ class ProfileStore {
 
     toggleShowStream() {
         this.showStream = !this.showStream;
+        this.setStreamVariant(this.showStream ? 'subsequentShow' : 'hide');
+    }
+
+    setStreamInFront(inFront: boolean) {
+        this.streamInFront = inFront;
+        this.setStreamVariant(this.streamInFront ? 'front' : 'subsequentShow');
+    }
+
+    setStreamVariant(variant: StreamVariant) {
+        this.streamVariant = variant;
     }
 
     setProfileData(profileData: ProfileData) {
@@ -226,6 +240,9 @@ class ProfileStore {
             getChannelInfo(profileData.owner).then((channelInfo) => {
                 this.setChannelInfo(channelInfo);
                 this.setProfileData(profileData);
+                if (channelInfo.isLive) {
+                    this.setStreamVariant('firstShow');
+                }
             });
         });
     }
