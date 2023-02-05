@@ -15,17 +15,34 @@ export const Commands = observer(() => {
     const { logEvent } = useAnalytics();
     return (
         <>
-            <div className="bg-gray-800 rounded-md mb-16 md:mb-9">
+            <div
+                className={clsx('bg-gray-800 rounded-md mb-16 md:mb-9', {
+                    'bg-gray-800 backdrop-filter backdrop-blur-lg firefox:bg-opacity-90':
+                        profileStore.channelInfo?.isLive,
+                    'bg-gray-800': !profileStore.channelInfo?.isLive,
+                    'bg-opacity-50':
+                        profileStore.channelInfo?.isLive &&
+                        profileStore.showStream,
+                })}
+                style={{
+                    transitionProperty: 'background-color',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    transitionDuration: '1s',
+                }}
+            >
                 {profileStore.profileData &&
                     profileStore.currentCommands.map((c, i) => (
                         <div
                             key={c.trigger}
                             className={clsx('p-6', {
-                                'border-t border-gray-900 border-solid': i > 0,
+                                'border-t border-gray-900 border-solid border-opacity-50':
+                                    i > 0,
                             })}
                         >
                             <div className="text-xl">
-                                <span>{c.trigger}</span>
+                                <span className="font-semibold">
+                                    {c.trigger}
+                                </span>
                                 <CopyButton
                                     tooltipText="Copy command"
                                     copyText={c.trigger}
@@ -47,9 +64,7 @@ export const Commands = observer(() => {
                                     </span>
                                 </div>
                             </div>
-                            <Aliases
-                                aliases={c.aliases}
-                            />
+                            <Aliases aliases={c.aliases} />
                             <CooldownsAndPermissions
                                 cooldowns={c.cooldown}
                                 permissions={c.permissions}

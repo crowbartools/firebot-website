@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { cloneElement } from 'react';
 import Sticky from 'react-stickynode';
 import { useStores } from '../../stores';
@@ -24,7 +24,7 @@ export const Tabs: React.FC<Props> = ({
     return (
         <>
             <Sticky
-                innerActiveClass="mb-5 z-50 px-3 md:px-[13.8rem] z-50 !w-[100%] left-0"
+                innerActiveClass="mb-5 z-50 px-3 md:px-[11rem] z-50 !w-[100%] left-0"
                 onStateChange={(state) => {
                     appStore.setTabBarStuck(
                         state.status === Sticky.STATUS_FIXED
@@ -58,22 +58,12 @@ export const Tabs: React.FC<Props> = ({
                                     >
                                         {tabName}
                                         <div className="absolute bottom-0 left-0 w-full flex justify-center">
-                                            <AnimatePresence>
-                                                {index === activeTabIndex && (
-                                                    <motion.span
-                                                        className="rounded h-1 bg-blue-500"
-                                                        initial={{ width: 0 }}
-                                                        animate={{
-                                                            width: '100%',
-                                                        }}
-                                                        exit={{ width: 0 }}
-                                                        transition={{
-                                                            ease: 'easeOut',
-                                                            duration: 0.05,
-                                                        }}
-                                                    ></motion.span>
-                                                )}
-                                            </AnimatePresence>
+                                            {index === activeTabIndex && (
+                                                <motion.span
+                                                    className="rounded h-1 bg-blue-500 w-full"
+                                                    layoutId="underline"
+                                                ></motion.span>
+                                            )}
                                         </div>
                                     </a>
 

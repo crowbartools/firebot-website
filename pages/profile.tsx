@@ -7,8 +7,12 @@ import { Searchbar } from '../components/profile/Searchbar';
 import { Tabs } from '../components/profile/Tabs';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
+import Tilt from 'react-parallax-tilt';
 import { Select } from '../components/profile/Select';
 import useAnalytics from '../hooks/useAnalytics';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from '../components/profile/Tooltip';
 
 const ALL_COMMANDS_TAG = {
     id: 'allCommands',
@@ -52,17 +56,64 @@ export const Profile: React.FC = observer(() => {
                     ></motion.div>
                 )}
             </AnimatePresence>
+            <AnimatePresence>
+                {profileStore.channelInfo &&
+                    profileStore.channelInfo.isLive && (
+                        <motion.div
+                            initial={{
+                                opacity: 0.0,
+                            }}
+                            animate={
+                                profileStore.showStream
+                                    ? {
+                                          opacity: 0.075,
+                                          transition: {
+                                              delay: 1,
+                                              duration: 3,
+                                          },
+                                      }
+                                    : {
+                                          opacity: 0.0,
+                                          transition: {
+                                              duration: 0.5,
+                                          },
+                                      }
+                            }
+                            className="fixed z-[-1] left-1/2 -translate-x-1/2 top-0 pointer-events-none"
+                            style={{
+                                height: 'max(100vh, calc(100vw * (9/16))',
+                                width: 'max(100vw, calc(100vh * (16/9)))',
+                            }}
+                        >
+                            <iframe
+                                src={`https://player.twitch.tv/?channel=${profileStore.channelInfo.username}&parent=localhost&parent=firebot.app&muted=true&autoplay=true&controls=false`}
+                                className="w-full h-full"
+                                allowFullScreen
+                            ></iframe>
+                        </motion.div>
+                    )}
+            </AnimatePresence>
+            {/* <div id="live-stream" className="fixed z-[-1] left-0 top-0"></div> */}
             <div className="mb-5 flex items-center lg:flex-row flex-col">
                 {profileStore.channelInfo ? (
-                    <img
-                        className="inline-block h-36 w-36 rounded-full bg-gray-400"
-                        src={profileStore.channelInfo?.profilePicUrl}
-                        alt="Profile Picture"
-                    />
+                    <Tilt
+                        scale={1.25}
+                        glareEnable
+                        glareBorderRadius="100%"
+                        glareMaxOpacity={0.33}
+                    >
+                        <div>
+                            <img
+                                className="inline-block h-36 w-36 rounded-full bg-gray-400"
+                                src={profileStore.channelInfo?.profilePicUrl}
+                                alt="Profile Picture"
+                            />
+                        </div>
+                    </Tilt>
                 ) : (
                     <div className="w-36 h-36 rounded-full bg-gray-400" />
                 )}
-                <h2 className="text-4xl md:text-6xl text-white leading-normal tracking-wide mx-4 font-extralight">
+                <h2 className="text-4xl md:text-6xl text-white leading-normal tracking-wide mx-4 font-light">
                     {profileStore.channelInfo?.displayName ??
                         profileStore.profileData?.owner}
                 </h2>
@@ -74,8 +125,8 @@ export const Profile: React.FC = observer(() => {
                                 {
                                     'bg-red-500':
                                         profileStore.channelInfo?.isLive,
-                                    'bg-gray-200': !profileStore.channelInfo
-                                        ?.isLive,
+                                    'bg-gray-200':
+                                        !profileStore.channelInfo?.isLive,
                                 }
                             )}
                         ></div>
@@ -84,6 +135,27 @@ export const Profile: React.FC = observer(() => {
                                 ? 'LIVE'
                                 : 'OFFLINE'}
                         </div>
+                    </div>
+                )}
+                {profileStore.channelInfo?.isLive && (
+                    <div
+                        onClick={profileStore.toggleShowStream}
+                        className={clsx('cursor-pointer ml-4 w-6 text-center', {
+                            'hover:opacity-75': profileStore.showStream,
+                            'opacity-50 hover:opacity-75':
+                                !profileStore.showStream,
+                        })}
+                    >
+                        <Tooltip content="Toggle stream preview">
+                            <FontAwesomeIcon
+                                className="w-5 h-5 text-white"
+                                icon={
+                                    profileStore.showStream
+                                        ? faVideo
+                                        : faVideoSlash
+                                }
+                            />
+                        </Tooltip>
                     </div>
                 )}
             </div>
@@ -117,7 +189,8 @@ export const Profile: React.FC = observer(() => {
                                         <div
                                             className={clsx({
                                                 'w-52 mr-3': !mobile,
-                                                'w-full order-last mt-3': mobile,
+                                                'w-full order-last mt-3':
+                                                    mobile,
                                             })}
                                         >
                                             <Select

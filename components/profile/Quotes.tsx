@@ -33,13 +33,28 @@ export const Quotes = observer(() => {
 
     return (
         <>
-            <div className="bg-gray-800 rounded-md overflow-hidden mt-2">
+            <div
+                className={clsx('bg-gray-800 rounded-md overflow-hidden mt-2', {
+                    'bg-gray-800 backdrop-filter backdrop-blur-lg firefox:bg-opacity-90':
+                        profileStore.channelInfo?.isLive,
+                    'bg-gray-800': !profileStore.channelInfo?.isLive,
+                    'bg-opacity-50':
+                        profileStore.channelInfo?.isLive &&
+                        profileStore.showStream,
+                })}
+                style={{
+                    transitionProperty: 'background-color',
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    transitionDuration: '1s',
+                }}
+            >
                 {profileStore.profileData &&
                     profileStore.currentQuotes.map((q, i) => (
                         <div
                             key={q._id}
                             className={clsx('p-6', {
-                                'border-t border-gray-900 border-solid': i > 0,
+                                'border-t border-gray-900 border-solid border-opacity-50':
+                                    i > 0,
                             })}
                         >
                             <div className="text-2xl italic font-hairline mb-2 break-words">
@@ -65,13 +80,15 @@ export const Quotes = observer(() => {
                     ))}
             </div>
             <div className="my-8 md:my-4 text-sm flex justify-end">
-                <button
-                    className="text-blue-500 hover:text-blue-300"
-                    onClick={downloadQuotesCsv}
-                >
-                    <DownloadIcon className="w-6 h-6 inline-block" /> Download
-                    as .CSV
-                </button>
+                {!!profileStore.profileData?.quotes?.quotes?.length && (
+                    <button
+                        className="text-blue-500 hover:text-blue-300"
+                        onClick={downloadQuotesCsv}
+                    >
+                        <DownloadIcon className="w-6 h-6 inline-block" />{' '}
+                        Download as .CSV
+                    </button>
+                )}
             </div>
             <div
                 className="fixed flex items-center justify-center mb-8 md:mb-5 shadow-xl"

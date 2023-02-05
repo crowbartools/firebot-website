@@ -38,7 +38,7 @@ export const Subcommands: React.FC<{
         command.subCommands?.length > 0 && (
             <div className="mt-2">
                 <a
-                    className="text-gray-200 cursor-pointer text-sm inline-flex items-center hover:text-gray-300"
+                    className="text-blue-300 cursor-pointer text-sm inline-flex items-center hover:text-blue-400"
                     onClick={toggleOpen}
                 >
                     Subcommands{' '}
@@ -51,7 +51,7 @@ export const Subcommands: React.FC<{
                 <AnimatePresence>
                     {open && (
                         <motion.div
-                            className="bg-gray-700 py-3 px-4 mt-2"
+                            className="py-3 px-4 mt-2"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{
                                 height: 'max-content',
@@ -78,7 +78,7 @@ export const Subcommands: React.FC<{
                                     initial={variantType.hidden}
                                     animate={variantType.visible}
                                 >
-                                    <span className="text-base">{`${
+                                    <span className="text-base font-semibold">{`${
                                         command.trigger
                                     } ${
                                         sc.usage?.length > 0 ? sc.usage : sc.arg

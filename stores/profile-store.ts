@@ -10,16 +10,17 @@ class ProfileStore {
     channelInfo: ChannelInfo = null;
     isLoading = true;
     unableToLoad = false;
+    showStream = true;
     activeTabIndex = 0;
 
     quotesPagination = {
         currentPage: 1,
-        pageSize: 25
+        pageSize: 25,
     };
 
     commandsPagination = {
         currentPage: 1,
-        pageSize: 25
+        pageSize: 25,
     };
 
     selectedCommandSortTag: this['profileData']['sortTags'][0] | null = null;
@@ -155,6 +156,10 @@ class ProfileStore {
         this.quotesPagination.currentPage = page;
     }
 
+    toggleShowStream() {
+        this.showStream = !this.showStream;
+    }
+
     setProfileData(profileData: ProfileData) {
         if (profileData != null) {
             this.profileData = profileData;
@@ -162,12 +167,13 @@ class ProfileStore {
                 this.profileData.quotes.quotes
             ).reverse();
             this.profileData.commands.allowedCmds.map((c) => {
-                const permissionsRestriction = c.restrictionData?.restrictions?.find(
-                    (r) => r.type === 'firebot:permissions'
-                );
+                const permissionsRestriction =
+                    c.restrictionData?.restrictions?.find(
+                        (r) => r.type === 'firebot:permissions'
+                    );
                 if (permissionsRestriction?.roleIds?.length > 0) {
                     c.permissions = {
-                        roles: getMappedRoles(permissionsRestriction.roleIds)
+                        roles: getMappedRoles(permissionsRestriction.roleIds),
                     };
                 }
                 if (c.subCommands?.length > 0) {
@@ -176,12 +182,15 @@ class ProfileStore {
                         c.subCommands.push(c.fallbackSubcommand);
                     }
                     c.subCommands?.map((sc) => {
-                        const scPermRestriction = sc.restrictionData?.restrictions?.find(
-                            (r) => r.type === 'firebot:permissions'
-                        );
+                        const scPermRestriction =
+                            sc.restrictionData?.restrictions?.find(
+                                (r) => r.type === 'firebot:permissions'
+                            );
                         if (scPermRestriction?.roleIds?.length > 0) {
                             sc.permissions = {
-                                roles: getMappedRoles(scPermRestriction.roleIds)
+                                roles: getMappedRoles(
+                                    scPermRestriction.roleIds
+                                ),
                             };
                         }
                         return sc;

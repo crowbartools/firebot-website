@@ -9,7 +9,10 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                gray: colors.neutral,
+                gray: {
+                    ...colors.neutral,
+                    "1000": "rgb(15,15,15)"
+                },
                 cyan: colors.cyan,
                 "light-blue": colors.lightBlue
             },
