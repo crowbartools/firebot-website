@@ -15,7 +15,11 @@ type Context = {
 export const ToastContext = React.createContext<Context>(null);
 const { Provider } = ToastContext;
 
-export const ToastProvider = observer(({ children }) => {
+type Props = {
+    children?: React.ReactNode;
+};
+
+export const ToastProvider: React.FC<Props> = observer(({ children }) => {
     const { toastStore } = useStores();
     const add: Context['add'] = toastStore.addToast;
     const remove: Context['remove'] = toastStore.removeToast;

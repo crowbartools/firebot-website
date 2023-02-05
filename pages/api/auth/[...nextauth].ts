@@ -49,7 +49,7 @@ export default NextAuth({
         },
         async jwt({ token, user }) {
             if (user) {
-                token.follows = user.follows;
+                token.follows = (user as any).follows;
             }
             return token;
         }
