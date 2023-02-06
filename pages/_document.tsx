@@ -8,14 +8,14 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html className="bg-gray-900 text-white 2xl:text-lg overflow-y-scroll">
+            <Html className="bg-gray-900 text-white 2xl:text-lg">
                 <Head>
                     <link
                         rel="stylesheet"
                         href="https://rsms.me/inter/inter.css"
                     />
                 </Head>
-                <body className="scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb">
+                <body className="scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb overflow-y-scroll">
                     <Main />
                     <NextScript />
                 </body>

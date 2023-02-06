@@ -167,6 +167,9 @@ class ProfileStore {
 
     setStreamInFront(inFront: boolean) {
         this.streamInFront = inFront;
+        window.scrollTo({
+            top: 0,
+        });
         this.setStreamVariant(this.streamInFront ? 'front' : 'subsequentShow');
     }
 
