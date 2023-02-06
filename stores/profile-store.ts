@@ -240,9 +240,12 @@ class ProfileStore {
         this.isLoading = true;
         this.unableToLoad = false;
         getProfileData().then((profileData) => {
+            this.setProfileData(profileData);
+            if (!profileData) {
+                return;
+            }
             getChannelInfo(profileData.owner).then((channelInfo) => {
                 this.setChannelInfo(channelInfo);
-                this.setProfileData(profileData);
                 if (channelInfo.isLive) {
                     this.setStreamVariant('firstShow');
                 }

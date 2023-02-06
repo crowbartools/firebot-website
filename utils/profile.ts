@@ -10,12 +10,20 @@ export async function getProfileData(): Promise<ProfileData> {
 
     if (binId == null) return null;
 
-    const response = await axios.get<ProfileData>(
-        `https://bytebin.lucko.me/${binId}`
-    );
+    try {
+        const response = await axios.get<ProfileData>(
+            `https://bytebin.lucko.me/${binId}`
+        );
 
-    if (response.status === 200) {
-        return JSON.parse(unescape(JSON.stringify(response.data)));
+        if (response.status === 200) {
+            return JSON.parse(unescape(JSON.stringify(response.data)));
+        }
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(
+            `Failed to get profile data with id ${binId}. Has it expired?`,
+            error
+        );
     }
 
     return null;
