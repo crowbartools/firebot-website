@@ -11,11 +11,11 @@ export const ToggleStreamButton: React.FC = observer(() => {
 
     return (
         <Menu as="div" className="relative inline-block text-left">
-            <div>
+            <div className="flex">
                 <Menu.Button className="bg-transparent outline-none ring-0">
                     <div
                         className={clsx(
-                            'cursor-pointer w-6 text-center mt-2 lg:ml-3 lg:mt-0',
+                            'cursor-pointer w-8 text-center mt-2 lg:ml-3 lg:mt-0 leading-[1]',
                             {
                                 'hover:opacity-75': profileStore.showStream,
                                 'opacity-50 hover:opacity-75':
@@ -24,7 +24,7 @@ export const ToggleStreamButton: React.FC = observer(() => {
                         )}
                     >
                         <FontAwesomeIcon
-                            className="w-5 h-5 text-white"
+                            className="w-7 h-7 text-white text-xl"
                             icon={
                                 profileStore.showStream ? faVideo : faVideoSlash
                             }
@@ -41,7 +41,7 @@ export const ToggleStreamButton: React.FC = observer(() => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left divide-y divide-gray-700 rounded-md bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                <Menu.Items className="absolute left-1/2 -translate-x-1/2 mt-3 w-56 divide-y divide-gray-700 rounded-md bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                     <div className="px-1 py-1 ">
                         <Menu.Item>
                             {({ active }) => (
