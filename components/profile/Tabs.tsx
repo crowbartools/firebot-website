@@ -30,6 +30,7 @@ export const Tabs: React.FC<Props> = ({
                         state.status === Sticky.STATUS_FIXED
                     );
                 }}
+                enableTransforms={false}
                 top={100}
             >
                 <>
