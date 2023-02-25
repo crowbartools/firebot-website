@@ -56,6 +56,11 @@ export const people: Person[] = [
         role: 'Support',
     },
     {
+        id: '452884554',
+        name: 'DennisOnTheInternet',
+        role: 'Developer',
+    },
+    {
         id: '58680725',
         name: 'baamang',
         role: 'Developer',
