@@ -35,7 +35,7 @@ class GithubStore {
 
     get downloadUrl() {
         return this.latestRelease?.assets.find((a) =>
-            a.name.includes('Setup.exe')
+            a.name.includes('setup.exe')
         )?.browser_download_url;
     }
 }
