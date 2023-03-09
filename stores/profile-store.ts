@@ -70,6 +70,7 @@ class ProfileStore {
         } else {
             this.selectedCommandSortTag = sortTag;
         }
+        this.setCurrentCommandsPage(1);
     }
 
     get filteredCommands() {
