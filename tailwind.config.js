@@ -14,7 +14,7 @@ module.exports = {
                     "1000": "rgb(15,15,15)"
                 },
                 cyan: colors.cyan,
-                "light-blue": colors.lightBlue
+                "light-blue": colors.sky
             },
             fontFamily: {
                 sans: ['Inter var', ...defaultTheme.fontFamily.sans],

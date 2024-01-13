@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import React from 'react';
+import Markdown from 'react-markdown';
 import { useToggle } from 'react-use';
 import useAnalytics from '../../hooks/useAnalytics';
 import { ProfileData } from '../../types/profile';
@@ -88,7 +89,7 @@ export const VariableExamples: React.FC<{
                                             />
                                         </b>
                                         <div className="text-gray-400">
-                                            {e.description}
+                                            <Markdown className="var-description">{e.description}</Markdown>
                                         </div>
                                     </div>
                                 </motion.div>

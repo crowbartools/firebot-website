@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
 import React from 'react';
+import Markdown from 'react-markdown';
 import { useToggle } from 'react-use';
 import useAnalytics from '../../hooks/useAnalytics';
 import { ProfileData } from '../../types/profile';
@@ -101,8 +102,10 @@ export const Subcommands: React.FC<{
                                             &#8212;
                                         </span>
                                         <span>
-                                            {sc.description ??
-                                                'No description.'}
+                                            <Markdown>
+                                                {sc.description ??
+                                                    'No description.'}
+                                            </Markdown>
                                         </span>
                                     </div>
                                     <CooldownsAndPermissions

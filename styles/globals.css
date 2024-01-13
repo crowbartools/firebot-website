@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
   
+.var-description a {
+   text-decoration: underline; 
+}

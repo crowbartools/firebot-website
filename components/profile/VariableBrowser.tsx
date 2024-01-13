@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Markdown from 'react-markdown';
 import { Modal } from './Modal';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
@@ -67,7 +68,7 @@ export const VariableBrowser: React.FC = observer(() => {
                                     />
                                 </b>
                                 <div className="text-gray-400">
-                                    {v.description}
+                                    <Markdown className="var-description">{v.description}</Markdown>
                                 </div>
                                 <VariableExamples examples={v.examples} />
                             </div>

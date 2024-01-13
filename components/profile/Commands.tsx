@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import { useStores } from '../../stores';
 import clsx from 'clsx';
 import { Pagination } from './Pagination';
@@ -57,10 +58,12 @@ export const Commands = observer(() => {
                                         &#8212;
                                     </span>
                                     <span>
-                                        {c.baseCommandDescription
-                                            ? c.baseCommandDescription
-                                            : c.description ??
-                                              'No description.'}
+                                        <Markdown>
+                                            {c.baseCommandDescription
+                                                ? c.baseCommandDescription
+                                                : c.description ??
+                                                    'No description.'}
+                                        </Markdown>
                                     </span>
                                 </div>
                             </div>
