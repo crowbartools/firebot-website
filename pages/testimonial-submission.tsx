@@ -10,7 +10,7 @@ import { User } from '../components/testimonial/User';
 const WEBHOOK_URL =
     'https://discord.com/api/webhooks/912252920186159105/c4SV28ObuGdnGtBt9vKLcMvLURcXjIe3F1MceMtKfFvmzQYDlLETxDXqmdXD2bNhfGgG';
 
-const DISCORD_USERNAME_REGEX = /^.{3,32}#[0-9]{4}$/gim;
+const DISCORD_USERNAME_REGEX = /^\w{3,32}(#[0-9]{4})?$/gim;
 
 export const Testimonial: React.FC = observer(() => {
     const { data: session } = useSession();
@@ -186,6 +186,7 @@ export const Testimonial: React.FC = observer(() => {
                                     className="py-3 px-4 text-base block w-full shadow-sm text-warm-gray-900 outline-none focus:ring-2 focus:ring-blue-400 border border-gray-900 rounded-md bg-gray-700"
                                     aria-describedby="message-max"
                                     value={testimonial}
+                                    placeholder="Enter testimonial"
                                     onChange={(event) =>
                                         setTestimonial(event.target.value)
                                     }
@@ -220,6 +221,7 @@ export const Testimonial: React.FC = observer(() => {
                                     type="text"
                                     className="py-3 px-4 block text-base w-full shadow-sm outline-none focus:ring-2 focus:ring-blue-400 border border-gray-900 rounded-md bg-gray-700"
                                     value={streamerType}
+                                    placeholder="Enter type"
                                     onChange={(event) =>
                                         setStreamerType(event.target.value)
                                     }
@@ -252,7 +254,7 @@ export const Testimonial: React.FC = observer(() => {
                                     onBlur={() => {
                                         validateDiscordUser();
                                     }}
-                                    placeholder="Username#0001"
+                                    placeholder="Enter username"
                                 />
                             </div>
                             {discordUserValid ? (
@@ -270,7 +272,7 @@ export const Testimonial: React.FC = observer(() => {
                                     htmlFor="message"
                                     className="block text-base font-medium text-warm-gray-900"
                                 >
-                                    Twitter Handle
+                                    Twitter (formerly known as Twitter)
                                 </label>
                             </div>
                             <div>
@@ -292,7 +294,7 @@ export const Testimonial: React.FC = observer(() => {
                                     onChange={(event) => {
                                         setTwitterUser(event.target.value);
                                     }}
-                                    placeholder="@username"
+                                    placeholder="Enter @username"
                                 />
                             </div>
                             <span className="text-gray-500 text-sm">
@@ -308,8 +310,10 @@ export const Testimonial: React.FC = observer(() => {
                                         'shadow-sm text-sm font-medium text-white bg-blue-600',
                                         ' focus:outline-none ',
                                         {
-                                            'opacity-50 cursor-not-allowed': !formValid,
-                                            'hover:bg-blue-700 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2': formValid,
+                                            'opacity-50 cursor-not-allowed':
+                                                !formValid,
+                                            'hover:bg-blue-700 focus:ring-blue-500 focus:ring-2 focus:ring-offset-2':
+                                                formValid,
                                         }
                                     )}
                                     onClick={() => {
