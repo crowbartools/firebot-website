@@ -1,4 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faApple, faLinux, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 import { motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
@@ -11,10 +13,27 @@ const DownloadButton = withoutSsr(
     observer(() => {
         const { githubStore } = useStores();
         const { logEvent } = useAnalytics();
+
+        const ua = window.navigator.userAgent.toLowerCase();
+
+        let downloadUrl = githubStore.windowsDownloadUrl;
+        let platform = "Windows";
+        let platformIcon = faMicrosoft;
+
+        if (ua.includes("macintosh")) {
+            downloadUrl = githubStore.macDownloadUrl;
+            platform = "Mac";
+            platformIcon = faApple;
+        } else if (ua.includes("linux")) {
+            downloadUrl = githubStore.linuxDownloadUrl;
+            platform = "Linux";
+            platformIcon = faLinux;
+        }
+
         return (
             <motion.a
-                className="block text-center w-full sm:w-48 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-10"
-                href={githubStore.downloadUrl}
+                className="block text-center w-full sm:w-60 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-4"
+                href={downloadUrl}
                 onClick={() => logEvent('Download Button Click')}
                 whileHover={{
                     scale: 1.02,
@@ -24,7 +43,7 @@ const DownloadButton = withoutSsr(
                     },
                 }}
             >
-                Download
+                Download for {platform} <FontAwesomeIcon icon={platformIcon} />
             </motion.a>
         );
     })
@@ -76,6 +95,12 @@ export const HeroSection: React.FC = () => {
                             </div>
                             <div className="mt-6">
                                 <DownloadButton />
+                                <a className="inline-flex text-xs text-gray-500"
+                                    href="https://github.com/crowbartools/Firebot/releases/latest">Additional downloads
+                                    <ChevronRightIcon
+                                        className="h-4 w-4"
+                                        aria-hidden="true"
+                                /></a>
                             </div>
                             <div className="mt-6">
                                 <div className="block h-7">
