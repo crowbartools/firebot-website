@@ -1,5 +1,6 @@
 import { people } from '../../constants/people';
 import { TwitchUser } from '../../types/twitch';
+import Tilt from 'react-parallax-tilt';
 
 const TeamSection: React.FC<{ userData: Record<string, TwitchUser> }> = ({
     userData,
@@ -24,11 +25,30 @@ const TeamSection: React.FC<{ userData: Record<string, TwitchUser> }> = ({
                             return (
                                 <li key={person.name}>
                                     <div className="space-y-4">
-                                        <img
-                                            className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24 shadow-inner"
-                                            src={personData?.profile_image_url}
-                                            alt=""
-                                        />
+                                        <Tilt
+                                            scale={1.3}
+                                            perspective={1000}
+                                            style={{
+                                                transformStyle: 'preserve-3d',
+                                            }}
+                                            glareEnable
+                                            glareBorderRadius="200rem"
+                                            glareMaxOpacity={0.1}
+                                            tiltEnable
+                                            className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24 outline outline-4 outline-gray-800 bg-gray-800 flex items-center justify-center"
+                                        >
+                                            <img
+                                                className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24 shadow-inner"
+                                                src={
+                                                    personData?.profile_image_url
+                                                }
+                                                alt={`Avatar image for ${personData?.display_name}`}
+                                                style={{
+                                                    transform:
+                                                        'translateZ(10px)',
+                                                }}
+                                            />
+                                        </Tilt>
                                         <div className="space-y-2">
                                             <div className="text-xs font-medium lg:text-sm">
                                                 <h3>{person.name}</h3>
