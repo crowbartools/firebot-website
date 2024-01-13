@@ -2,14 +2,14 @@ import axios from 'axios';
 import NextAuth from 'next-auth';
 import TwitchProvider from 'next-auth/providers/twitch';
 
-async function getFollowCount(userId, accessToken) {
-    const getUserUrl = `https://api.twitch.tv/helix/users/follows?to_id=${userId}&first=1`;
+async function getFollowCount(userId: string, accessToken: string) {
+    const getUserUrl = `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${userId}&first=1`;
     try {
-        const response = await axios.get(getUserUrl, {
+        const response = await axios.get<{ total: number }>(getUserUrl, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                'Client-Id': process.env.TWITCH_CLIENT_ID
-            }
+                'Client-Id': process.env.TWITCH_CLIENT_ID,
+            },
         });
         return response.data?.total;
     } catch (error) {
