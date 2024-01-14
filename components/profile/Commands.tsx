@@ -58,7 +58,7 @@ export const Commands = observer(() => {
                                         &#8212;
                                     </span>
                                     <span>
-                                        <Markdown>
+                                        <Markdown className="md-inline">
                                             {c.baseCommandDescription
                                                 ? c.baseCommandDescription
                                                 : c.description ??

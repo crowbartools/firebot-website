@@ -89,7 +89,7 @@ export const VariableExamples: React.FC<{
                                             />
                                         </b>
                                         <div className="text-gray-400">
-                                            <Markdown className="var-description">{e.description}</Markdown>
+                                            <Markdown className="md-inline">{e.description}</Markdown>
                                         </div>
                                     </div>
                                 </motion.div>

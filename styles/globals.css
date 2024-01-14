@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
   
-.var-description a {
+.md-inline {
+    display: inline;
+}
+
+.md-inline p {
+    display: inline;
+}
+
+.md-inline a {
    text-decoration: underline; 
 }

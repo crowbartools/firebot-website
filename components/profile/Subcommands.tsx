@@ -102,7 +102,7 @@ export const Subcommands: React.FC<{
                                             &#8212;
                                         </span>
                                         <span>
-                                            <Markdown>
+                                            <Markdown className="md-inline">
                                                 {sc.description ??
                                                     'No description.'}
                                             </Markdown>

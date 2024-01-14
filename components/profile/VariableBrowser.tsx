@@ -68,7 +68,7 @@ export const VariableBrowser: React.FC = observer(() => {
                                     />
                                 </b>
                                 <div className="text-gray-400">
-                                    <Markdown className="var-description">{v.description}</Markdown>
+                                    <Markdown className="md-inline">{v.description}</Markdown>
                                 </div>
                                 <VariableExamples examples={v.examples} />
                             </div>
