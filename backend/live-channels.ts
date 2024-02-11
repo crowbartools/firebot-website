@@ -41,7 +41,11 @@ export async function addLiveChannel(
         };
     }
 
-    channelCache.set<CacheEntry>(channelId, { addedAt: Date.now(), userData });
+    channelCache.set<CacheEntry>(
+        channelId,
+        { addedAt: Date.now(), userData },
+        THIRTY_MINS_IN_SECONDS
+    );
 
     return { success: true };
 }
