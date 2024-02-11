@@ -49,38 +49,64 @@ const getHeaders = (token: string) => ({
     'Client-Id': process.env.TWITCH_CLIENT_ID
 });
 
-export async function getUsers(userIds: string[], getStreams = false) {
+export async function getStreams(userIds: string[]) {
     const token = await getAppAccessToken();
     if (token == null) return {};
 
-    const users: Record<string, TwitchUser> = {};
+    const streams: Record<string, TwitchStream> = {};
 
-    for (const chunk of chunkArray(userIds, 100)) {
-        const {
-            data: { data: getUsersData }
-        } = await axios.get<{ data: Array<TwitchUser> }>(
-            `https://api.twitch.tv/helix/users?id=${chunk.join('&id=')}`,
-            {
-                headers: getHeaders(token)
-            }
-        );
-        getUsersData.forEach((user) => (users[user.id] = user));
-
-        if (getStreams) {
+    try {
+        for (const chunk of chunkArray(userIds, 100)) {
             const {
-                data: { data: getStreamsData }
+                data: { data: streamsChunk },
             } = await axios.get<{ data: Array<TwitchStream> }>(
                 `https://api.twitch.tv/helix/streams?first=100&user_id=${chunk.join(
                     '&user_id='
                 )}`,
                 {
-                    headers: getHeaders(token)
+                    headers: getHeaders(token),
                 }
             );
-            getStreamsData.forEach(
-                (stream) => (users[stream.user_id].stream = stream)
+            streamsChunk.forEach(
+                (stream) => (streams[stream.user_id] = stream)
             );
         }
+    } catch (error) {
+        console.error('Failed to get streams from twitch');
+        return {};
+    }
+
+    return streams;
+}
+
+export async function getUsers(userIds: string[], includeStreams = false) {
+    const token = await getAppAccessToken();
+    if (token == null) return {};
+
+    const users: Record<string, TwitchUser> = {};
+
+    try {
+        for (const chunk of chunkArray(userIds, 100)) {
+            const {
+                data: { data: getUsersData },
+            } = await axios.get<{ data: Array<TwitchUser> }>(
+                `https://api.twitch.tv/helix/users?id=${chunk.join('&id=')}`,
+                {
+                    headers: getHeaders(token),
+                }
+            );
+            getUsersData.forEach((user) => (users[user.id] = user));
+
+            if (includeStreams) {
+                const streams = await getStreams(chunk);
+                Object.entries(streams).forEach(([userId, stream]) => {
+                    users[userId].stream = stream;
+                });
+            }
+        }
+    } catch (error) {
+        console.error('Failed to get users from twitch');
+        return {};
     }
 
     return users;
