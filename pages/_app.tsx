@@ -5,6 +5,9 @@ import { ToastProvider } from '../components/toasts';
 import { initialStore, Provider as StoreProvider } from '../stores';
 import { SessionProvider } from 'next-auth/react';
 import '../styles/globals.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export default function App({
     Component,
@@ -39,13 +42,15 @@ export default function App({
             </Head>
             <>
                 <SessionProvider session={session}>
-                    <StoreProvider value={initialStore}>
-                        <ToastProvider>
-                            <Nav />
-                            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                            <Component {...pageProps} />
-                        </ToastProvider>
-                    </StoreProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <StoreProvider value={initialStore}>
+                            <ToastProvider>
+                                <Nav />
+                                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                                <Component {...pageProps} />
+                            </ToastProvider>
+                        </StoreProvider>
+                    </QueryClientProvider>
                 </SessionProvider>
             </>
         </>

@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html className="bg-gradient-to-br from-gray-900 to-gray-1000 text-white 2xl:text-lg">
+            <Html className="bg-gradient-to-br from-gray-900 to-gray-1000 text-white 2xl:text-lg h-full">
                 <Head>
                     <link
                         rel="stylesheet"

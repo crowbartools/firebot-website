@@ -3,6 +3,10 @@ export type TwitchStream = {
     user_id: string;
     type: 'live';
     thumbnail_url: string;
+    title: string;
+    game_name: string;
+    started_at: string;
+    tags: string[];
 };
 
 export type TwitchUser = {
