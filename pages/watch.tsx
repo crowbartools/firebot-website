@@ -49,7 +49,9 @@ function WatchPage() {
                     ))}
                 </motion.div>
                 {channels?.length === 0 && isFetched && (
-                    <p>No live channels found right now. Check back later!</p>
+                    <p className="text-gray-400">
+                        No live channels found right now. Check back later!
+                    </p>
                 )}
                 {isFetchingNextPage && (
                     <div className="text-gray-400 mt-6">Loading more...</div>
