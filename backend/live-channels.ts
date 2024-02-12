@@ -57,10 +57,15 @@ export function getLiveChannels(page: number) {
         page = 1;
     }
 
-    // channels will be ordered by when they were added to the cache, newest first
     const channels = Object.values(
-        channelCache.mget<CacheEntry>(channelCache.keys().reverse())
-    ).map((c) => c.userData);
+        channelCache.mget<CacheEntry>(channelCache.keys())
+    )
+        .map((c) => c.userData)
+        .sort(
+            (a, b) =>
+                new Date(b.stream.started_at).getTime() -
+                new Date(a.stream.started_at).getTime()
+        );
 
     const offset = (page - 1) * PAGE_SIZE;
     const channelsForPage = channels.slice(offset, offset + PAGE_SIZE);

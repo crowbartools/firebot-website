@@ -2,8 +2,12 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export const StreamPreview: React.FC<{ username: string }> = ({ username }) => {
+export const StreamPreview: React.FC<{
+    username: string;
+    allowClicks?: boolean;
+}> = ({ username, allowClicks }) => {
     const [isLoaded, setIsLoaded] = useState(false);
+
     return (
         <motion.div
             animate={{
@@ -12,7 +16,10 @@ export const StreamPreview: React.FC<{ username: string }> = ({ username }) => {
             }}
             transition={{ duration: 0.5 }}
             className={clsx(
-                'absolute left-1/2 -translate-x-1/2 top-0 w-full h-full pointer-events-none rounded-lg overflow-hidden'
+                'absolute inset-0 w-full h-full rounded-lg overflow-hidden',
+                {
+                    'pointer-events-none': !allowClicks,
+                }
             )}
         >
             <iframe

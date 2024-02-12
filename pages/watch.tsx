@@ -10,6 +10,7 @@ import moment from 'moment';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ClockIcon } from '@heroicons/react/outline';
 import Tilt from 'react-parallax-tilt';
+import { useKeyPress } from 'react-use';
 
 function WatchPage() {
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
@@ -104,11 +105,17 @@ const ChannelCard: React.FC<{ channel: TwitchUser; index: number }> = ({
     const hoursSince = Math.floor(minutesSince / 60);
     const remainingMinutes = Math.floor(minutesSince % 60);
 
+    const [isPressingShift] = useKeyPress('Shift');
+
     return (
         <motion.a
             key={channel.id}
-            href={`https://twitch.tv/${channel.login}`}
-            target="_blank"
+            href={
+                !isPressingShift
+                    ? `https://twitch.tv/${channel.login}`
+                    : undefined
+            }
+            target={!isPressingShift ? '_blank' : undefined}
             rel="noreferrer"
             custom={index}
             variants={variants}
@@ -168,7 +175,12 @@ const ChannelCard: React.FC<{ channel: TwitchUser; index: number }> = ({
                             .toString()
                             .padStart(2, '0')}`}</span>
                     </div>
-                    {isHovering && <StreamPreview username={channel.login} />}
+                    {isHovering && (
+                        <StreamPreview
+                            username={channel.login}
+                            allowClicks={isPressingShift}
+                        />
+                    )}
                     <motion.img
                         key="preview"
                         animate={
