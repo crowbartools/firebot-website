@@ -12,7 +12,7 @@ export const StreamPreview: React.FC<{ username: string }> = ({ username }) => {
             }}
             transition={{ duration: 0.5 }}
             className={clsx(
-                'absolute left-1/2 -translate-x-1/2 top-0 w-full h-full pointer-events-none'
+                'absolute left-1/2 -translate-x-1/2 top-0 w-full h-full pointer-events-none rounded-lg overflow-hidden'
             )}
         >
             <iframe

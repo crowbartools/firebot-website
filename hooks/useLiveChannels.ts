@@ -2,6 +2,8 @@ import axios from 'axios';
 import { TwitchUser } from '../types/twitch';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const useLiveChannels = () => {
     return useInfiniteQuery({
         queryKey: ['live-channels'],
@@ -16,6 +18,7 @@ export const useLiveChannels = () => {
                     page: pageParam,
                 },
             });
+            await wait(750);
             return data;
         },
         initialPageParam: 1,

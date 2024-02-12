@@ -97,7 +97,7 @@ const AllFeaturesSection: React.FC = () => {
                 <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10 ">
                     {features.map((feature) => (
                         <Tilt
-                            scale={1.05}
+                            scale={1.01}
                             perspective={1000}
                             key={feature.name}
                             className="relative bg-gray-800 flex flex-col rounded-lg px-7 min-h-full"
