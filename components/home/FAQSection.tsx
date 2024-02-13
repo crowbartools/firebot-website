@@ -18,7 +18,7 @@ const faqs: Array<{ question: string; answer: string }> = [
     },
     {
         question: 'What operating systems are supported?',
-        answer: 'Windows 10 (64 bit) and most common Linux distros. Linux does not get automatic updates at this time. We are also looking to support macOS in the future.',
+        answer: 'Windows 10/11 (64 bit), macOS 12 and higher, and most common Linux distros. Linux and macOS do not get automatic updates at this time.',
     },
     {
         question: 'Can I contribute to Firebot?',
