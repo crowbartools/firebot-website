@@ -33,6 +33,7 @@ export default async function handler(
 const settingsSchema: yup.ObjectSchema<AdminSettings> = yup.object({
     blacklistedChannelIds: yup.array(yup.string()).optional(),
     blacklistedStreamCategoryIds: yup.array(yup.string()).optional(),
+    blacklistedTags: yup.array(yup.string()).optional(),
 });
 
 function isValidPatchBody(body: any): body is Partial<AdminSettings> {
