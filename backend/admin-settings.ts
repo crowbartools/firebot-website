@@ -4,6 +4,7 @@ import { AdminSettings } from '../types/admin';
 const defaultSettings: AdminSettings = {
     blacklistedChannelIds: [],
     blacklistedStreamCategoryIds: [],
+    blacklistedTags: [],
 };
 
 const db = new JsonDB(new Config('admin-settings', true, false, '/'));

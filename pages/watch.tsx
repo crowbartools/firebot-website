@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useLiveChannels } from '../hooks/useLiveChannels';
 import { withoutSsr } from '../utils/withoutSsr';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ChannelCard } from '../components/watch/ChannelCard';
+import { HowToModal } from '../components/watch/HowToModal';
+import Head from 'next/head';
 
 function WatchPage() {
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
@@ -18,10 +20,15 @@ function WatchPage() {
         }
     }, [inView, hasNextPage, fetchNextPage]);
 
+    const [showHowToModal, setShowHowToModal] = useState(false);
+
     const hasChannels = data?.pages.some((page) => page.channels.length > 0);
 
     return (
         <div className="relative max-w-7xl 2xl:max-w-8xl mt-2 mx-auto flex items-center justify-center px-8 sm:px-10 pb-10">
+            <Head>
+                <title>Firebot - Watch</title>
+            </Head>
             <div className="width-full">
                 <div className="text-center w-full">
                     <h1 className="text-4xl 2xl:text-5xl font-extrabold">
@@ -30,6 +37,12 @@ function WatchPage() {
                     <div className="text-xl 2xl:text-2xl text-gray-300 mt-1 font-light">
                         Check out these live channels that use Firebot!
                     </div>
+                    <button
+                        className="text-sm text-gray-400 mt-1 font-light underline hover:text-gray-100"
+                        onClick={() => setShowHowToModal(true)}
+                    >
+                        How do I get my channel listed here?
+                    </button>
                 </div>
                 <motion.div
                     className="mt-6 2x:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-8"
@@ -62,6 +75,10 @@ function WatchPage() {
                 )}
                 <div ref={ref} className="h-1"></div>
             </div>
+            <HowToModal
+                isOpen={showHowToModal}
+                onClose={() => setShowHowToModal(false)}
+            />
         </div>
     );
 }

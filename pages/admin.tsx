@@ -53,7 +53,11 @@ const AdminSettings: React.FC = () => {
 
     const [blacklistedChannelIdsString, setBlacklistedChannelIdsString] =
         useState<string>('');
+
     const [blacklistedCategoryIdsString, setBlackListedCategoryIdsString] =
+        useState<string>('');
+
+    const [blacklistedStreamTagsString, setBlacklistedStreamTagsString] =
         useState<string>('');
 
     useEffect(() => {
@@ -63,6 +67,9 @@ const AdminSettings: React.FC = () => {
             );
             setBlackListedCategoryIdsString(
                 adminSettings.blacklistedStreamCategoryIds?.join(',')
+            );
+            setBlacklistedStreamTagsString(
+                adminSettings.blacklistedTags?.join(',')
             );
         }
     }, [settingsFetched, adminSettings]);
@@ -80,7 +87,7 @@ const AdminSettings: React.FC = () => {
                 <>
                     <div className="mt-10">
                         <TextArea
-                            label="Blacklisted Channel Ids"
+                            label="Channel Id Blacklist"
                             value={blacklistedChannelIdsString}
                             onChange={(newValue) =>
                                 setBlacklistedChannelIdsString(newValue)
@@ -89,14 +96,23 @@ const AdminSettings: React.FC = () => {
                     </div>
                     <div className="mt-10">
                         <TextArea
-                            label="Blacklisted Category Names"
+                            label="Category Name Blacklist"
                             value={blacklistedCategoryIdsString}
                             onChange={(newValue) =>
                                 setBlackListedCategoryIdsString(newValue)
                             }
                         />
                     </div>
-                    <div className="text-center mt-10">
+                    <div className="mt-10">
+                        <TextArea
+                            label="Stream Tag Blacklist"
+                            value={blacklistedStreamTagsString}
+                            onChange={(newValue) =>
+                                setBlacklistedStreamTagsString(newValue)
+                            }
+                        />
+                    </div>
+                    <div className="text-center mt-10 pb-10">
                         <button
                             type="button"
                             disabled={updateIsPending}
@@ -113,6 +129,10 @@ const AdminSettings: React.FC = () => {
                                             .split(',')
                                             .map((id) => id.trim())
                                             .filter((id) => !!id.length),
+                                    blacklistedTags: blacklistedStreamTagsString
+                                        .split(',')
+                                        .map((tag) => tag.trim())
+                                        .filter((tag) => !!tag.length),
                                 })
                             }
                         >

@@ -124,10 +124,27 @@ export const ChannelCard: React.FC<{ channel: TwitchUser; index: number }> = ({
                                 {channel.stream?.title}
                             </TestOverflowScroller>
                         </div> */}
-                        <div className="text-gray-400 leading-none">
+                        <div
+                            className="text-gray-400 leading-none"
+                            style={{
+                                WebkitLineClamp: 1,
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                wordBreak: 'break-all',
+                            }}
+                        >
                             {channel.display_name}
                         </div>
-                        <div className="text-gray-400 leading-none">
+                        <div
+                            className="text-gray-400 leading-none text-sm"
+                            style={{
+                                WebkitLineClamp: 2,
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                            }}
+                        >
                             {channel.stream?.game_name}
                         </div>
                     </div>

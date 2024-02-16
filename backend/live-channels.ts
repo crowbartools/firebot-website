@@ -3,6 +3,9 @@ import { TwitchUser } from '../types/twitch';
 import { getStreams, getUsers } from './twitch-api';
 import { getAdminSettings } from './admin-settings';
 import { AdminSettings } from '../types/admin';
+import { JsonDB, Config } from 'node-json-db';
+
+const db = new JsonDB(new Config('live-channels-cache', true, false, '/'));
 
 const THIRTY_MINS_IN_SECONDS = 1800;
 const FIFTEEN_MINS_IN_SECONDS = 900;
@@ -20,15 +23,26 @@ const channelCache = new NodeCache({
 });
 
 function validateChannelAndCategory(
-    { blacklistedChannelIds, blacklistedStreamCategoryIds }: AdminSettings,
+    {
+        blacklistedChannelIds,
+        blacklistedStreamCategoryIds,
+        blacklistedTags,
+    }: AdminSettings,
     channelId: string,
-    categoryName: string
+    categoryName: string,
+    streamTags: string[]
 ) {
     if (blacklistedChannelIds.includes(channelId)) {
         return false;
     }
 
     if (blacklistedStreamCategoryIds.includes(categoryName)) {
+        return false;
+    }
+
+    if (
+        streamTags.some((t) => blacklistedTags.includes(t?.toLowerCase() ?? ''))
+    ) {
         return false;
     }
 
@@ -64,7 +78,8 @@ export async function addLiveChannel(
         !validateChannelAndCategory(
             adminSettings,
             channelId,
-            userData.stream.game_name
+            userData.stream.game_name,
+            userData.stream.tags
         )
     ) {
         // silently ignore blacklisted channels/categories
@@ -78,6 +93,8 @@ export async function addLiveChannel(
         { addedAt: Date.now(), userData },
         THIRTY_MINS_IN_SECONDS
     );
+
+    await db.push('/channels', channelCache.keys(), true);
 
     return { success: true };
 }
@@ -132,7 +149,8 @@ export async function validateCache() {
             validateChannelAndCategory(
                 adminSettings,
                 channelId,
-                stream.game_name
+                stream.game_name,
+                stream.tags
             )
         ) {
             existing.userData.stream = stream;
@@ -140,7 +158,21 @@ export async function validateCache() {
             channelCache.del(channelId);
         }
     }
+
+    await db.push('/channels', channelCache.keys(), true);
 }
+
+(async () => {
+    try {
+        const persistedCache = ((await db.getData('/channels')) ??
+            []) as string[];
+        for (const channelId of persistedCache) {
+            await addLiveChannel(channelId);
+        }
+    } catch (e) {
+        /* ignore */
+    }
+})();
 
 // every 5 minutes, check ensure channels are still live and update the cache
 setInterval(validateCache, FIVE_MINS_IN_SECONDS * 1000);
