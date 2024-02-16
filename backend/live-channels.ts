@@ -1,6 +1,8 @@
 import NodeCache from 'node-cache';
 import { TwitchUser } from '../types/twitch';
 import { getStreams, getUsers } from './twitch-api';
+import { getAdminSettings } from './admin-settings';
+import { AdminSettings } from '../types/admin';
 
 const THIRTY_MINS_IN_SECONDS = 1800;
 const FIFTEEN_MINS_IN_SECONDS = 900;
@@ -16,6 +18,22 @@ const channelCache = new NodeCache({
     checkperiod: 30,
     useClones: false,
 });
+
+function validateChannelAndCategory(
+    { blacklistedChannelIds, blacklistedStreamCategoryIds }: AdminSettings,
+    channelId: string,
+    categoryName: string
+) {
+    if (blacklistedChannelIds.includes(channelId)) {
+        return false;
+    }
+
+    if (blacklistedStreamCategoryIds.includes(categoryName)) {
+        return false;
+    }
+
+    return true;
+}
 
 export async function addLiveChannel(
     channelId: string
@@ -38,6 +56,20 @@ export async function addLiveChannel(
         return {
             success: false,
             error: `Channel ${channelId} not found or not live`,
+        };
+    }
+
+    const adminSettings = await getAdminSettings();
+    if (
+        !validateChannelAndCategory(
+            adminSettings,
+            channelId,
+            userData.stream.game_name
+        )
+    ) {
+        // silently ignore blacklisted channels/categories
+        return {
+            success: true,
         };
     }
 
@@ -80,14 +112,14 @@ export function getLiveChannels(page: number) {
     };
 }
 
-// every 5 minutes, check ensure channels are still live and update the cache
-setInterval(async () => {
+export async function validateCache() {
     const channelIds = channelCache.keys();
     if (channelIds.length === 0) {
         return;
     }
 
     const streams = await getStreams(channelIds);
+    const adminSettings = await getAdminSettings();
 
     for (const channelId of channelIds) {
         const existing = channelCache.get<CacheEntry>(channelId);
@@ -95,10 +127,20 @@ setInterval(async () => {
             continue;
         }
         const stream = streams[channelId];
-        if (stream) {
+        if (
+            stream &&
+            validateChannelAndCategory(
+                adminSettings,
+                channelId,
+                stream.game_name
+            )
+        ) {
             existing.userData.stream = stream;
         } else {
             channelCache.del(channelId);
         }
     }
-}, FIVE_MINS_IN_SECONDS * 1000);
+}
+
+// every 5 minutes, check ensure channels are still live and update the cache
+setInterval(validateCache, FIVE_MINS_IN_SECONDS * 1000);

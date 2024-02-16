@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export const StreamPreview: React.FC<{
+export const StreamPreviewEmbed: React.FC<{
     username: string;
     allowClicks?: boolean;
 }> = ({ username, allowClicks }) => {

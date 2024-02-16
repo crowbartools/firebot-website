@@ -17,3 +17,17 @@ export type TwitchUser = {
     offline_image_url: string;
     stream?: TwitchStream;
 };
+
+export type TwitchChannel = {
+    id: string;
+    broadcaster_login: string;
+    display_name: string;
+    thumbnail_url: string;
+    title: string;
+};
+
+export type TwitchCategory = {
+    id: string;
+    name: string;
+    box_art_url: string;
+};

@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { TwitchStream, TwitchUser } from '../types/twitch';
+import {
+    TwitchCategory,
+    TwitchChannel,
+    TwitchStream,
+    TwitchUser,
+} from '../types/twitch';
 
 type TokenData = {
     access_token: string;
@@ -16,7 +21,7 @@ const chunkArray = <T>(array: T[], chunk_size: number): Array<T[]> =>
 const GET_TOKEN_URL = `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_CLIENT_SECRET}&grant_type=client_credentials`;
 
 const state: { appToken?: TokenData } = {
-    appToken: null
+    appToken: null,
 };
 
 async function getAppAccessToken() {
@@ -46,7 +51,7 @@ async function getAppAccessToken() {
 
 const getHeaders = (token: string) => ({
     Authorization: `Bearer ${token}`,
-    'Client-Id': process.env.TWITCH_CLIENT_ID
+    'Client-Id': process.env.TWITCH_CLIENT_ID,
 });
 
 export async function getStreams(userIds: string[]) {
@@ -110,4 +115,42 @@ export async function getUsers(userIds: string[], includeStreams = false) {
     }
 
     return users;
+}
+
+export async function searchChannels(query: string) {
+    const token = await getAppAccessToken();
+    if (token == null) return [];
+    try {
+        const response = await axios.get<{ data: Array<TwitchChannel> }>(
+            'https://api.twitch.tv/helix/search/channels',
+            {
+                headers: getHeaders(token),
+                params: {
+                    query,
+                },
+            }
+        );
+        return response?.data?.data ?? [];
+    } catch (error) {
+        return [];
+    }
+}
+
+export async function searchCategories(query: string) {
+    const token = await getAppAccessToken();
+    if (token == null) return [];
+    try {
+        const response = await axios.get<{ data: Array<TwitchCategory> }>(
+            'https://api.twitch.tv/helix/search/categories',
+            {
+                headers: getHeaders(token),
+                params: {
+                    query,
+                },
+            }
+        );
+        return response?.data?.data ?? [];
+    } catch (error) {
+        return [];
+    }
 }

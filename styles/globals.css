@@ -13,3 +13,8 @@
 .md-inline a {
    text-decoration: underline; 
 }
+
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
