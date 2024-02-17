@@ -7,6 +7,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const useLiveChannels = () => {
     return useInfiniteQuery({
         queryKey: ['live-channels'],
+        refetchInterval: 1000 * 60 * 5, // 5 minutes
         queryFn: async ({ pageParam = 1 }) => {
             const { data } = await axios.get<{
                 channels: TwitchUser[];

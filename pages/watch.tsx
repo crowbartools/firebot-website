@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { useLiveChannels } from '../hooks/useLiveChannels';
 import { withoutSsr } from '../utils/withoutSsr';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ChannelCard } from '../components/watch/ChannelCard';
 import { HowToModal } from '../components/watch/HowToModal';
 import Head from 'next/head';
+import { useGridDimensions } from '../hooks/useGridDimensions';
+import clsx from 'clsx';
 
 function WatchPage() {
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
@@ -23,6 +25,20 @@ function WatchPage() {
     const [showHowToModal, setShowHowToModal] = useState(false);
 
     const hasChannels = data?.pages.some((page) => page.channels.length > 0);
+
+    const gridRef = useRef<HTMLDivElement>(null);
+
+    const teamMemberCount = data?.pages.reduce(
+        (acc, page) =>
+            acc +
+            page.channels.reduce(
+                (acc, channel) => acc + (channel.isTeamMember ? 1 : 0),
+                0
+            ),
+        0
+    );
+
+    const { columns, rows } = useGridDimensions(gridRef);
 
     return (
         <div className="relative max-w-7xl 2xl:max-w-8xl mt-2 mx-auto flex items-center justify-center px-8 sm:px-10 pb-10">
@@ -45,7 +61,13 @@ function WatchPage() {
                     </button>
                 </div>
                 <motion.div
-                    className="mt-6 2x:mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-8"
+                    ref={gridRef}
+                    className={clsx(
+                        'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-8',
+                        teamMemberCount === 0
+                            ? 'mt-6 2x:mt-8'
+                            : 'mt-14 2xl:mt-16'
+                    )}
                     initial={{
                         opacity: 0,
                     }}
@@ -53,12 +75,15 @@ function WatchPage() {
                         opacity: 1,
                     }}
                 >
-                    {data?.pages.map((page) => {
+                    {data?.pages.map((page, pageIndex) => {
                         return page.channels.map((channel, i) => (
                             <ChannelCard
                                 key={channel.id}
                                 channel={channel}
-                                index={i}
+                                index={i * (pageIndex + 1)}
+                                totalColumns={columns}
+                                totalRows={rows}
+                                teamMemberCount={teamMemberCount}
                             />
                         ));
                     })}

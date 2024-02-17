@@ -5,6 +5,10 @@ import { useUpdateAdminSettings } from '../hooks/useUpdateAdminSettings';
 // import { useTwitchChannels } from '../hooks/useTwitchChannels';
 // import { useTwitchCategories } from '../hooks/useTwitchCategories';
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { useToasts } from '../components/toasts';
 
 function WatchAdminPage() {
     const { data: session } = useSession();
@@ -63,16 +67,18 @@ const AdminSettings: React.FC = () => {
     useEffect(() => {
         if (adminSettings && settingsFetched) {
             setBlacklistedChannelIdsString(
-                adminSettings.blacklistedChannelIds.join(',')
+                adminSettings.blacklistedChannelIds.join('\n')
             );
             setBlackListedCategoryIdsString(
-                adminSettings.blacklistedStreamCategoryIds?.join(',')
+                adminSettings.blacklistedStreamCategoryIds?.join('\n')
             );
             setBlacklistedStreamTagsString(
-                adminSettings.blacklistedTags?.join(',')
+                adminSettings.blacklistedTags?.join('\n')
             );
         }
     }, [settingsFetched, adminSettings]);
+
+    const { addToast } = useToasts();
 
     // const [channelQuery, setChannelQuery] = useState('');
     // const [categoriesQuery, setCategoriesQuery] = useState('');
@@ -116,27 +122,52 @@ const AdminSettings: React.FC = () => {
                         <button
                             type="button"
                             disabled={updateIsPending}
-                            className="rounded-md bg-cyan-500 px-10 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 disabled:bg-gray-400 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
+                            className={clsx(
+                                'rounded-md px-10 py-2.5 text-sm font-semibold text-white shadow-sm',
+                                ' focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500',
+                                updateIsPending
+                                    ? 'bg-gray-400 cursor-not-allowed pr-4'
+                                    : 'bg-cyan-500 hover:bg-cyan-400'
+                            )}
                             onClick={() =>
-                                updateAdminSettings({
-                                    blacklistedChannelIds:
-                                        blacklistedChannelIdsString
-                                            .split(',')
-                                            .map((id) => id.trim())
-                                            .filter((id) => !!id.length),
-                                    blacklistedStreamCategoryIds:
-                                        blacklistedCategoryIdsString
-                                            .split(',')
-                                            .map((id) => id.trim())
-                                            .filter((id) => !!id.length),
-                                    blacklistedTags: blacklistedStreamTagsString
-                                        .split(',')
-                                        .map((tag) => tag.trim())
-                                        .filter((tag) => !!tag.length),
-                                })
+                                updateAdminSettings(
+                                    {
+                                        blacklistedChannelIds:
+                                            blacklistedChannelIdsString
+                                                .split('\n')
+                                                .map((id) => id.trim())
+                                                .filter((id) => !!id.length),
+                                        blacklistedStreamCategoryIds:
+                                            blacklistedCategoryIdsString
+                                                .split('\n')
+                                                .map((id) => id.trim())
+                                                .filter((id) => !!id.length),
+                                        blacklistedTags:
+                                            blacklistedStreamTagsString
+                                                .split('\n')
+                                                .map((tag) => tag.trim())
+                                                .filter((tag) => !!tag.length),
+                                    },
+                                    {
+                                        onSuccess: () => {
+                                            addToast('Settings saved!', {
+                                                appearance: 'success',
+                                                autoDismiss: true,
+                                                autoDismissTimeout: 3000,
+                                            });
+                                        },
+                                    }
+                                )
                             }
                         >
                             Save
+                            {updateIsPending && (
+                                <FontAwesomeIcon
+                                    icon={faCircleNotch}
+                                    spin
+                                    className="ml-2"
+                                />
+                            )}
                         </button>
                     </div>
                 </>
@@ -160,10 +191,9 @@ const TextArea: React.FC<{
             </label>
             <div className="mt-2">
                 <textarea
-                    rows={5}
-                    placeholder="Enter comma separated list"
+                    rows={6}
+                    placeholder="Enter new-line separated list"
                     className="block w-full rounded-md border-0 p-1.5 text-gray-100 shadow-sm ring-1 ring-inset bg-gray-700 ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-500 outline-none sm:text-sm sm:leading-6"
-                    defaultValue={''}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                 />

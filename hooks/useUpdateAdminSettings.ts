@@ -8,11 +8,14 @@ export const useUpdateAdminSettings = () => {
         mutationFn: async (settings: Partial<AdminSettings>) => {
             await queryClient.cancelQueries({ queryKey: ['admin-settings'] });
 
+            
             const { data } = await axios.patch<AdminSettings>(
                 '/api/admin/settings',
                 settings
             );
 
+            await new Promise((resolve) => setTimeout(resolve, 750));
+            
             return data;
         },
         onSuccess: (newSettings) => {

@@ -3,9 +3,8 @@ import { TwitchUser } from '../types/twitch';
 import { getStreams, getUsers } from './twitch-api';
 import { getAdminSettings } from './admin-settings';
 import { AdminSettings } from '../types/admin';
-import { JsonDB, Config } from 'node-json-db';
-
-const db = new JsonDB(new Config('live-channels-cache', true, false, '/'));
+import { people } from '../constants/people';
+import * as db from './db';
 
 const THIRTY_MINS_IN_SECONDS = 1800;
 const FIFTEEN_MINS_IN_SECONDS = 900;
@@ -21,6 +20,17 @@ const channelCache = new NodeCache({
     checkperiod: 30,
     useClones: false,
 });
+
+async function persistCacheKeysToDb() {
+    const query = `
+    insert into persisted_cache (name, keys)
+    values ($1, $2)
+    on conflict (name)
+        do update set name = EXCLUDED.name,
+                    keys = EXCLUDED.keys;
+    `;
+    await db.query(query, ['liveChannels', channelCache.keys()]);
+}
 
 function validateChannelAndCategory(
     {
@@ -88,13 +98,19 @@ export async function addLiveChannel(
         };
     }
 
+    const matchedTeamMember = people.find(
+        (member) => member.id === userData.id && member.isTeamMember
+    );
+    userData.isTeamMember = matchedTeamMember != null;
+    userData.teamMemberRole = matchedTeamMember?.generalizedRole;
+
     channelCache.set<CacheEntry>(
         channelId,
         { addedAt: Date.now(), userData },
         THIRTY_MINS_IN_SECONDS
     );
 
-    await db.push('/channels', channelCache.keys(), true);
+    persistCacheKeysToDb();
 
     return { success: true };
 }
@@ -110,10 +126,13 @@ export function getLiveChannels(page: number) {
         channelCache.mget<CacheEntry>(channelCache.keys())
     )
         .map((c) => c.userData)
-        .sort(
-            (a, b) =>
-                new Date(b.stream.started_at).getTime() -
-                new Date(a.stream.started_at).getTime()
+        .sort((a, b) =>
+            a.isTeamMember != b.isTeamMember
+                ? a.isTeamMember
+                    ? -1
+                    : 1
+                : new Date(b.stream.started_at).getTime() -
+                  new Date(a.stream.started_at).getTime()
         );
 
     const offset = (page - 1) * PAGE_SIZE;
@@ -136,7 +155,7 @@ export async function validateCache() {
     }
 
     const streams = await getStreams(channelIds);
-    const adminSettings = await getAdminSettings();
+    const adminSettings = getAdminSettings();
 
     for (const channelId of channelIds) {
         const existing = channelCache.get<CacheEntry>(channelId);
@@ -159,18 +178,18 @@ export async function validateCache() {
         }
     }
 
-    await db.push('/channels', channelCache.keys(), true);
+    persistCacheKeysToDb();
 }
 
 (async () => {
-    try {
-        const persistedCache = ((await db.getData('/channels')) ??
-            []) as string[];
-        for (const channelId of persistedCache) {
-            await addLiveChannel(channelId);
-        }
-    } catch (e) {
-        /* ignore */
+    const result = await db.query(
+        'SELECT keys FROM persisted_cache where name = $1',
+        ['liveChannels']
+    );
+    if (!result) return;
+    const keys: string[] = result.rows[0]?.keys ?? [];
+    for (const channelId of keys) {
+        await addLiveChannel(channelId);
     }
 })();
 

@@ -16,6 +16,8 @@ export type TwitchUser = {
     profile_image_url: string;
     offline_image_url: string;
     stream?: TwitchStream;
+    isTeamMember?: boolean;
+    teamMemberRole?: string;
 };
 
 export type TwitchChannel = {
