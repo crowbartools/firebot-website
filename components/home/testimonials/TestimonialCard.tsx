@@ -21,7 +21,7 @@ export const TestimonialCard: React.FC<{
                     <div className="hidden lg:block lg:flex-shrink-0">
                         <img
                             className="h-64 w-64 rounded-full xl:h-80 xl:w-80 border-4 border-black bg-gradient-to-br from-gray-600 to-light-gray-800"
-                            src={user.profile_image_url}
+                            src={user?.profile_image_url}
                             alt=""
                         />
                     </div>
@@ -51,7 +51,8 @@ export const TestimonialCard: React.FC<{
                                                         'Testimonial Read More Click',
                                                         {
                                                             User:
-                                                                user.display_name,
+                                                                user?.display_name ||
+                                                                'A User',
                                                         }
                                                     );
                                                 }}
@@ -67,13 +68,13 @@ export const TestimonialCard: React.FC<{
                                     <div className="flex-shrink-0 lg:hidden">
                                         <img
                                             className="h-12 w-12 rounded-full"
-                                            src={user.profile_image_url}
+                                            src={user?.profile_image_url}
                                             alt=""
                                         />
                                     </div>
                                     <div className="ml-4 lg:ml-0 md:flex md:items-center md:justify-center">
                                         <div className="text-base font-medium text-white">
-                                            {user.display_name}
+                                            {user?.display_name || 'A User'}
                                         </div>
 
                                         <svg
@@ -100,12 +101,18 @@ export const TestimonialCard: React.FC<{
                                             onClick={() =>
                                                 logEvent(
                                                     'Testimonial Profile Click',
-                                                    { Channel: user.login }
+                                                    {
+                                                        Channel:
+                                                            user?.login ??
+                                                            'Unknown',
+                                                    }
                                                 )
                                             }
                                             target="_blank"
                                             rel="noreferrer"
-                                            href={`https://twitch.tv/${user.login}`}
+                                            href={`https://twitch.tv/${
+                                                user?.login ?? ''
+                                            }`}
                                             className="md:ml-0 ml-3 inline-flex items-center border border-transparent shadow-sm text-sm leading-4 text-indigo-500 hover:text-indigo-400 font-medium rounded-md"
                                         >
                                             <FontAwesomeIcon
@@ -114,7 +121,7 @@ export const TestimonialCard: React.FC<{
                                             />
                                             View Channel
                                         </motion.a>
-                                        {user.stream?.type == 'live' && (
+                                        {user?.stream?.type == 'live' && (
                                             <div className="ml-3 hidden md:block">
                                                 <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-700 text-gray-50">
                                                     <svg
@@ -135,7 +142,7 @@ export const TestimonialCard: React.FC<{
                                     </div>
                                 </div>
 
-                                {user.stream?.type == 'live' && (
+                                {user?.stream?.type == 'live' && (
                                     <div className="mt-3 block md:hidden">
                                         <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-700 text-gray-50">
                                             <svg
