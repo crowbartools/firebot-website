@@ -11,6 +11,7 @@ import { StreamPreviewImage } from './StreamPreviewImage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { DevAndExpertsInfoModal } from './DevAndExpertsInfoModal';
+import { useDeviceDetect } from '../../hooks/useDeviceDetect';
 
 export const ChannelCard: React.FC<{
     channel: TwitchUser;
@@ -44,6 +45,8 @@ export const ChannelCard: React.FC<{
         useState(false);
 
     const [isPressingShift] = useKeyPress('Shift');
+
+    const { isMobile } = useDeviceDetect();
 
     const currentColumn = (index + 1) % totalColumns || totalColumns;
     const currentRow = Math.ceil((index + 1) / totalColumns);
@@ -132,7 +135,7 @@ export const ChannelCard: React.FC<{
                 glareEnable
                 glareBorderRadius="0.5rem"
                 glareMaxOpacity={0.1}
-                tiltEnable={isHovering}
+                tiltEnable={!isMobile()}
                 className="hover:bg-gray-800 rounded-lg p-2"
             >
                 <div
