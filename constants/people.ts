@@ -6,7 +6,7 @@ export type Person = {
     name: string;
     role: string;
     /**
-     * Crowbar Team or Expert memebers
+     * Crowbar Team or Expert members
      * If true, user is highlighted on /watch page
      */
     isTeamMember?: boolean;
