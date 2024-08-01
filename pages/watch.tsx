@@ -11,8 +11,23 @@ import { useGridDimensions } from '../hooks/useGridDimensions';
 import clsx from 'clsx';
 
 function WatchPage() {
+    const params = new URLSearchParams(location.search);
+    const matureParam = params.get('mature');
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
-        useLiveChannels();
+        useLiveChannels({
+            sortBy: (params.get('sortBy') ?? undefined) as
+                | 'stream_uptime'
+                | 'viewers'
+                | undefined,
+            sortDirection: (params.get('sortDirection') ?? undefined) as
+                | 'asc'
+                | 'desc'
+                | undefined,
+            search: params.get('search') ?? undefined,
+            language: params.get('language') ?? undefined,
+            category: params.get('category') ?? undefined,
+            mature: matureParam != null ? matureParam === 'true' : undefined,
+        });
 
     const { ref, inView } = useInView();
 

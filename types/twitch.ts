@@ -4,8 +4,12 @@ export type TwitchStream = {
     type: 'live';
     thumbnail_url: string;
     title: string;
+    game_id: string;
     game_name: string;
     started_at: string;
+    language: string;
+    is_mature: boolean;
+    viewer_count: number;
     tags: string[];
 };
 

@@ -1,6 +1,6 @@
 import NodeCache from 'node-cache';
 import { TwitchUser } from '../types/twitch';
-import { getStreams, getUsers } from './twitch-api';
+import { getStreams, getUsers, searchCategories } from './twitch-api';
 import { getAdminSettings } from './admin-settings';
 import { AdminSettings } from '../types/admin';
 import { people } from '../constants/people';
@@ -117,23 +117,96 @@ export async function addLiveChannel(
 
 const PAGE_SIZE = 20;
 
-export function getLiveChannels(page: number) {
+export async function getLiveChannels(
+    page: number,
+    sortBy: 'stream_uptime' | 'viewers' = 'stream_uptime',
+    sortDirection: 'asc' | 'desc' = 'asc',
+    filters?: {
+        search?: string;
+        language?: string;
+        category?: string;
+        mature?: boolean;
+    }
+) {
     if (page < 1) {
         page = 1;
     }
 
-    const channels = Object.values(
+    let channels = Object.values(
         channelCache.mget<CacheEntry>(channelCache.keys())
     )
         .map((c) => c.userData)
-        .sort((a, b) =>
-            a.isTeamMember != b.isTeamMember
-                ? a.isTeamMember
-                    ? -1
-                    : 1
-                : new Date(b.stream.started_at).getTime() -
-                  new Date(a.stream.started_at).getTime()
-        );
+        .sort((a, b) => {
+            if (a.isTeamMember != b.isTeamMember) {
+                return a.isTeamMember ? -1 : 1;
+            }
+            if (sortBy === 'viewers') {
+                return sortDirection === 'asc'
+                    ? a.stream.viewer_count - b.stream.viewer_count
+                    : b.stream.viewer_count - a.stream.viewer_count;
+            }
+            return sortDirection === 'asc'
+                ? new Date(b.stream.started_at).getTime() -
+                      new Date(a.stream.started_at).getTime()
+                : new Date(a.stream.started_at).getTime() -
+                      new Date(b.stream.started_at).getTime();
+        });
+
+    if (filters != null && Object.values(filters).some((f) => f != null)) {
+        let categoryId: string | null = null;
+        if (filters.category != null) {
+            // if the category filter is a number, treat as a category id
+            if (!isNaN(parseInt(filters.category))) {
+                categoryId = filters.category;
+            } else {
+                // otherwise, search categories by name
+                const category = await searchCategories(filters.category);
+                categoryId = category[0]?.id;
+            }
+        }
+        channels = channels.filter((c) => {
+            if (
+                filters.language != null &&
+                c.stream.language !== filters.language
+            ) {
+                return false;
+            }
+            if (categoryId != null && c.stream.game_id !== categoryId) {
+                return false;
+            }
+            if (
+                filters.mature != null &&
+                c.stream.is_mature !== filters.mature
+            ) {
+                return false;
+            }
+            if (
+                filters.search != null &&
+                !(
+                    c.display_name
+                        .toLowerCase()
+                        .includes(filters.search.toLowerCase().trim()) ||
+                    c.stream.title
+                        .toLowerCase()
+                        .includes(filters.search.toLowerCase().trim()) ||
+                    c.stream.tags.some(
+                        (t) =>
+                            t
+                                .toLowerCase()
+                                .includes(
+                                    filters.search.toLowerCase().trim()
+                                ) ||
+                            c.stream.game_name
+                                .toLowerCase()
+                                .includes(filters.search.toLowerCase().trim())
+                    )
+                )
+            ) {
+                return false;
+            }
+            return true;
+        });
+    }
 
     const offset = (page - 1) * PAGE_SIZE;
     const channelsForPage = channels.slice(offset, offset + PAGE_SIZE);

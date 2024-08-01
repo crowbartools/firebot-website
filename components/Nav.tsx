@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import useAnalytics from '../hooks/useAnalytics';
 import { useDebounce } from 'react-use';
-import { useLiveChannels } from '../hooks/useLiveChannels';
+import { useLiveChannelCount } from '../hooks/useLiveChannels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
 
@@ -36,9 +36,9 @@ export const Nav = observer((): JSX.Element => {
     const [viewedSection, setViewedSection] = useState('');
     const [debouncedViewedSection, setDebouncedViewedSection] = useState('');
 
-    const { data: liveChannelsData } = useLiveChannels();
+    const { data: liveChannelsCount } = useLiveChannelCount();
 
-    const hasLiveChannels = (liveChannelsData?.pages?.[0]?.total ?? 0) > 0;
+    const hasLiveChannels = (liveChannelsCount ?? 0) > 0;
 
     useDebounce(
         () => {
@@ -61,6 +61,22 @@ export const Nav = observer((): JSX.Element => {
             Page: router.pathname,
         });
     }, []);
+
+    const renderFeaturedChannelsBtn = () => {
+        return (
+            <>
+                {hasLiveChannels && onHome && (
+                    <Link
+                        href="/watch"
+                        className="border border-gray-700 rounded text-xs py-1 px-2 mr-2 flex items-center justify-center text-gray-400 hover:text-white font-bold"
+                    >
+                        <div className="h-3 w-3 bg-red-500 rounded-full mr-1"></div>
+                        Featured Streams
+                    </Link>
+                )}
+            </>
+        );
+    };
 
     return (
         <Sticky
@@ -101,6 +117,7 @@ export const Nav = observer((): JSX.Element => {
                                         </Link>
                                         {onHome && (
                                             <div className="-mr-2 flex items-center md:hidden">
+                                                {renderFeaturedChannelsBtn()}
                                                 <Popover.Button className="bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white">
                                                     <span className="sr-only">
                                                         Open main menu
@@ -163,15 +180,7 @@ export const Nav = observer((): JSX.Element => {
                                         </Scrollspy>
                                     )}
                                     <div className="hidden md:flex justify-end items-center flex-1">
-                                        {hasLiveChannels && onHome && (
-                                            <Link
-                                                href="/watch"
-                                                className="border border-gray-700 rounded text-xs py-1 px-2 mr-2 flex items-center justify-center text-gray-400 hover:text-white font-bold"
-                                            >
-                                                <div className="h-3 w-3 bg-red-500 rounded-full mr-1"></div>
-                                                Watch Live
-                                            </Link>
-                                        )}
+                                        {renderFeaturedChannelsBtn()}
                                         <a
                                             className="text-gray-400 hover:text-white mr-2"
                                             href="https://discord.gg/tTmMbrG"
