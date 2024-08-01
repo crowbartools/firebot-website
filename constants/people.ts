@@ -1,15 +1,25 @@
 export type Person = {
+    /**
+     * Twitch ID
+     */
     id: string;
     name: string;
     role: string;
+    /**
+     * Crowbar Team or Expert members
+     * If true, user is highlighted on /watch page
+     */
     isTeamMember?: boolean;
+    /**
+     * Shown on the /watch page for team members
+     */
     generalizedRole?: string;
 };
 
 export const people: Person[] = [
     {
         id: '22639237',
-        name: 'Firebottle',
+        name: 'Jesski',
         role: 'Creator / Developer',
         isTeamMember: true,
         generalizedRole: 'Dev',
@@ -76,6 +86,21 @@ export const people: Person[] = [
         role: 'Support / Tester',
         isTeamMember: true,
         generalizedRole: 'Expert',
+    },
+    {
+        id: '57499224',
+        name: 'phroggie',
+        role: 'Developer',
+    },
+    {
+        id: '21209878',
+        name: 'Oceanity',
+        role: 'Developer',
+    },
+    {
+        id: '62558521',
+        name: 'Alfww',
+        role: 'Developer',
     },
     {
         id: '140305832',
