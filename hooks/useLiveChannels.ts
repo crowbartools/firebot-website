@@ -5,11 +5,10 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useLiveChannels = (filterAndSort?: {
-    sortBy?: 'stream_uptime' | 'viewers';
-    sortDirection?: 'asc' | 'desc';
+    sortBy?: string[];
     search?: string;
-    language?: string;
-    category?: string;
+    language?: string[];
+    category?: string[];
     mature?: boolean;
 }) => {
     return useInfiniteQuery({
@@ -25,6 +24,9 @@ export const useLiveChannels = (filterAndSort?: {
                 params: {
                     page: pageParam,
                     ...(filterAndSort ?? {}),
+                },
+                paramsSerializer: {
+                    indexes: null,
                 },
             });
             await wait(750);

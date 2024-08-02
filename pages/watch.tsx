@@ -15,17 +15,14 @@ function WatchPage() {
     const matureParam = params.get('mature');
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
         useLiveChannels({
-            sortBy: (params.get('sortBy') ?? undefined) as
-                | 'stream_uptime'
-                | 'viewers'
-                | undefined,
-            sortDirection: (params.get('sortDirection') ?? undefined) as
-                | 'asc'
-                | 'desc'
-                | undefined,
+            sortBy: params.get('sortBy') ? params.get('sortBy').split(',') : [],
             search: params.get('search') ?? undefined,
-            language: params.get('language') ?? undefined,
-            category: params.get('category') ?? undefined,
+            language: params.get('language')
+                ? params.get('language').split(',')
+                : [],
+            category: params.get('category')
+                ? params.get('category').split(',')
+                : [],
             mature: matureParam != null ? matureParam === 'true' : undefined,
         });
 

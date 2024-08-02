@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import acceptLanguageParser from 'accept-language-parser';
 import {
     addLiveChannel,
+    ChannelSortBy,
     getLiveChannels,
 } from '../../../backend/live-channels';
 
@@ -16,22 +18,39 @@ export default async function handler(
         if (isNaN(page)) {
             res.status(400).send({ error: 'Invalid page' });
         } else {
-            const sortBy = req.query.sortBy as string;
-            const sortDirection = req.query.sortDirection as string;
+            const sortBy = req.query.sortBy
+                ? Array.isArray(req.query.sortBy)
+                    ? req.query.sortBy
+                    : [req.query.sortBy]
+                : undefined;
 
             if (!validateSortBy(sortBy)) {
                 res.status(400).send({ error: 'Invalid sortBy' });
                 return;
             }
 
-            if (!validateSortDirection(sortDirection)) {
-                res.status(400).send({ error: 'Invalid sortDirection' });
-                return;
-            }
+            const acceptLanguages = acceptLanguageParser.parse(
+                req.headers['accept-language']
+            );
+            const dedupedSortLanguages = acceptLanguages
+                .filter(
+                    (lang, index, self) =>
+                        index === self.findIndex((t) => t.code === lang.code)
+                )
+                .sort((a, b) => b.quality - a.quality)
+                .map((lang) => lang.code);
 
             const search = req.query.search as string;
-            const language = req.query.language as string;
-            const category = req.query.category as string;
+            const language = req.query.language
+                ? Array.isArray(req.query.language)
+                    ? req.query.language
+                    : [req.query.language]
+                : undefined;
+            const category = req.query.category
+                ? Array.isArray(req.query.category)
+                    ? req.query.category
+                    : [req.query.category]
+                : undefined;
             const mature = req.query.mature
                 ? req.query.mature === 'true'
                 : undefined;
@@ -39,7 +58,7 @@ export default async function handler(
             const response = await getLiveChannels(
                 page,
                 sortBy,
-                sortDirection,
+                dedupedSortLanguages,
                 language || category || search || mature
                     ? { search, language, category, mature }
                     : undefined
@@ -52,17 +71,21 @@ export default async function handler(
 }
 
 function validateSortBy(
-    sortBy: string
-): sortBy is 'stream_uptime' | 'viewers' | undefined {
-    return sortBy == null || sortBy === 'stream_uptime' || sortBy === 'viewers';
-}
-
-function validateSortDirection(
-    sortDirection: string
-): sortDirection is 'asc' | 'desc' | undefined {
+    sortBy: string[] | undefined
+): sortBy is ChannelSortBy[] | undefined {
+    const validSortBys: ChannelSortBy[] = [
+        'viewers',
+        'viewers:asc',
+        'viewers:desc',
+        'stream_uptime',
+        'stream_uptime:asc',
+        'stream_uptime:desc',
+        'language',
+        'language:asc',
+        'language:desc',
+    ];
     return (
-        sortDirection == null ||
-        sortDirection === 'asc' ||
-        sortDirection === 'desc'
+        sortBy == null ||
+        sortBy.every((s) => validSortBys.includes(s as ChannelSortBy))
     );
 }

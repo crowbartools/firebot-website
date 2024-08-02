@@ -117,14 +117,19 @@ export async function addLiveChannel(
 
 const PAGE_SIZE = 20;
 
+type SortByType<T extends string> = T | `${T}:${'asc' | 'desc'}`;
+
+export type ChannelSortBy = SortByType<
+    'viewers' | 'stream_uptime' | 'language'
+>;
 export async function getLiveChannels(
     page: number,
-    sortBy: 'stream_uptime' | 'viewers' = 'stream_uptime',
-    sortDirection: 'asc' | 'desc' = 'asc',
+    sortBy: ChannelSortBy[] = ['language:desc', 'stream_uptime:asc'],
+    sortLanguages: string[] = [],
     filters?: {
         search?: string;
-        language?: string;
-        category?: string;
+        language?: string[];
+        category?: string[];
         mature?: boolean;
     }
 ) {
@@ -132,46 +137,88 @@ export async function getLiveChannels(
         page = 1;
     }
 
-    let channels = Object.values(
+    if (filters?.language?.length) {
+        sortLanguages = filters.language;
+    }
+
+    const allChannels = Object.values(
         channelCache.mget<CacheEntry>(channelCache.keys())
-    )
-        .map((c) => c.userData)
-        .sort((a, b) => {
-            if (a.isTeamMember != b.isTeamMember) {
-                return a.isTeamMember ? -1 : 1;
+    ).map((c) => c.userData);
+
+    let channels = allChannels.sort((a, b) => {
+        if (a.isTeamMember != b.isTeamMember) {
+            return a.isTeamMember ? -1 : 1;
+        }
+        for (const sortByItem of sortBy) {
+            // eslint-disable-next-line prefer-const
+            let [sortByKey, sortDirection] = sortByItem.split(':');
+            if (sortDirection == null) {
+                sortDirection = 'asc';
             }
-            if (sortBy === 'viewers') {
+
+            if (sortByKey === 'language') {
+                const aLang = a.stream.language;
+                const bLang = b.stream.language;
+                const aIndex = sortLanguages.indexOf(aLang);
+                const bIndex = sortLanguages.indexOf(bLang);
+                if (aIndex === bIndex) {
+                    continue;
+                }
+                if (aIndex === -1) {
+                    return 1;
+                }
+                if (bIndex === -1) {
+                    return -1;
+                }
+                return sortDirection === 'asc'
+                    ? bIndex - aIndex
+                    : aIndex - bIndex;
+            }
+
+            if (sortByKey === 'stream_uptime') {
+                return sortDirection === 'asc'
+                    ? new Date(b.stream.started_at).getTime() -
+                          new Date(a.stream.started_at).getTime()
+                    : new Date(a.stream.started_at).getTime() -
+                          new Date(b.stream.started_at).getTime();
+            }
+
+            if (sortByKey === 'viewers') {
                 return sortDirection === 'asc'
                     ? a.stream.viewer_count - b.stream.viewer_count
                     : b.stream.viewer_count - a.stream.viewer_count;
             }
-            return sortDirection === 'asc'
-                ? new Date(b.stream.started_at).getTime() -
-                      new Date(a.stream.started_at).getTime()
-                : new Date(a.stream.started_at).getTime() -
-                      new Date(b.stream.started_at).getTime();
-        });
+        }
+        return 0;
+    });
 
     if (filters != null && Object.values(filters).some((f) => f != null)) {
-        let categoryId: string | null = null;
+        const categoryIds: string[] = [];
         if (filters.category != null) {
-            // if the category filter is a number, treat as a category id
-            if (!isNaN(parseInt(filters.category))) {
-                categoryId = filters.category;
-            } else {
-                // otherwise, search categories by name
-                const category = await searchCategories(filters.category);
-                categoryId = category[0]?.id;
+            for (const categoryIdOrName of filters.category) {
+                // if the category filter is a number, treat as a category id
+                if (!isNaN(parseInt(categoryIdOrName))) {
+                    categoryIds.push(categoryIdOrName);
+                } else {
+                    // otherwise, search categories by name
+                    const categories = await searchCategories(categoryIdOrName);
+                    if (categories?.[0]?.id) {
+                        categoryIds.push(categories[0].id);
+                    }
+                }
             }
         }
         channels = channels.filter((c) => {
             if (
                 filters.language != null &&
-                c.stream.language !== filters.language
+                !filters.language.includes(c.stream.language)
             ) {
                 return false;
             }
-            if (categoryId != null && c.stream.game_id !== categoryId) {
+            if (
+                categoryIds?.length &&
+                !categoryIds.includes(c.stream.game_id)
+            ) {
                 return false;
             }
             if (
