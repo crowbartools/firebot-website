@@ -90,17 +90,23 @@ export const people: Person[] = [
     {
         id: '57499224',
         name: 'phroggie',
-        role: 'Developer',
+        isTeamMember: true,
+        role: 'Contributing Developer',
+        generalizedRole: 'Contributor'
     },
     {
         id: '21209878',
         name: 'Oceanity',
-        role: 'Developer',
+        isTeamMember: true,
+        role: 'Contributing Developer',
+        generalizedRole: 'Contributor'
     },
     {
         id: '62558521',
         name: 'Alfww',
-        role: 'Developer',
+        isTeamMember: true,
+        role: 'Contributing Developer',
+        generalizedRole: 'Contributor'
     },
     {
         id: '140305832',
