@@ -127,11 +127,11 @@ class ProfileStore {
         return (
             this.profileData?.quotes.quotes.filter((c) =>
                 queryIsNum
-                    ? c.text.toLowerCase().includes(normalizedQuery) ||
-                      c._id.toString() === normalizedQuery
-                    : c.text.toLowerCase().includes(normalizedQuery) ||
-                      c.originator.toLowerCase().includes(normalizedQuery) ||
-                      c.game.toLowerCase().includes(normalizedQuery) ||
+                    ? c.text?.toLowerCase().includes(normalizedQuery) ||
+                      c._id?.toString() === normalizedQuery
+                    : c.text?.toLowerCase().includes(normalizedQuery) ||
+                      c.originator?.toLowerCase().includes(normalizedQuery) ||
+                      c.game?.toLowerCase().includes(normalizedQuery) ||
                       moment(c.createdAt)
                           .format('M/D/YYYY')
                           .includes(normalizedQuery)
