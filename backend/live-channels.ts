@@ -268,6 +268,14 @@ export async function getLiveChannels(
     };
 }
 
+export async function getRandomLiveChannel() {
+    const allChannels = Object.values(
+        channelCache.mget<CacheEntry>(channelCache.keys())
+    ).map((c) => c.userData);
+
+    return allChannels[Math.floor(Math.random() * allChannels.length)];
+}
+
 export async function validateCache() {
     const channelIds = channelCache.keys();
     if (channelIds.length === 0) {
