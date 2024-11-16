@@ -13,7 +13,13 @@ import useAnalytics from '../hooks/useAnalytics';
 import { useDebounce } from 'react-use';
 import { useLiveChannelCount } from '../hooks/useLiveChannels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
+import {
+    faDiscord,
+    faGithub,
+    faThreads,
+    faBluesky,
+    IconDefinition,
+} from '@fortawesome/free-brands-svg-icons';
 
 const navigation = [
     { name: 'Download', href: '#download' },
@@ -22,6 +28,33 @@ const navigation = [
     { name: 'FAQ', href: '#faq' },
     { name: 'Help', href: '#help' },
     { name: 'Team', href: '#team' },
+];
+
+const socials: Array<{
+    name: string;
+    href: string;
+    icon: IconDefinition;
+}> = [
+    {
+        name: 'GitHub',
+        href: 'https://github.com/crowbartools/firebot',
+        icon: faGithub,
+    },
+    {
+        name: 'Discord',
+        href: 'https://discord.gg/tTmMbrG',
+        icon: faDiscord,
+    },
+    {
+        name: 'Threads',
+        href: 'https://www.threads.net/@firebotapp',
+        icon: faThreads,
+    },
+    {
+        name: 'Bluesky',
+        href: 'https://bsky.app/profile/firebot.app',
+        icon: faBluesky,
+    },
 ];
 
 export const Nav = observer((): JSX.Element => {
@@ -181,36 +214,26 @@ export const Nav = observer((): JSX.Element => {
                                     )}
                                     <div className="hidden md:flex justify-end items-center flex-1">
                                         {renderFeaturedChannelsBtn()}
-                                        <a
-                                            className="text-gray-400 hover:text-white mr-2"
-                                            href="https://discord.gg/tTmMbrG"
-                                            onClick={() =>
-                                                logEvent('Discord Button Click')
-                                            }
-                                        >
-                                            <span className="sr-only">
-                                                Community Discord
-                                            </span>
-                                            <FontAwesomeIcon
-                                                icon={faDiscord}
-                                                className="text-lg"
-                                            />
-                                        </a>
-                                        <a
-                                            className="text-gray-400 hover:text-white"
-                                            href="https://github.com/crowbartools/firebot"
-                                            onClick={() =>
-                                                logEvent('GitHub Button Click')
-                                            }
-                                        >
-                                            <span className="sr-only">
-                                                GitHub repository
-                                            </span>
-                                            <FontAwesomeIcon
-                                                icon={faGithub}
-                                                className="text-lg"
-                                            />
-                                        </a>
+                                        {socials.map((social) => (
+                                            <a
+                                                key={social.name}
+                                                href={social.href}
+                                                onClick={() =>
+                                                    logEvent(
+                                                        `${social.name} Button Click`
+                                                    )
+                                                }
+                                                className="text-gray-400 hover:text-white mr-2"
+                                            >
+                                                <span className="sr-only">
+                                                    {social.name}
+                                                </span>
+                                                <FontAwesomeIcon
+                                                    icon={social.icon}
+                                                    className="text-lg"
+                                                />
+                                            </a>
+                                        ))}
                                     </div>
                                 </div>
                             </nav>
