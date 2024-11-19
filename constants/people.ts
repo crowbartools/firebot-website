@@ -61,7 +61,7 @@ export const people: Person[] = [
     },
     {
         id: '37677315',
-        name: 'Heyaapl',
+        name: 'heyaapl',
         role: 'Tutorials / Support',
         isTeamMember: true,
         generalizedRole: 'Tutorials',
@@ -77,13 +77,6 @@ export const people: Person[] = [
         id: '452884554',
         name: 'DennisOnTheInternet',
         role: 'Developer',
-        isTeamMember: true,
-        generalizedRole: 'Expert',
-    },
-    {
-        id: '137263225',
-        name: 'DragynsLair',
-        role: 'Support / Tester',
         isTeamMember: true,
         generalizedRole: 'Expert',
     },
