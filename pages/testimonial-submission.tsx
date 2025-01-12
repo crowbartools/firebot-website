@@ -7,19 +7,12 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import React, { useState } from 'react';
 import { User } from '../components/testimonial/User';
 
-const WEBHOOK_URL =
-    'https://discord.com/api/webhooks/912252920186159105/c4SV28ObuGdnGtBt9vKLcMvLURcXjIe3F1MceMtKfFvmzQYDlLETxDXqmdXD2bNhfGgG';
-
-const DISCORD_USERNAME_REGEX = /^\w{3,32}(#[0-9]{4})?$/gim;
-
 export const Testimonial: React.FC = observer(() => {
     const { data: session } = useSession();
 
     const [testimonial, setTestimonial] = useState('');
     const [streamerType, setStreamerType] = useState('');
     const [discordUser, setDiscordUser] = useState('');
-    const [twitterUser, setTwitterUser] = useState('');
-    const [discordUserValid, setDiscordUserValid] = useState(true);
 
     const [submitting, setSubmitting] = useState(false);
     const [successfulSubmission, setSuccessfulSubmission] = useState(false);
@@ -28,80 +21,26 @@ export const Testimonial: React.FC = observer(() => {
         setTestimonial('');
         setStreamerType('');
         setDiscordUser('');
-        setDiscordUserValid(true);
-        setTwitterUser('');
         setSuccessfulSubmission(false);
-    };
-
-    const validateDiscordUser = () => {
-        setDiscordUserValid(
-            (!discordUser.length || DISCORD_USERNAME_REGEX.test(discordUser)) &&
-                discordUser.length < 100
-        );
     };
 
     const formValid =
         testimonial.length > 0 &&
         testimonial.length < 2000 &&
         streamerType.length > 0 &&
-        streamerType.length < 2000 &&
-        discordUserValid;
+        streamerType.length < 2000;
 
     const submitTestimonial = async () => {
         if (!formValid || submitting || successfulSubmission) return;
 
         setSubmitting(true);
 
-        const webhookData = {
-            content: null,
-            embeds: [
-                {
-                    color: 5814783,
-                    fields: [
-                        {
-                            name: 'Testimonial',
-                            value: testimonial,
-                        },
-                        {
-                            name: 'Streamer Type',
-                            value: streamerType,
-                            inline: true,
-                        },
-                        {
-                            name: 'Follows',
-                            value: (session.user as any).follows ?? 'Unknown',
-                            inline: true,
-                        },
-                        ...(discordUser.length
-                            ? [
-                                  {
-                                      name: 'Discord',
-                                      value: discordUser,
-                                      inline: true,
-                                  },
-                              ]
-                            : []),
-                        ...(twitterUser.length
-                            ? [
-                                  {
-                                      name: 'Twitter',
-                                      value: `@${twitterUser.replace('@', '')}`,
-                                      inline: true,
-                                  },
-                              ]
-                            : []),
-                    ],
-                    author: {
-                        name: session.user.name,
-                        url: `https://twitch.tv/${session.user.name}`,
-                        icon_url: session.user.image,
-                    },
-                },
-            ],
-        };
-
         try {
-            await axios.post(WEBHOOK_URL, webhookData);
+            await axios.post('/api/testimonial', {
+                testimonial,
+                streamerType,
+                discordUser: discordUser?.length ? discordUser : undefined,
+            });
             setSuccessfulSubmission(true);
         } catch (error) {
             // eslint-disable-next-line no-console
@@ -251,50 +190,7 @@ export const Testimonial: React.FC = observer(() => {
                                     onChange={(event) => {
                                         setDiscordUser(event.target.value);
                                     }}
-                                    onBlur={() => {
-                                        validateDiscordUser();
-                                    }}
                                     placeholder="Enter username"
-                                />
-                            </div>
-                            {discordUserValid ? (
-                                <span className="text-gray-500 text-sm">
-                                    Optional
-                                </span>
-                            ) : (
-                                <span className="text-red-500 text-sm">
-                                    Invalid Discord username
-                                </span>
-                            )}
-
-                            <div className="flex justify-between mt-6">
-                                <label
-                                    htmlFor="message"
-                                    className="block text-base font-medium text-warm-gray-900"
-                                >
-                                    Twitter (formerly known as Twitter)
-                                </label>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-400">
-                                    Are you okay with us potentially tweeting
-                                    your testimonial as well? If so, provide
-                                    your twitter handle so we can tag you!
-                                    Otherwise, please feel free to leave this
-                                    blank.
-                                </p>
-                            </div>
-                            <div className="mt-1">
-                                <input
-                                    id="twitterName"
-                                    name="twitterName"
-                                    type="text"
-                                    className="py-3 px-4 block text-base w-full shadow-sm outline-none focus:ring-2 focus:ring-blue-400 border border-gray-900 rounded-md bg-gray-700"
-                                    value={twitterUser}
-                                    onChange={(event) => {
-                                        setTwitterUser(event.target.value);
-                                    }}
-                                    placeholder="Enter @username"
                                 />
                             </div>
                             <span className="text-gray-500 text-sm">
