@@ -48,7 +48,7 @@ export const Profile: React.FC = observer(() => {
     return (
         <>
             <StreamPreviewBackground />
-            <div className="h-full text-white relative mx-3 lg:mx-auto lg:max-w-6xl mt-8 lg:mt-16">
+            <div className="h-full text-white relative mx-3 xl:mx-auto lg:max-w-6xl mt-8 lg:mt-16 pb-10">
                 <AnimatePresence>
                     {profileStore.unableToLoad && (
                         <motion.div

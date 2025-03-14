@@ -24,7 +24,7 @@ export const Tabs: React.FC<Props> = ({
     return (
         <>
             <Sticky
-                innerActiveClass="mb-5 z-50 px-3 md:px-[11rem] z-50 !w-[100%] left-0"
+                innerActiveClass="mb-5 z-50 px-3 lg:px-[11rem] z-50 !w-[100%] left-0"
                 onStateChange={(state) => {
                     appStore.setTabBarStuck(
                         state.status === Sticky.STATUS_FIXED
@@ -34,7 +34,7 @@ export const Tabs: React.FC<Props> = ({
                 top={100}
             >
                 <>
-                    <nav className="flex justify-center md:justify-start">
+                    <nav className="flex justify-center lg:justify-start">
                         {Object.entries(config).map(
                             ([tabName, { toolbar }], index) => (
                                 <>
@@ -71,7 +71,7 @@ export const Tabs: React.FC<Props> = ({
                                     {index === activeTabIndex && (
                                         <div
                                             key={tabName}
-                                            className="order-last ml-auto md:block hidden"
+                                            className="order-last ml-auto lg:block hidden"
                                         >
                                             {toolbar(false)}
                                         </div>
@@ -85,7 +85,7 @@ export const Tabs: React.FC<Props> = ({
                             index === activeTabIndex && (
                                 <div
                                     key={tabName}
-                                    className="md:hidden block mt-4"
+                                    className="lg:hidden block mt-4"
                                 >
                                     {toolbar(true)}
                                 </div>
@@ -93,7 +93,7 @@ export const Tabs: React.FC<Props> = ({
                     )}
                 </>
             </Sticky>
-            <div className="mt-4 md:mt-10">
+            <div className="mt-4 lg:mt-10">
                 {Object.entries(config).map(
                     ([, { content }], index) =>
                         index === activeTabIndex &&
