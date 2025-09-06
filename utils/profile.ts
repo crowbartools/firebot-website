@@ -3,11 +3,9 @@ import { utils } from 'xlsx';
 import fileDownload from 'js-file-download';
 import { ChannelInfo, ProfileData } from '../types/profile';
 
-export async function getProfileData(): Promise<ProfileData> {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    const binId = urlParams.get('id');
-
+export async function getProfileDataFromByteBin(
+    binId: string
+): Promise<ProfileData> {
     if (binId == null) return null;
 
     try {
@@ -29,6 +27,32 @@ export async function getProfileData(): Promise<ProfileData> {
     return null;
 }
 
+export async function getProfileDataFromCrowbar(
+    channelName: string
+): Promise<ProfileData> {
+    if (channelName == null) {
+        return null;
+    }
+
+    try {
+        const response = await axios.get<ProfileData>(
+            `https://api.crowbar.tools/v1/profile-data/${channelName}`
+        );
+
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(
+            `Failed to get profile data for ${channelName}. Has it expired?`,
+            error
+        );
+    }
+
+    return null;
+}
+
 export async function getChannelInfo(
     channelName: string
 ): Promise<ChannelInfo> {
@@ -36,12 +60,16 @@ export async function getChannelInfo(
         return null;
     }
 
-    const response = await axios.get<ChannelInfo>(
-        `https://api.firebot.app/v1/channel/${channelName}`
-    );
+    try {
+        const response = await axios.get<ChannelInfo>(
+            `https://api.firebot.app/v1/channel/${channelName}`
+        );
 
-    if (response.status === 200) {
-        return response.data;
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch {
+        // silently fail
     }
 
     return null;

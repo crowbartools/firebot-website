@@ -3,7 +3,8 @@ import moment from 'moment';
 import { ChannelInfo, ProfileData, StreamVariant } from '../types/profile';
 import getMappedRoles, {
     getChannelInfo,
-    getProfileData,
+    getProfileDataFromByteBin,
+    getProfileDataFromCrowbar,
 } from '../utils/profile';
 
 class ProfileStore {
@@ -179,79 +180,108 @@ class ProfileStore {
     }
 
     setProfileData(profileData: ProfileData) {
-        if (profileData != null) {
-            this.profileData = profileData;
-            this.profileData.quotes.quotes = toJS(
-                this.profileData.quotes.quotes
-            ).reverse();
-            this.profileData.commands.allowedCmds.map((c) => {
-                const permissionsRestriction =
-                    c.restrictionData?.restrictions?.find(
-                        (r) => r.type === 'firebot:permissions'
-                    );
-                if (permissionsRestriction?.roleIds?.length > 0) {
-                    c.permissions = {
-                        roles: getMappedRoles(permissionsRestriction.roleIds),
-                    };
-                }
-                if (c.subCommands?.length > 0) {
-                    c.subCommands = c.subCommands?.filter((f) => f.active);
-                    if (c.fallbackSubcommand) {
-                        c.subCommands.push(c.fallbackSubcommand);
-                    }
-                    c.subCommands?.map((sc) => {
-                        const scPermRestriction =
-                            sc.restrictionData?.restrictions?.find(
-                                (r) => r.type === 'firebot:permissions'
-                            );
-                        if (scPermRestriction?.roleIds?.length > 0) {
-                            sc.permissions = {
-                                roles: getMappedRoles(
-                                    scPermRestriction.roleIds
-                                ),
-                            };
-                        }
-                        return sc;
-                    });
-                }
-                return c;
-            });
-
-            this.commandSortTags =
-                this.profileData.sortTags?.filter((st) =>
-                    this.profileData.commands.allowedCmds.some((c) =>
-                        c.sortTags?.includes(st.id)
-                    )
-                ) ?? [];
-
-            if (this.profileData.profilePage === 'quotes') {
-                this.activeTabIndex = 1;
-            }
-        } else {
-            this.unableToLoad = true;
+        if (profileData == null) {
+            return;
         }
-        this.isLoading = false;
+        this.profileData = profileData;
+        this.profileData.quotes.quotes = toJS(
+            this.profileData.quotes.quotes
+        ).reverse();
+        this.profileData.commands.allowedCmds.map((c) => {
+            const permissionsRestriction =
+                c.restrictionData?.restrictions?.find(
+                    (r) => r.type === 'firebot:permissions'
+                );
+            if (permissionsRestriction?.roleIds?.length > 0) {
+                c.permissions = {
+                    roles: getMappedRoles(permissionsRestriction.roleIds),
+                };
+            }
+            if (c.subCommands?.length > 0) {
+                c.subCommands = c.subCommands?.filter((f) => f.active);
+                if (c.fallbackSubcommand) {
+                    c.subCommands.push(c.fallbackSubcommand);
+                }
+                c.subCommands?.map((sc) => {
+                    const scPermRestriction =
+                        sc.restrictionData?.restrictions?.find(
+                            (r) => r.type === 'firebot:permissions'
+                        );
+                    if (scPermRestriction?.roleIds?.length > 0) {
+                        sc.permissions = {
+                            roles: getMappedRoles(scPermRestriction.roleIds),
+                        };
+                    }
+                    return sc;
+                });
+            }
+            return c;
+        });
+
+        this.commandSortTags =
+            this.profileData.sortTags?.filter((st) =>
+                this.profileData.commands.allowedCmds.some((c) =>
+                    c.sortTags?.includes(st.id)
+                )
+            ) ?? [];
+
+        if (this.profileData.profilePage === 'quotes') {
+            this.activeTabIndex = 1;
+        }
     }
 
     setChannelInfo(channelInfo: ChannelInfo) {
         this.channelInfo = channelInfo;
     }
 
-    getProfileData() {
+    getProfileData(channelName?: string, binId?: string) {
         this.isLoading = true;
         this.unableToLoad = false;
-        getProfileData().then((profileData) => {
-            this.setProfileData(profileData);
-            if (!profileData) {
-                return;
-            }
-            getChannelInfo(profileData.owner).then((channelInfo) => {
+
+        if (!channelName && !binId) {
+            this.isLoading = false;
+            this.unableToLoad = true;
+            return;
+        }
+
+        if (binId) {
+            getProfileDataFromByteBin(binId).then((profileData) => {
+                this.setProfileData(profileData);
+                if (!profileData) {
+                    this.unableToLoad = true;
+                    this.isLoading = false;
+                    return;
+                }
+                getChannelInfo(profileData.owner).then((channelInfo) => {
+                    this.setChannelInfo(channelInfo);
+                    if (channelInfo.isLive) {
+                        this.setStreamVariant('firstShow');
+                    }
+                    this.isLoading = false;
+                });
+            });
+        } else if (channelName) {
+            Promise.all([
+                getChannelInfo(channelName),
+                getProfileDataFromCrowbar(channelName),
+            ]).then(([channelInfo, profileData]) => {
+                if (!channelInfo) {
+                    this.unableToLoad = true;
+                    this.isLoading = false;
+                    return;
+                }
+
                 this.setChannelInfo(channelInfo);
+
                 if (channelInfo.isLive) {
                     this.setStreamVariant('firstShow');
                 }
+
+                this.setProfileData(profileData);
+
+                this.isLoading = false;
             });
-        });
+        }
     }
 }
 

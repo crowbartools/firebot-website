@@ -16,7 +16,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faDiscord,
     faGithub,
-    faThreads,
     faBluesky,
     IconDefinition,
 } from '@fortawesome/free-brands-svg-icons';
@@ -44,11 +43,6 @@ const socials: Array<{
         name: 'Discord',
         href: 'https://discord.gg/tTmMbrG',
         icon: faDiscord,
-    },
-    {
-        name: 'Threads',
-        href: 'https://www.threads.net/@firebotapp',
-        icon: faThreads,
     },
     {
         name: 'Bluesky',
