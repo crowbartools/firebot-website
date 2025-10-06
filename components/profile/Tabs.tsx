@@ -14,6 +14,7 @@ interface Props {
         }
     >;
     onTabClick: (tabIndex: number) => void;
+    extraData?: any;
 }
 export const Tabs: React.FC<Props> = ({
     activeTabIndex,

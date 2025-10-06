@@ -50,6 +50,29 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
         }
     }, [profileStore.channelInfo?.displayName]);
 
+    useEffect(() => {
+        if (profileStore.isLoading || profileStore.profileData == null) {
+            return;
+        }
+
+        const params = new URLSearchParams(location.search);
+        const commandsTag = params.get('commands');
+
+        if (commandsTag == null) {
+            return;
+        }
+
+        const foundTag = profileStore.profileData.sortTags?.find(
+            (st) => st.name === commandsTag
+        );
+
+        if (foundTag == null) {
+            return;
+        }
+
+        profileStore.setSelectedCommandSortTag(foundTag);
+    }, [profileStore.isLoading, profileStore.profileData]);
+
     return (
         <>
             <StreamPreviewBackground />
@@ -160,6 +183,9 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                     <Tabs
                                         activeTabIndex={
                                             profileStore.activeTabIndex
+                                        }
+                                        extraData={
+                                            profileStore.selectedCommandSortTag
                                         }
                                         onTabClick={(index) => {
                                             if (

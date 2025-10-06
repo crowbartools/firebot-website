@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
@@ -19,6 +19,10 @@ export const Select: React.FC<Props> = ({
     onSelected,
 }) => {
     const [selectedOption, setSelectedOption] = useState(initialSelected);
+
+    useEffect(() => {
+        setSelectedOption(initialSelected);
+    }, [initialSelected]);
 
     const setSelected = (option) => {
         setSelectedOption(option);
