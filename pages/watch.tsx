@@ -93,6 +93,7 @@ function WatchPage() {
                                 key={channel.id}
                                 channel={channel}
                                 index={i * (pageIndex + 1)}
+                                indexInPage={i}
                                 totalColumns={columns}
                                 totalRows={rows}
                                 teamMemberCount={teamMemberCount}
