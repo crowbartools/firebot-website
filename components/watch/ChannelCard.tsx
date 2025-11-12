@@ -16,10 +16,11 @@ import { useDeviceDetect } from '../../hooks/useDeviceDetect';
 export const ChannelCard: React.FC<{
     channel: TwitchUser;
     index: number;
+    indexInPage: number;
     totalColumns: number;
     totalRows: number;
     teamMemberCount: number;
-}> = ({ channel, index, totalColumns, teamMemberCount }) => {
+}> = ({ channel, index, indexInPage, totalColumns, teamMemberCount }) => {
     const [isHovering, setIsHovering] = useState(false);
 
     const variantType = {
@@ -32,11 +33,11 @@ export const ChannelCard: React.FC<{
             opacity: 0,
             scale: 0.75,
         }),
-        [variantType.visible]: (index: number) => ({
+        [variantType.visible]: (indexInPage: number) => ({
             opacity: 1,
             scale: 1,
             transition: {
-                delay: index * 0.1 + 0.1,
+                delay: indexInPage * 0.1 + 0.1,
             },
         }),
     };
@@ -78,7 +79,7 @@ export const ChannelCard: React.FC<{
             }
             target={!isPressingShift ? '_blank' : undefined}
             rel="noreferrer"
-            custom={index}
+            custom={indexInPage}
             variants={variants}
             initial={variantType.hidden}
             animate={variantType.visible}
