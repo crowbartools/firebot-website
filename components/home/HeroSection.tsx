@@ -1,13 +1,89 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faApple, faLinux, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
-import { motion } from 'framer-motion';
+import {
+    faApple,
+    faLinux,
+    faMicrosoft,
+} from '@fortawesome/free-brands-svg-icons';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { ScrollAnchor } from '..';
 import useAnalytics from '../../hooks/useAnalytics';
 import { useStores } from '../../stores';
 import { withoutSsr } from '../../utils/withoutSsr';
+import { Menu } from '@headlessui/react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+type DropdownProps = {
+    platform: string;
+    platformIcon: any;
+    downloads: { name: string; url: string }[];
+    onClick: () => void;
+};
+function DownloadDropdown({
+    platform,
+    platformIcon,
+    downloads,
+    onClick,
+}: DropdownProps) {
+    return (
+        <div className="w-full">
+            <Menu as="div" className="relative inline-block w-full sm:w-fit">
+                {({ open }) => (
+                    <>
+                        <Menu.Button className="inline-flex justify-center w-full sm:w-fit items-center rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-4">
+                            <>
+                                <FontAwesomeIcon
+                                    icon={platformIcon}
+                                    className="mr-2"
+                                />
+                                Download for {platform}
+                                <motion.span
+                                    animate={{
+                                        rotate: open ? 180 : 0,
+                                    }}
+                                >
+                                    <ChevronDownIcon
+                                        aria-hidden="true"
+                                        className="h-5 w-5 text-gray-300"
+                                    />
+                                </motion.span>
+                            </>
+                        </Menu.Button>
+
+                        <AnimatePresence>
+                            {open && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.1 }}
+                                >
+                                    <Menu.Items
+                                        static
+                                        className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-gray-800 outline outline-1 -outline-offset-1 outline-white/10 transition data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                                    >
+                                        {downloads.map((download) => (
+                                            <Menu.Item key={download.name}>
+                                                <a
+                                                    href={download.url}
+                                                    className="block px-4 py-2 text-sm text-gray-300 data-[focus]:bg-white/5 data-[focus]:text-white data-[focus]:outline-none hover:bg-white/10"
+                                                    onClick={onClick}
+                                                >
+                                                    {download.name}
+                                                </a>
+                                            </Menu.Item>
+                                        ))}
+                                    </Menu.Items>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </>
+                )}
+            </Menu>
+        </div>
+    );
+}
 
 const DownloadButton = withoutSsr(
     observer(() => {
@@ -16,35 +92,36 @@ const DownloadButton = withoutSsr(
 
         const ua = window.navigator.userAgent.toLowerCase();
 
-        let downloadUrl = githubStore.windowsDownloadUrl;
-        let platform = "Windows";
+        let downloadUrls = githubStore.windowsDownloadUrls;
+        let platform = 'Windows';
         let platformIcon = faMicrosoft;
 
-        if (ua.includes("macintosh")) {
-            downloadUrl = githubStore.macDownloadUrl;
-            platform = "Mac";
+        if (ua.includes('macintosh')) {
+            downloadUrls = githubStore.macDownloadUrls;
+            platform = 'macOS';
             platformIcon = faApple;
-        } else if (ua.includes("linux")) {
-            downloadUrl = githubStore.linuxDownloadUrl;
-            platform = "Linux";
+        } else if (ua.includes('linux')) {
+            downloadUrls = githubStore.linuxDownloadUrls;
+            platform = 'Linux';
             platformIcon = faLinux;
         }
 
-        return (
-            <motion.a
+        return downloadUrls.length < 2 ? (
+            <a
                 className="block text-center w-full sm:w-60 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-4"
-                href={downloadUrl}
+                href={downloadUrls[0].url}
                 onClick={() => logEvent('Download Button Click')}
-                whileHover={{
-                    scale: 1.02,
-                    transition: {
-                        type: 'spring',
-                        bounce: 0.5,
-                    },
-                }}
             >
-                Download for {platform} <FontAwesomeIcon icon={platformIcon} />
-            </motion.a>
+                <FontAwesomeIcon icon={platformIcon} className="mr-3" />
+                Download for {platform}
+            </a>
+        ) : (
+            <DownloadDropdown
+                platform={platform}
+                platformIcon={platformIcon}
+                downloads={downloadUrls}
+                onClick={() => logEvent('Download Button Click')}
+            />
         );
     })
 );
@@ -95,12 +172,16 @@ export const HeroSection: React.FC = () => {
                             </div>
                             <div className="mt-6">
                                 <DownloadButton />
-                                <a className="inline-flex text-xs text-gray-500"
-                                    href="https://github.com/crowbartools/Firebot/releases/latest">Additional downloads
+                                <a
+                                    className="inline-flex text-xs text-gray-500"
+                                    href="https://github.com/crowbartools/Firebot/releases/latest"
+                                >
+                                    Additional downloads
                                     <ChevronRightIcon
                                         className="h-4 w-4"
                                         aria-hidden="true"
-                                /></a>
+                                    />
+                                </a>
                             </div>
                             <div className="mt-6">
                                 <div className="block h-7">
