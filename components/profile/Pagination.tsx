@@ -113,15 +113,13 @@ export const Pagination: React.FC<Props> = ({
                 onClickAway={() => setJumpToModalOpen(false)}
                 onClose={() => setJumpToModalOpen(false)}
             >
-                <div className="p-6">
-                    <h2 className="text-white font-thin text-2xl mb-4">
-                        Jump To Page
-                    </h2>
+                <div className="p-8 bg-gradient-to-br from-gray-800/95 to-gray-900/95 backdrop-blur-sm rounded-2xl">
+                    <h2 className="font-bold text-2xl mb-6">Jump To Page</h2>
                     <input
                         ref={inputRef}
-                        className="block w-full p-3 rounded-lg bg-gray-700 placeholder-gray-200 text-white outline-none focus:shadow-focus border-none"
+                        className="block w-full p-3 rounded-xl bg-gray-700/80 backdrop-blur-sm placeholder-gray-400 text-white outline-none border border-gray-600/50 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200"
                         value={jumpToPage || ''}
-                        placeholder="Enter page"
+                        placeholder="Enter page number"
                         onKeyPress={(event) => {
                             if (event.key === 'Enter') {
                                 handleJumpToPage();
@@ -132,15 +130,15 @@ export const Pagination: React.FC<Props> = ({
                         }
                         type="number"
                     />
-                    <div className="mt-4 flex justify-end">
+                    <div className="mt-6 flex justify-end gap-3">
                         <button
-                            className="p-3 rounded-lg bg-gray-700 w-20 text-white mr-2 hover:bg-opacity-75"
+                            className="px-6 py-2.5 rounded-xl bg-gray-700 hover:bg-gray-600 text-white font-semibold transition-all duration-200"
                             onClick={() => setJumpToModalOpen(false)}
                         >
                             Cancel
                         </button>
                         <button
-                            className="p-3 rounded-lg bg-blue-700 w-20 text-white hover:bg-opacity-75"
+                            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-semibold transition-all duration-200"
                             onClick={() => handleJumpToPage()}
                         >
                             Go
@@ -148,9 +146,9 @@ export const Pagination: React.FC<Props> = ({
                     </div>
                 </div>
             </Modal>
-            <nav className="relative z-0 inline-flex shadow-lg select-none">
+            <nav className="relative z-0 inline-flex shadow-2xl select-none rounded-xl">
                 <a
-                    className="absolute mr-3 lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base border-solid shadow-lg inline-flex items-center rounded-md border border-gray-800 bg-gray-700 hover:text-gray-200 cursor-pointer"
+                    className="absolute mr-3 lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base shadow-xl inline-flex items-center rounded-xl border border-gray-700/50 bg-gray-800/80 backdrop-blur-sm hover:bg-gray-700 text-white hover:text-blue-300 cursor-pointer transition-all duration-200"
                     onClick={() => {
                         setJumpToPage(null);
                         setJumpToModalOpen(true);
@@ -170,7 +168,7 @@ export const Pagination: React.FC<Props> = ({
                 </a>
 
                 <a
-                    className="absolute ml-3 lg:px-1 lg:py-1 lg:text-sm px-3 py-2 text-base border-solid shadow-lg inline-flex items-center rounded-md border border-gray-800 bg-gray-700 hover:text-gray-200 cursor-pointer"
+                    className="absolute ml-3 lg:px-1 lg:py-1 lg:text-sm px-3 py-2 text-base shadow-xl inline-flex items-center rounded-xl border border-gray-700/50 bg-gray-800/80 backdrop-blur-sm hover:bg-gray-700 text-white hover:text-blue-300 cursor-pointer transition-all duration-200"
                     onClick={() => {
                         window.scrollTo(0, 0);
                     }}
@@ -184,7 +182,7 @@ export const Pagination: React.FC<Props> = ({
                 </a>
 
                 <a
-                    className="relative cursor-pointer border-solid inline-flex items-center lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base rounded-l-md border border-gray-800 bg-gray-700 leading-5 font-medium text-white hover:text-gray-200"
+                    className="relative cursor-pointer inline-flex items-center lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base rounded-l-xl border border-gray-700/50 bg-gray-800/80 backdrop-blur-sm leading-5 font-medium text-white hover:bg-gray-700 hover:text-blue-300 transition-all duration-200"
                     aria-label="Previous"
                     onClick={() => onPageChanged(Math.max(1, currentPage - 1))}
                 >
@@ -207,8 +205,8 @@ export const Pagination: React.FC<Props> = ({
                                 key={index}
                                 className={clsx(
                                     '-ml-px relative hidden md:inline-flex items-center px-4 py-2 border',
-                                    'border-gray-800 border-solid bg-gray-700 text-sm leading-5 font-medium',
-                                    'text-white'
+                                    'border-gray-700/50 bg-gray-800/80 backdrop-blur-sm text-sm leading-5 font-medium',
+                                    'text-gray-400'
                                 )}
                             >
                                 ...
@@ -221,14 +219,13 @@ export const Pagination: React.FC<Props> = ({
                             onClick={() => onPageChanged(page)}
                             className={clsx(
                                 'cursor-pointer inline-flex -ml-px relative items-center',
-                                'lg:px-4 lg:py-2 lg:text-sm px-6 py-3 text-base border border-gray-800 border-solid bg-gray-700 leading-5',
-                                'font-medium hover:bg-opacity-25 focus:z-10 outline-none',
-                                'focus:shadow-focus',
-                                'transition ease-in-out duration-150',
+                                'lg:px-4 lg:py-2 lg:text-sm px-6 py-3 text-base border border-gray-700/50 bg-gray-800/80 backdrop-blur-sm leading-5',
+                                'font-semibold hover:bg-gray-700 focus:z-10 outline-none',
+                                'transition-all duration-200',
                                 {
-                                    'bg-gray-700 z-10 inline-flex text-blue-300':
+                                    'bg-gradient-to-r from-blue-500/80 to-blue-500/80 text-white z-10 inline-flex border-blue-500/50':
                                         page === currentPage,
-                                    'hidden md:inline-flex text-white':
+                                    'hidden md:inline-flex text-gray-300 hover:text-blue-300':
                                         page !== currentPage,
                                 }
                             )}
@@ -238,7 +235,7 @@ export const Pagination: React.FC<Props> = ({
                     );
                 })}
                 <a
-                    className="cursor-pointer -ml-px relative inline-flex items-center lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base rounded-r-md border border-solid border-gray-900 bg-gray-700 leading-5 font-medium text-white hover:text-gray-200"
+                    className="cursor-pointer -ml-px relative inline-flex items-center lg:px-2 lg:py-2 lg:text-sm px-4 py-3 text-base rounded-r-xl border border-gray-700/50 bg-gray-800/80 backdrop-blur-sm leading-5 font-medium text-white hover:bg-gray-700 hover:text-blue-300 transition-all duration-200"
                     aria-label="Next"
                     onClick={() =>
                         onPageChanged(Math.min(totalPages, currentPage + 1))

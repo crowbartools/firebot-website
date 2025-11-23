@@ -79,18 +79,22 @@ const ModalComponent: React.FC<Props> = ({
                     >
                         <div
                             ref={modalRef}
-                            className="bg-gray-800 rounded-lg mb-10 relative"
+                            className="bg-gray-800 rounded-2xl mb-10 relative"
                         >
                             <button
                                 className={clsx(
-                                    'bg-green-500 text-white rounded-full w-8 h-8 absolute right-0',
-                                    'top-0 transform -translate-y-2 translate-x-2 hover:bg-',
-                                    'flex justify-center items-center leading-none text-xl'
+                                    'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700',
+                                    'text-white rounded-full w-10 h-10 absolute right-0',
+                                    'top-0 transform -translate-y-3 translate-x-3',
+                                    'flex justify-center items-center',
+                                    'transition-all duration-200 hover:scale-110 z-10',
+                                    'border-2 border-gray-900'
                                 )}
                                 type="button"
                                 onClick={() => onClose()}
+                                aria-label="Close modal"
                             >
-                                <XIcon className="w-5 h-6" />
+                                <XIcon className="w-6 h-6" />
                             </button>
                             {children}
                         </div>

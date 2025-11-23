@@ -36,22 +36,22 @@ export const VariableExamples: React.FC<{
 
     return (
         !!examples?.length && (
-            <div className="mt-2">
-                <a
-                    className="text-blue-300 cursor-pointer text-sm inline-flex items-center hover:text-blue-400"
+            <div className="mt-3">
+                <button
+                    className="text-blue-400 hover:text-blue-500 cursor-pointer text-sm font-semibold inline-flex items-center transition-all duration-200"
                     onClick={toggleOpen}
                 >
                     Other examples{' '}
                     {!open ? (
-                        <ChevronRightIcon className="w-5 h-5" />
+                        <ChevronRightIcon className="w-5 h-5 text-blue-400" />
                     ) : (
-                        <ChevronDownIcon className="w-5 h-5" />
+                        <ChevronDownIcon className="w-5 h-5 text-blue-400" />
                     )}
-                </a>
+                </button>
                 <AnimatePresence>
                     {open && (
                         <motion.div
-                            className="py-3 px-4 mt-2"
+                            className="py-3 px-4 mt-2 bg-gray-800/30 rounded-xl border border-gray-600/30 backdrop-blur-sm"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{
                                 height: 'max-content',
@@ -68,29 +68,32 @@ export const VariableExamples: React.FC<{
                             {examples.map((e, index) => (
                                 <motion.div
                                     key={e.usage}
-                                    className={clsx({
-                                        'mb-3': index !== examples.length - 1,
+                                    className={clsx('pb-3', {
+                                        'mb-3 border-b border-gray-600/30':
+                                            index !== examples.length - 1,
                                     })}
                                     custom={index}
                                     variants={subCommandVariants}
                                     initial={variantType.hidden}
                                     animate={variantType.visible}
                                 >
-                                    <div key={e.usage} className="px-4">
-                                        <b>
-                                            ${e.usage}{' '}
-                                            <CopyButton
-                                                copyText={'$' + e.usage}
-                                                onClick={() => {
-                                                    logEvent('Variable Copy', {
-                                                        Variable: '$' + e.usage,
-                                                    });
-                                                }}
-                                            />
-                                        </b>
-                                        <div className="text-gray-400">
-                                            <Markdown className="md-inline">{e.description}</Markdown>
-                                        </div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="font-bold text-sm font-mono text-white">
+                                            ${e.usage}
+                                        </span>
+                                        <CopyButton
+                                            copyText={'$' + e.usage}
+                                            onClick={() => {
+                                                logEvent('Variable Copy', {
+                                                    Variable: '$' + e.usage,
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="text-gray-300 text-sm leading-relaxed">
+                                        <Markdown className="md-inline">
+                                            {e.description}
+                                        </Markdown>
                                     </div>
                                 </motion.div>
                             ))}

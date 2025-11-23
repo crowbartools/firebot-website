@@ -113,7 +113,7 @@ export const Nav = observer((): JSX.Element => {
                 'border-b border-gray-800 z-50',
                 'bg-gray-900 backdrop-filter backdrop-blur bg-opacity-50 firefox:bg-opacity-90',
                 {
-                    'pb-[13.25rem] md:pb-[5.5rem]': appStore.tabBarStuck,
+                    'pb-[14.25rem] md:pb-[6rem]': appStore.tabBarStuck,
                 }
             )}
         >
@@ -132,14 +132,16 @@ export const Nav = observer((): JSX.Element => {
                                             className="flex items-center"
                                         >
                                             <Image
-                                                src="/firebot-logo-stroke.png"
+                                                src="/firebot-logo.png"
                                                 alt="Picture of the author"
-                                                // className="ring-2 ring-blue-300"
+                                                style={{
+                                                    filter: 'drop-shadow(0px 0px 5px rgb(255 213 0 / 25%))',
+                                                }}
                                                 width={45}
                                                 height={45}
                                             />
-                                            <div className="text-yellow-300 text-3xl font-extralight ml-3">
-                                                Firebot
+                                            <div className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300  text-3xl font-black ml-3">
+                                                FIREBOT
                                             </div>
                                         </Link>
                                         {onHome && (

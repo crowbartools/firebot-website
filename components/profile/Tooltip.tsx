@@ -88,16 +88,16 @@ export const Tooltip: React.FC<Props> = ({
                         transition={{
                             duration: 0.1,
                         }}
-                        className="absolute text-center pointer-events-none z-50 shadow-lg text-sm"
+                        className="absolute text-center pointer-events-none z-50 shadow-xl text-sm"
                         style={placements[placement].container}
                     >
                         <>
-                            <div className="p-2 w-32 bg-blue-500 text-white rounded">
+                            <div className="p-2 w-32 bg-gray-600 text-white rounded-lg">
                                 {content}
                             </div>
                             <span
                                 style={placements[placement].arrow}
-                                className="w-0 h-0 absolute text-blue-500"
+                                className="w-0 h-0 absolute text-gray-600"
                             />
                         </>
                     </motion.div>

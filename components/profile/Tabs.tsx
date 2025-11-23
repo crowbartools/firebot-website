@@ -25,7 +25,7 @@ export const Tabs: React.FC<Props> = ({
     return (
         <>
             <Sticky
-                innerActiveClass="mb-5 z-50 px-3 lg:px-[11rem] z-50 !w-[100%] left-0"
+                innerActiveClass="mb-5 z-50 px-3 lg:px-[7rem] z-50 !w-[100%] left-0"
                 onStateChange={(state) => {
                     appStore.setTabBarStuck(
                         state.status === Sticky.STATUS_FIXED
@@ -35,7 +35,7 @@ export const Tabs: React.FC<Props> = ({
                 top={100}
             >
                 <>
-                    <nav className="flex justify-center lg:justify-start">
+                    <nav className="flex justify-center lg:justify-start pb-1">
                         {Object.entries(config).map(
                             ([tabName, { toolbar }], index) => (
                                 <>
@@ -48,13 +48,13 @@ export const Tabs: React.FC<Props> = ({
                                         }
                                         onClick={() => onTabClick(index)}
                                         className={clsx(
-                                            `text-2xl font-light relative py-2 cursor-pointer hover:text-white select-none`,
+                                            `text-2xl font-semibold relative py-3 px-4 cursor-pointer select-none rounded-t-lg`,
                                             {
-                                                'text-gray-200':
+                                                'text-gray-400 hover:text-gray-200':
                                                     index !== activeTabIndex,
-                                                'text-white':
+                                                'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-500':
                                                     index === activeTabIndex,
-                                                'ml-14': index > 0,
+                                                'ml-2': index > 0,
                                             }
                                         )}
                                     >
@@ -62,7 +62,7 @@ export const Tabs: React.FC<Props> = ({
                                         <div className="absolute bottom-0 left-0 w-full flex justify-center">
                                             {index === activeTabIndex && (
                                                 <motion.span
-                                                    className="rounded h-1 bg-blue-500 w-full"
+                                                    className="rounded h-1 bg-gradient-to-r from-blue-400 to-blue-500 w-full shadow-lg"
                                                     layoutId="underline"
                                                 ></motion.span>
                                             )}
@@ -94,7 +94,7 @@ export const Tabs: React.FC<Props> = ({
                     )}
                 </>
             </Sticky>
-            <div className="mt-4 lg:mt-10">
+            <div className="mt-6 lg:mt-10">
                 {Object.entries(config).map(
                     ([, { content }], index) =>
                         index === activeTabIndex &&

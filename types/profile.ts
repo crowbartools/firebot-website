@@ -69,5 +69,3 @@ export interface ChannelInfo {
     isLive: boolean;
     description: string;
 }
-
-export type StreamVariant = 'firstShow' | 'subsequentShow' | 'front' | 'hide';

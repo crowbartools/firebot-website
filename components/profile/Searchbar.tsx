@@ -35,7 +35,7 @@ export const Searchbar: React.FC<Props> = ({
         focused: {
             scale: 1.0,
             boxShadow:
-                '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                '0 10px 15px -3px rgba(59, 130, 246, 0.2), 0 4px 6px -2px rgba(59, 130, 246, 0.1)',
         },
     };
 
@@ -43,16 +43,22 @@ export const Searchbar: React.FC<Props> = ({
         <div className="order-last">
             <motion.div
                 variants={variants}
-                whileHover={variants.focused}
                 animate={isFocused ? 'focused' : 'notFocused'}
+                className="rounded-xl"
             >
                 <label htmlFor="search" className="sr-only">
                     Search
                 </label>
                 <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                         <svg
-                            className="h-5 w-5 text-gray-200"
+                            className={clsx(
+                                'h-5 w-5 transition-colors duration-200',
+                                {
+                                    'text-blue-400': isFocused,
+                                    'text-gray-400': !isFocused,
+                                }
+                            )}
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -66,10 +72,10 @@ export const Searchbar: React.FC<Props> = ({
                     <input
                         id="search"
                         className={clsx(
-                            'block w-full pl-10 pr-3 py-3 rounded-lg text-white',
-                            'bg-gray-700 placeholder-gray-200',
-                            'outline-none text-base md:text-sm focus:shadow-focus border-none',
-                            'focus:ring-2 ring-blue-400'
+                            'block w-full pl-10 pr-3 py-3 rounded-xl text-white transition-all duration-200',
+                            'bg-gray-700/80 backdrop-blur-sm placeholder-gray-400',
+                            'outline-none text-base md:text-sm border border-gray-600/50',
+                            'focus:ring-2 focus:ring-blue-400 focus:bg-gray-700'
                         )}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}

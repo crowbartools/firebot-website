@@ -17,14 +17,9 @@ export const Commands = observer(() => {
     return (
         <>
             <div
-                className={clsx('bg-gray-800 rounded-md mb-16 md:mb-9', {
-                    'bg-gray-800 backdrop-filter backdrop-blur-lg firefox:bg-opacity-90':
-                        profileStore.channelInfo?.isLive,
-                    'bg-gray-800': !profileStore.channelInfo?.isLive,
-                    'bg-opacity-50':
-                        profileStore.channelInfo?.isLive &&
-                        profileStore.showStream,
-                })}
+                className={clsx(
+                    'bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-2xl mt-2 border border-gray-700/50 shadow-2xl mb-16 md:mb-9'
+                )}
                 style={{
                     transitionProperty: 'background-color',
                     transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -35,36 +30,35 @@ export const Commands = observer(() => {
                     profileStore.currentCommands.map((c, i) => (
                         <div
                             key={c.trigger}
-                            className={clsx('p-6', {
-                                'border-t border-gray-900 border-solid border-opacity-50':
-                                    i > 0,
-                            })}
+                            className={clsx(
+                                'p-8 transition-colors duration-200',
+                                {
+                                    'border-t border-gray-700/50': i > 0,
+                                }
+                            )}
                         >
                             <div className="text-xl">
-                                <span className="font-semibold">
-                                    {c.trigger}
-                                </span>
-                                <CopyButton
-                                    tooltipText="Copy command"
-                                    copyText={c.trigger}
-                                    onClick={() =>
-                                        logEvent('Copy Command', {
-                                            Trigger: c.trigger,
-                                        })
-                                    }
-                                />
-                                <div className="font-light text-gray-200 text-sm block md:inline">
-                                    <span className="hidden lg:inline-block mx-2">
-                                        &#8212;
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="font-bold text-2xl">
+                                        {c.trigger}
                                     </span>
-                                    <span>
-                                        <Markdown className="md-inline">
-                                            {c.baseCommandDescription
-                                                ? c.baseCommandDescription
-                                                : c.description ??
-                                                    'No description.'}
-                                        </Markdown>
-                                    </span>
+                                    <CopyButton
+                                        tooltipText="Copy command"
+                                        copyText={c.trigger}
+                                        onClick={() =>
+                                            logEvent('Copy Command', {
+                                                Trigger: c.trigger,
+                                            })
+                                        }
+                                    />
+                                </div>
+                                <div className="font-normal text-gray-300 text-base leading-relaxed">
+                                    <Markdown className="md-inline">
+                                        {c.baseCommandDescription
+                                            ? c.baseCommandDescription
+                                            : c.description ??
+                                              'No description.'}
+                                    </Markdown>
                                 </div>
                             </div>
                             <Aliases aliases={c.aliases} />
@@ -82,7 +76,7 @@ export const Commands = observer(() => {
                     ))}
             </div>
             <div
-                className="fixed flex items-center justify-center mb-8 md:mb-5 shadow-xl"
+                className="fixed flex items-center justify-center mb-8 md:mb-5"
                 style={{
                     bottom: 0,
                     left: '50%',

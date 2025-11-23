@@ -1,6 +1,6 @@
 import { makeAutoObservable, reaction, toJS } from 'mobx';
 import moment from 'moment';
-import { ChannelInfo, ProfileData, StreamVariant } from '../types/profile';
+import { ChannelInfo, ProfileData } from '../types/profile';
 import getMappedRoles, {
     getChannelInfo,
     getProfileDataFromByteBin,
@@ -12,11 +12,7 @@ class ProfileStore {
     channelInfo: ChannelInfo = null;
     isLoading = true;
     unableToLoad = false;
-    showStream = true;
-    streamInFront = false;
     activeTabIndex = 0;
-
-    streamVariant: StreamVariant = 'hide';
 
     quotesPagination = {
         currentPage: 1,
@@ -162,23 +158,6 @@ class ProfileStore {
         this.quotesPagination.currentPage = page;
     }
 
-    toggleShowStream() {
-        this.showStream = !this.showStream;
-        this.setStreamVariant(this.showStream ? 'subsequentShow' : 'hide');
-    }
-
-    setStreamInFront(inFront: boolean) {
-        this.streamInFront = inFront;
-        window.scrollTo({
-            top: 0,
-        });
-        this.setStreamVariant(this.streamInFront ? 'front' : 'subsequentShow');
-    }
-
-    setStreamVariant(variant: StreamVariant) {
-        this.streamVariant = variant;
-    }
-
     setProfileData(profileData: ProfileData) {
         if (profileData == null) {
             return;
@@ -254,9 +233,6 @@ class ProfileStore {
                 }
                 getChannelInfo(profileData.owner).then((channelInfo) => {
                     this.setChannelInfo(channelInfo);
-                    if (channelInfo.isLive) {
-                        this.setStreamVariant('firstShow');
-                    }
                     this.isLoading = false;
                 });
             });
@@ -272,10 +248,6 @@ class ProfileStore {
                 }
 
                 this.setChannelInfo(channelInfo);
-
-                if (channelInfo.isLive) {
-                    this.setStreamVariant('firstShow');
-                }
 
                 this.setProfileData(profileData);
 

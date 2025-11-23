@@ -37,22 +37,22 @@ export const Subcommands: React.FC<{
 
     return (
         command.subCommands?.length > 0 && (
-            <div className="mt-2">
-                <a
-                    className="text-blue-300 cursor-pointer text-sm inline-flex items-center hover:text-blue-400"
+            <div className="mt-4">
+                <button
+                    className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-400 hover:to-blue-500 cursor-pointer text-sm font-semibold inline-flex items-center transition-all duration-200"
                     onClick={toggleOpen}
                 >
                     Subcommands{' '}
                     {!open ? (
-                        <ChevronRightIcon className="w-5 h-5" />
+                        <ChevronRightIcon className="w-5 h-5 text-blue-400" />
                     ) : (
-                        <ChevronDownIcon className="w-5 h-5" />
+                        <ChevronDownIcon className="w-5 h-5 text-blue-400" />
                     )}
-                </a>
+                </button>
                 <AnimatePresence>
                     {open && (
                         <motion.div
-                            className="py-3 px-4 mt-2"
+                            className="py-4 px-5 mt-3 bg-gray-700/30 rounded-xl border border-gray-600/30 backdrop-blur-sm"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{
                                 height: 'max-content',
@@ -69,8 +69,8 @@ export const Subcommands: React.FC<{
                             {command.subCommands.map((sc, index) => (
                                 <motion.div
                                     key={sc.arg}
-                                    className={clsx({
-                                        'mb-3':
+                                    className={clsx('pb-4', {
+                                        'mb-4 border-b border-gray-600/30':
                                             index !==
                                             command.subCommands.length - 1,
                                     })}
@@ -79,34 +79,37 @@ export const Subcommands: React.FC<{
                                     initial={variantType.hidden}
                                     animate={variantType.visible}
                                 >
-                                    <span className="text-base font-semibold">{`${
-                                        command.trigger
-                                    } ${
-                                        sc.usage?.length > 0 ? sc.usage : sc.arg
-                                    }`}</span>
-                                    <CopyButton
-                                        tooltipText="Copy subcommand"
-                                        copyText={`${command.trigger} ${
-                                            sc.regex ? sc.usage : sc.arg
-                                        }`}
-                                        onClick={() =>
-                                            logEvent('Copy Command', {
-                                                Trigger: `${command.trigger} ${
-                                                    sc.regex ? sc.usage : sc.arg
-                                                }`,
-                                            })
-                                        }
-                                    />
-                                    <div className="font-light text-gray-200 text-sm block md:inline">
-                                        <span className="hidden lg:inline-block mx-2">
-                                            &#8212;
-                                        </span>
-                                        <span>
-                                            <Markdown className="md-inline">
-                                                {sc.description ??
-                                                    'No description.'}
-                                            </Markdown>
-                                        </span>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-base font-bold text-white">{`${
+                                            command.trigger
+                                        } ${
+                                            sc.usage?.length > 0
+                                                ? sc.usage
+                                                : sc.arg
+                                        }`}</span>
+                                        <CopyButton
+                                            tooltipText="Copy subcommand"
+                                            copyText={`${command.trigger} ${
+                                                sc.regex ? sc.usage : sc.arg
+                                            }`}
+                                            onClick={() =>
+                                                logEvent('Copy Command', {
+                                                    Trigger: `${
+                                                        command.trigger
+                                                    } ${
+                                                        sc.regex
+                                                            ? sc.usage
+                                                            : sc.arg
+                                                    }`,
+                                                })
+                                            }
+                                        />
+                                    </div>
+                                    <div className="font-normal text-gray-300 text-sm leading-relaxed">
+                                        <Markdown className="md-inline">
+                                            {sc.description ??
+                                                'No description.'}
+                                        </Markdown>
                                     </div>
                                     <CooldownsAndPermissions
                                         cooldowns={sc.cooldown}

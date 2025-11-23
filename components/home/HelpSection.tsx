@@ -7,13 +7,11 @@ const cards = [
         href: 'https://discord.gg/tTmMbrG',
         description:
             'Have a question, got feedback, or just want to say hello? Jump into our CrowbarTools Discord server! Devs and helpful community members are here to provide support.',
-        imageUrl:
-            'https://cybernews.com/wp-content/uploads/2020/07/Discord-privacy-tips-that-you-should-use-.jpg',
+        imageUrl: '/crowbarbanner.png',
     },
     {
         title: 'Video Tutorials',
-        href:
-            'https://www.youtube.com/playlist?list=PLKM4AhNKMRk4ecbLtTpCk1nXtVKhiWSqV',
+        href: 'https://www.youtube.com/playlist?list=PLKM4AhNKMRk4ecbLtTpCk1nXtVKhiWSqV',
         description:
             "Dive into Firebot with these awesome community made tutorials. With topics covering everything from initial setup, simple commands, alert queues, chat games, and more you'll be able to learn everything you need to master the bot.",
         imageUrl:

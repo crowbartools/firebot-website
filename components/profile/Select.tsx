@@ -9,10 +9,6 @@ interface Props {
     onSelected: (selected: this['options'][0]) => void;
 }
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ');
-}
-
 export const Select: React.FC<Props> = ({
     options,
     selected: initialSelected,
@@ -36,9 +32,10 @@ export const Select: React.FC<Props> = ({
                     <div className="relative">
                         <Listbox.Button
                             className={clsx(
-                                'bg-gray-700 relative w-full rounded-lg shadow-sm pl-3 pr-10',
-                                'py-3 text-left cursor-default focus:outline-none text-base md:text-sm',
-                                'focus:ring-2 ring-blue-400',
+                                'bg-gray-700/80 backdrop-blur-sm relative w-full rounded-xl shadow-sm pl-3 pr-10',
+                                'py-3 text-left cursor-default text-base md:text-sm transition-all duration-200',
+                                'border border-gray-600/50 hover:bg-gray-700',
+                                'focus:ring-2 focus:ring-blue-400',
                                 {
                                     'ring-2 ring-blue-400': open,
                                 }
@@ -61,16 +58,16 @@ export const Select: React.FC<Props> = ({
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Listbox.Options className="absolute z-10 mt-1 w-full bg-gray-600 shadow-lg max-h-60 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                            <Listbox.Options className="absolute z-10 mt-1 w-full bg-gray-700/95 backdrop-blur-sm shadow-2xl max-h-60 rounded-xl py-1 text-base ring-1 ring-gray-600/50 overflow-auto focus:outline-none sm:text-sm border border-gray-600/50">
                                 {options.map((option) => (
                                     <Listbox.Option
                                         key={option.id}
                                         className={({ active }) =>
-                                            classNames(
+                                            clsx(
                                                 active
-                                                    ? 'text-gray-50 bg-blue-600'
-                                                    : 'text-gray-50',
-                                                'cursor-default select-none relative py-2 pl-3 pr-9'
+                                                    ? 'text-white bg-gradient-to-r from-blue-400/80 to-cyan-500/80'
+                                                    : 'text-gray-100',
+                                                'cursor-default select-none relative py-2 pl-3 pr-9 transition-colors duration-150'
                                             )
                                         }
                                         value={option}
@@ -78,7 +75,7 @@ export const Select: React.FC<Props> = ({
                                         {({ selected }) => (
                                             <>
                                                 <span
-                                                    className={classNames(
+                                                    className={clsx(
                                                         selected
                                                             ? 'font-semibold'
                                                             : 'font-normal',
@@ -90,7 +87,7 @@ export const Select: React.FC<Props> = ({
 
                                                 {selected ? (
                                                     <span
-                                                        className={classNames(
+                                                        className={clsx(
                                                             'text-white absolute inset-y-0 right-0 flex items-center pr-4'
                                                         )}
                                                     >
