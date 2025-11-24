@@ -8,10 +8,10 @@ import { Tooltip } from './Tooltip';
 export const Aliases: React.FC<{
     aliases?: Command['aliases'];
 }> = ({ aliases }) =>
-    (!!aliases?.length) && (
+    !!aliases?.length && (
         <div className="flex items-center text-sm mt-1">
             <Tooltip content="Aliases">
-                <span className="flex items-center">
+                <span className="flex items-center flex-wrap gap-y-1">
                     <ColorSwatchIcon className="text-gray-200 mr-1 w-5 h-5 inline-block" />
                     {aliases.map((a) => (
                         <span

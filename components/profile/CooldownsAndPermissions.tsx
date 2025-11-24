@@ -45,7 +45,7 @@ export const CooldownsAndPermissions: React.FC<{
             {(!!permissions?.roles.length ||
                 !!rootPermissions?.roles.length) && (
                 <Tooltip content="Permissions">
-                    <span className="flex items-center">
+                    <span className="flex items-center flex-wrap gap-y-1">
                         <LockClosedIcon className="text-gray-200 mr-1 w-5 h-5 inline-block" />
                         {(permissions ?? rootPermissions).roles.map((r) => (
                             <span
