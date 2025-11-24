@@ -216,6 +216,8 @@ class ProfileStore {
     getProfileData(channelName?: string, binId?: string) {
         this.isLoading = true;
         this.unableToLoad = false;
+        this.channelInfo = null;
+        this.profileData = null;
 
         if (!channelName && !binId) {
             this.isLoading = false;

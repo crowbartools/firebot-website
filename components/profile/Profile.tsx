@@ -31,7 +31,7 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
 
     useEffect(() => {
         profileStore.getProfileData(channelName, binId);
-    }, []);
+    }, [channelName, binId]);
 
     useEffect(() => {
         if (profileStore.commandQuery?.length > 0) {
