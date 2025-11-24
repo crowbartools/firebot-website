@@ -75,7 +75,10 @@ const ModalComponent: React.FC<Props> = ({
                                 type: 'spring',
                             },
                         }}
-                        className={clsx('relative shadow my-10', widthClass)}
+                        className={clsx(
+                            'relative shadow my-10 flex flex-col justify-end md:block',
+                            widthClass
+                        )}
                     >
                         <div
                             ref={modalRef}
