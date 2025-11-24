@@ -59,6 +59,7 @@ export const Nav = observer((): JSX.Element => {
     const { appStore } = useStores();
 
     const onHome = router.pathname === '/';
+    const onWatch = router.pathname === '/watch';
 
     const [viewedSection, setViewedSection] = useState('');
     const [debouncedViewedSection, setDebouncedViewedSection] = useState('');
@@ -92,10 +93,10 @@ export const Nav = observer((): JSX.Element => {
     const renderFeaturedChannelsBtn = () => {
         return (
             <>
-                {hasLiveChannels && onHome && (
+                {hasLiveChannels && !onWatch && (
                     <Link
                         href="/watch"
-                        className="border border-gray-700 rounded text-xs py-1 px-2 mr-2 flex items-center justify-center text-gray-400 hover:text-white font-bold"
+                        className="border border-gray-700 rounded-lg text-xs py-1 px-2 mr-2 flex items-center justify-center text-gray-400 hover:text-white font-bold"
                     >
                         <div className="h-3 w-3 bg-red-500 rounded-full mr-1"></div>
                         Featured Streams
