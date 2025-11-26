@@ -19,6 +19,11 @@ import {
     faBluesky,
     IconDefinition,
 } from '@fortawesome/free-brands-svg-icons';
+import localFont from 'next/font/local';
+
+const lemonMilk = localFont({
+    src: '../public/LEMONMILK-Bold.otf',
+});
 
 const navigation = [
     { name: 'Download', href: '#download' },
@@ -141,7 +146,12 @@ export const Nav = observer((): JSX.Element => {
                                                 width={45}
                                                 height={45}
                                             />
-                                            <div className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300  text-3xl font-black ml-3">
+                                            <div
+                                                className={clsx(
+                                                    'text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300 text-3xl font-black ml-3',
+                                                    lemonMilk.className
+                                                )}
+                                            >
                                                 FIREBOT
                                             </div>
                                         </Link>
