@@ -148,7 +148,7 @@ export const Nav = observer((): JSX.Element => {
                                             />
                                             <div
                                                 className={clsx(
-                                                    'text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300 text-3xl font-black ml-3',
+                                                    'text-transparent bg-clip-text bg-gradient-to-r from-[#ebb11f] to-[#FFCA05] text-3xl font-black ml-3',
                                                     lemonMilk.className
                                                 )}
                                             >
