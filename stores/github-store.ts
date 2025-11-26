@@ -13,8 +13,19 @@ type GithubRelease = {
 const LATEST_RELEASE_URL =
     'https://api.github.com/repos/crowbartools/firebot/releases/latest';
 
+const FALLBACK_DOWNLOAD_OPTION: DownloadOption = {
+    name: 'default',
+    url: LATEST_RELEASE_URL,
+};
+
 class GithubStore {
     latestRelease: GithubRelease;
+
+    windowsDownloadUrls: DownloadOption[] = [FALLBACK_DOWNLOAD_OPTION];
+    macDownloadUrls: DownloadOption[] = [FALLBACK_DOWNLOAD_OPTION];
+    linuxDownloadUrls: DownloadOption[] = [FALLBACK_DOWNLOAD_OPTION];
+
+    currentVersion: string | undefined = undefined;
 
     constructor() {
         makeAutoObservable(this);
@@ -29,56 +40,46 @@ class GithubStore {
         const response = await axios.get<GithubRelease>(LATEST_RELEASE_URL);
         runInAction(() => {
             this.latestRelease = response?.data;
+
+            this.currentVersion = this.latestRelease?.tag_name;
+
+            const getAssetDownloadUrlByName = (nameIncludes: string) => {
+                return response?.data?.assets.find((a) =>
+                    a.name.includes(nameIncludes)
+                )?.browser_download_url;
+            };
+
+            this.windowsDownloadUrls = [
+                {
+                    name: 'x64',
+                    url: getAssetDownloadUrlByName('setup.exe'),
+                },
+            ];
+            this.macDownloadUrls = [
+                {
+                    name: 'Apple Silicon',
+                    url: getAssetDownloadUrlByName('macos-arm64.dmg'),
+                },
+                {
+                    name: 'Intel',
+                    url: getAssetDownloadUrlByName('macos-x64.dmg'),
+                },
+            ];
+            this.linuxDownloadUrls = [
+                {
+                    name: 'deb (x64)',
+                    url: getAssetDownloadUrlByName('linux-x64.deb'),
+                },
+                {
+                    name: 'rpm (x64)',
+                    url: getAssetDownloadUrlByName('linux-x64.rpm'),
+                },
+                {
+                    name: 'tar.gz (x64)',
+                    url: getAssetDownloadUrlByName('linux-x64.tar.gz'),
+                },
+            ];
         });
-    }
-
-    private getAssetDownloadUrlByName(nameIncludes: string) {
-        return this.latestRelease?.assets.find((a) =>
-            a.name.includes(nameIncludes)
-        )?.browser_download_url;
-    }
-
-    get currentVersion() {
-        return this.latestRelease?.tag_name;
-    }
-
-    get windowsDownloadUrls(): DownloadOption[] {
-        return [
-            {
-                name: 'x64',
-                url: this.getAssetDownloadUrlByName('setup.exe'),
-            },
-        ];
-    }
-
-    get macDownloadUrls(): DownloadOption[] {
-        return [
-            {
-                name: 'Apple Silicon',
-                url: this.getAssetDownloadUrlByName('macos-arm64.dmg'),
-            },
-            {
-                name: 'Intel',
-                url: this.getAssetDownloadUrlByName('macos-x64.dmg'),
-            },
-        ];
-    }
-
-    get linuxDownloadUrls(): DownloadOption[] {
-        return [
-            {
-                name: 'deb (x64)',
-                url: this.getAssetDownloadUrlByName('linux-x64.deb'),
-            },
-            {
-                name: 'rpm (x64)',
-                url: this.getAssetDownloadUrlByName('linux-x64.rpm'),
-            },
-            {
-                name: 'tar.gz (x64)',
-                url: this.getAssetDownloadUrlByName('linux-x64.tar.gz'),
-            },
-        ];
     }
 }
 
