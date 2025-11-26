@@ -106,6 +106,7 @@ const DownloadButton = withoutSsr(
             platformIcon = faLinux;
         }
 
+        // eslint-disable-next-line no-console
         console.log('Detected platform:', platform, downloadUrls);
 
         return downloadUrls.length < 2 ? (
