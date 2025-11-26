@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { DownloadOption } from '../types/downloads';
 
 type GithubRelease = {
@@ -12,7 +12,6 @@ type GithubRelease = {
 
 const LATEST_RELEASE_URL =
     'https://api.github.com/repos/crowbartools/firebot/releases/latest';
-
 
 class GithubStore {
     latestRelease: GithubRelease;
@@ -28,7 +27,9 @@ class GithubStore {
 
     async fetchLatestRelease() {
         const response = await axios.get<GithubRelease>(LATEST_RELEASE_URL);
-        this.setLatestRelease(response?.data);
+        runInAction(() => {
+            this.latestRelease = response?.data;
+        });
     }
 
     private getAssetDownloadUrlByName(nameIncludes: string) {
@@ -46,8 +47,8 @@ class GithubStore {
             {
                 name: 'x64',
                 url: this.getAssetDownloadUrlByName('setup.exe'),
-            }
-        ]
+            },
+        ];
     }
 
     get macDownloadUrls(): DownloadOption[] {
@@ -59,8 +60,8 @@ class GithubStore {
             {
                 name: 'Intel',
                 url: this.getAssetDownloadUrlByName('macos-x64.dmg'),
-            }
-        ]
+            },
+        ];
     }
 
     get linuxDownloadUrls(): DownloadOption[] {
@@ -76,8 +77,8 @@ class GithubStore {
             {
                 name: 'tar.gz (x64)',
                 url: this.getAssetDownloadUrlByName('linux-x64.tar.gz'),
-            }
-        ]
+            },
+        ];
     }
 }
 

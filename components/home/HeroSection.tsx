@@ -106,6 +106,8 @@ const DownloadButton = withoutSsr(
             platformIcon = faLinux;
         }
 
+        console.log('Detected platform:', platform, downloadUrls);
+
         return downloadUrls.length < 2 ? (
             <a
                 className="block text-center w-full sm:w-60 rounded-md border border-transparent px-5 py-3 bg-blue-500 text-base font-medium text-white shadow hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:px-4"
