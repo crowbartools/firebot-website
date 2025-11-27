@@ -260,6 +260,11 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                 config={{
                                                     Commands: {
                                                         content: <Commands />,
+                                                        badge: profileStore
+                                                            .profileData
+                                                            ?.commands
+                                                            ?.allowedCmds
+                                                            ?.length,
                                                         toolbar: (mobile) => (
                                                             <div
                                                                 className={clsx(
@@ -319,6 +324,9 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                     },
                                                     Quotes: {
                                                         content: <Quotes />,
+                                                        badge: profileStore
+                                                            .profileData?.quotes
+                                                            ?.quotes?.length,
                                                         toolbar: (mobile) => (
                                                             <div
                                                                 className={

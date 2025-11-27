@@ -10,6 +10,7 @@ interface Props {
         string,
         {
             content: React.ReactElement;
+            badge?: number;
             toolbar: (mobile: boolean) => React.ReactElement;
         }
     >;
@@ -48,7 +49,7 @@ export const Tabs: React.FC<Props> = ({
                                         }
                                         onClick={() => onTabClick(index)}
                                         className={clsx(
-                                            `text-2xl font-semibold relative py-3 px-4 cursor-pointer select-none rounded-t-lg`,
+                                            `text-2xl font-semibold relative py-3 px-4 cursor-pointer select-none rounded-t-lg flex items-center`,
                                             {
                                                 'text-gray-400 hover:text-gray-200':
                                                     index !== activeTabIndex,
@@ -59,6 +60,11 @@ export const Tabs: React.FC<Props> = ({
                                         )}
                                     >
                                         {tabName}
+                                        {(config[tabName].badge ?? 0) > 0 && (
+                                            <span className="ml-2 inline-block bg-gray-700 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                                                {config[tabName].badge}
+                                            </span>
+                                        )}
                                         <div className="absolute bottom-0 left-0 w-full flex justify-center">
                                             {index === activeTabIndex && (
                                                 <motion.span
