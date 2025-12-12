@@ -12,7 +12,7 @@ export const useLiveChannels = (filterAndSort?: {
     mature?: boolean;
 }) => {
     return useInfiniteQuery({
-        queryKey: ['live-channels'],
+        queryKey: ['live-channels', JSON.stringify(filterAndSort)],
         refetchInterval: 1000 * 60 * 5, // 5 minutes
         queryFn: async ({ pageParam = 1 }) => {
             const { data } = await axios.get<{

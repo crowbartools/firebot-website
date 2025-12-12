@@ -6,17 +6,25 @@ import { useInView } from 'react-intersection-observer';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { ChannelCard } from '../components/watch/ChannelCard';
 import { HowToModal } from '../components/watch/HowToModal';
+import { Searchbar } from '../components/profile/Searchbar';
 import Head from 'next/head';
 import { useGridDimensions } from '../hooks/useGridDimensions';
 import clsx from 'clsx';
+import { useRouter } from 'next/router';
 
 function WatchPage() {
+    const router = useRouter();
     const params = new URLSearchParams(location.search);
+
+    const [search, setSearch] = useState<string | null>(
+        params.get('search') || null
+    );
+
     const matureParam = params.get('mature');
     const { data, isFetching, isFetched, hasNextPage, fetchNextPage } =
         useLiveChannels({
             sortBy: params.get('sortBy') ? params.get('sortBy').split(',') : [],
-            search: params.get('search') ?? undefined,
+            search: search || undefined,
             language: params.get('language')
                 ? params.get('language').split(',')
                 : [],
@@ -35,6 +43,23 @@ function WatchPage() {
     }, [inView, hasNextPage, fetchNextPage]);
 
     const [showHowToModal, setShowHowToModal] = useState(false);
+
+    const handleSearch = (query: string) => {
+        const newParams = new URLSearchParams(window.location.search);
+        if (query) {
+            newParams.set('search', query);
+        } else {
+            newParams.delete('search');
+        }
+        const queryString = newParams.toString();
+        router.replace(
+            `/watch${queryString ? `?${queryString}` : ''}`,
+            undefined,
+            { shallow: true }
+        );
+
+        setSearch(query || null);
+    };
 
     const hasChannels = data?.pages.some((page) => page.channels.length > 0);
 
@@ -71,6 +96,13 @@ function WatchPage() {
                     >
                         How do I get my channel listed here?
                     </button>
+                    <div className="mt-6 max-w-md mx-auto">
+                        <Searchbar
+                            onSearch={handleSearch}
+                            placeholder="Search channels..."
+                            initialValue={search || ''}
+                        />
+                    </div>
                 </div>
                 <motion.div
                     ref={gridRef}

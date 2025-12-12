@@ -1,20 +1,23 @@
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useDebounce } from 'react-use';
 
 interface Props {
     onSearch: (query: string) => void;
     placeholder?: string;
+    initialValue?: string;
 }
 
 export const Searchbar: React.FC<Props> = ({
     onSearch,
     placeholder = 'Search',
+    initialValue = '',
 }) => {
-    const [query, setQuery] = useState('');
-    const [debouncedQuery, setDebouncedQuery] = useState('');
+    const [query, setQuery] = useState(initialValue);
+    const [debouncedQuery, setDebouncedQuery] = useState(initialValue);
+    const isInitialMount = useRef(true);
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -27,6 +30,10 @@ export const Searchbar: React.FC<Props> = ({
     );
 
     useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
         onSearch(debouncedQuery);
     }, [debouncedQuery]);
 
@@ -81,6 +88,7 @@ export const Searchbar: React.FC<Props> = ({
                         onBlur={() => setIsFocused(false)}
                         placeholder={placeholder}
                         type="text"
+                        value={query}
                         onChange={(event) => setQuery(event.target.value)}
                     />
                 </div>
