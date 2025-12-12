@@ -141,7 +141,7 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                 <div className="w-40 h-40 rounded-full bg-gradient-to-br from-gray-600 to-gray-700 ring-4 ring-gray-600/50" />
                                             )}
                                             <div className="flex-1 text-center lg:text-left">
-                                                <h2 className="text-5xl md:text-6xl leading-tight tracking-wide font-black mb-3">
+                                                <h2 className="text-5xl md:text-6xl leading-tight tracking-wide font-black mb-3 break-all">
                                                     {profileStore.channelInfo
                                                         ?.displayName ??
                                                         profileStore.profileData
@@ -214,12 +214,12 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                 />
                                                 <div className="text-lg text-center">
                                                     <span className="font-bold text-xl">
-                                                        Commands and quotes are
+                                                        Profile data
                                                         unavailable.
                                                     </span>
                                                     <br /> <br />
-                                                    Try generating a new link
-                                                    via !commands
+                                                    Profile data can be resynced
+                                                    by using !commands in chat.
                                                 </div>
                                             </div>
                                         </motion.div>
@@ -260,9 +260,6 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                 config={{
                                                     Commands: {
                                                         content: <Commands />,
-                                                        badge: profileStore
-                                                            .filteredCommands
-                                                            .length,
                                                         toolbar: (mobile) => (
                                                             <div
                                                                 className={clsx(
@@ -322,9 +319,6 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                     },
                                                     Quotes: {
                                                         content: <Quotes />,
-                                                        badge: profileStore
-                                                            .filteredQuotes
-                                                            .length,
                                                         toolbar: (mobile) => (
                                                             <div
                                                                 className={
