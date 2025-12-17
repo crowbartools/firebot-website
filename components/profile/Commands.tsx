@@ -16,6 +16,11 @@ export const Commands = observer(() => {
     const { logEvent } = useAnalytics();
     return (
         <>
+            <div className="text-xl">
+                {profileStore.selectedCommandSortTag 
+                    ? `Commands tagged as ${profileStore.selectedCommandSortTag.name}`
+                    : "All Commands"}
+            </div>
             <div
                 className={clsx(
                     'bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-2xl mt-2 border border-gray-700/50 shadow-2xl mb-16 md:mb-9'
