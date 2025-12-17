@@ -180,19 +180,19 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                     )}
                                                     {profileStore.channelInfo
                                                         ?.isLive && (
-                                                        <a
-                                                            href={`https://www.twitch.tv/${profileStore.channelInfo.displayName}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white font-bold py-1.5 px-6 rounded-xl transition-all duration-200 flex items-center gap-2 hover:scale-105 transform"
-                                                        >
-                                                            <FontAwesomeIcon
-                                                                icon={faTwitch}
-                                                                className="text-lg"
-                                                            />
-                                                            Watch Stream
-                                                        </a>
-                                                    )}
+                                                            <a
+                                                                href={`https://www.twitch.tv/${profileStore.channelInfo.displayName}`}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white font-bold py-1.5 px-6 rounded-xl transition-all duration-200 flex items-center gap-2 hover:scale-105 transform"
+                                                            >
+                                                                <FontAwesomeIcon
+                                                                    icon={faTwitch}
+                                                                    className="text-lg"
+                                                                />
+                                                                Watch Stream
+                                                            </a>
+                                                        )}
                                                 </div>
                                             </div>
                                         </div>
@@ -274,31 +274,31 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                                     .profileData
                                                                     ?.sortTags
                                                                     ?.length && (
-                                                                    <div
-                                                                        className={clsx(
-                                                                            {
-                                                                                'w-52 mr-3':
-                                                                                    !mobile,
-                                                                                'w-full order-last mt-3':
-                                                                                    mobile,
-                                                                            }
-                                                                        )}
-                                                                    >
-                                                                        <Select
-                                                                            options={[
-                                                                                ALL_COMMANDS_TAG,
-                                                                                ...profileStore.commandSortTags,
-                                                                            ]}
-                                                                            selected={
-                                                                                profileStore.selectedCommandSortTag ??
-                                                                                ALL_COMMANDS_TAG
-                                                                            }
-                                                                            onSelected={
-                                                                                profileStore.setSelectedCommandSortTag
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                )}
+                                                                        <div
+                                                                            className={clsx(
+                                                                                {
+                                                                                    'w-[16rem] mr-3':
+                                                                                        !mobile,
+                                                                                    'w-full order-last mt-3':
+                                                                                        mobile,
+                                                                                }
+                                                                            )}
+                                                                        >
+                                                                            <Select
+                                                                                options={[
+                                                                                    ALL_COMMANDS_TAG,
+                                                                                    ...profileStore.commandSortTags,
+                                                                                ]}
+                                                                                selected={
+                                                                                    profileStore.selectedCommandSortTag ??
+                                                                                    ALL_COMMANDS_TAG
+                                                                                }
+                                                                                onSelected={
+                                                                                    profileStore.setSelectedCommandSortTag
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                    )}
                                                                 <div
                                                                     className={clsx(
                                                                         {

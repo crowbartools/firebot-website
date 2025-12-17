@@ -1,7 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { useHover, useWindowScroll } from 'react-use';
+import { Placement } from '@popperjs/core';
 
 interface Props {
     children: React.ReactElement;
@@ -9,101 +11,148 @@ interface Props {
      * The text shown in the tooltip
      */
     content: string | React.ReactNode;
+    placement?: Placement;
     wrapperClassName?: string;
     disabled?: boolean;
 }
 
-const OFFSET = 10;
 const ARROW_SIZE = 10;
-
-const placements = {
-    bottom: {
-        arrow: {
-            borderBottom: `${ARROW_SIZE}px solid`,
-            borderLeft: `${ARROW_SIZE}px solid transparent`,
-            borderRight: `${ARROW_SIZE}px solid transparent`,
-            left: `calc(50% - ${ARROW_SIZE}px)`,
-            top: `-${ARROW_SIZE / 1.5}px`,
-        },
-        container: {
-            left: '50%',
-            top: `calc(100% + ${OFFSET}px)`,
-            transform: 'translateX(-50%)',
-        },
-    },
-    top: {
-        arrow: {
-            borderLeft: `${ARROW_SIZE}px solid transparent`,
-            borderRight: `${ARROW_SIZE}px solid transparent`,
-            borderTop: `${ARROW_SIZE}px solid`,
-            bottom: `-${ARROW_SIZE / 1.5}px`,
-            left: `calc(50% - ${ARROW_SIZE}px)`,
-        },
-        container: {
-            bottom: `calc(100% + ${OFFSET}px)`,
-            left: '50%',
-            transform: 'translateX(-50%)',
-        },
-    },
-};
 
 export const Tooltip: React.FC<Props> = ({
     children,
     content,
+    placement = 'top',
     wrapperClassName,
     disabled = false,
 }) => {
-    // if we don't wrap the children, useHover breaks
-    // when root child is a custom component
-    const target = <span>{children}</span>;
-    const [hoverable, hovered] = useHover(target);
+    const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
+    const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
+    const [arrowElement, setArrowElement] = useState<HTMLSpanElement | null>(null);
+    const [isHovered, setIsHovered] = useState(false);
 
-    const tooltipRef = useRef<HTMLDivElement>();
-
-    const [placement, setPlacement] = useState<keyof typeof placements>('top');
-
-    const { y } = useWindowScroll();
-
-    useEffect(() => {
-        setPlacement('top');
-    }, [content, y]);
-    useLayoutEffect(() => {
-        setTimeout(() => {
-            const rect = tooltipRef.current?.getBoundingClientRect();
-            if (placement === 'top' && hovered) {
-                setPlacement(rect?.top >= 0 ? 'top' : 'bottom');
-            }
-        }, 1);
+    const { styles, attributes, state } = usePopper(referenceElement, popperElement, {
+        placement,
+        modifiers: [
+            {
+                name: 'arrow',
+                options: {
+                    element: arrowElement,
+                },
+            },
+            {
+                name: 'offset',
+                options: {
+                    offset: [0, ARROW_SIZE],
+                },
+            },
+            {
+                name: 'flip',
+                options: {
+                    fallbackPlacements: ['bottom', 'left', 'right'],
+                },
+            },
+            {
+                name: 'preventOverflow',
+                options: {
+                    padding: 8,
+                },
+            },
+        ],
     });
 
+    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+
+    const currentPlacement = state?.placement ?? 'top';
+
+    const getArrowStyles = (): React.CSSProperties => {
+        const base: React.CSSProperties = {
+            position: 'absolute',
+            width: 0,
+            height: 0,
+        };
+
+        if (currentPlacement.startsWith('top')) {
+            return {
+                ...base,
+                borderLeft: `${ARROW_SIZE}px solid transparent`,
+                borderRight: `${ARROW_SIZE}px solid transparent`,
+                borderTop: `${ARROW_SIZE}px solid`,
+                bottom: `-${ARROW_SIZE - 3}px`,
+            };
+        }
+        if (currentPlacement.startsWith('bottom')) {
+            return {
+                ...base,
+                borderBottom: `${ARROW_SIZE}px solid`,
+                borderLeft: `${ARROW_SIZE}px solid transparent`,
+                borderRight: `${ARROW_SIZE}px solid transparent`,
+                top: `-${ARROW_SIZE - 3}px`,
+            };
+        }
+        if (currentPlacement.startsWith('left')) {
+            return {
+                ...base,
+                borderTop: `${ARROW_SIZE}px solid transparent`,
+                borderBottom: `${ARROW_SIZE}px solid transparent`,
+                borderLeft: `${ARROW_SIZE}px solid`,
+                right: `-${ARROW_SIZE - 3}px`,
+            };
+        }
+        if (currentPlacement.startsWith('right')) {
+            return {
+                ...base,
+                borderTop: `${ARROW_SIZE}px solid transparent`,
+                borderBottom: `${ARROW_SIZE}px solid transparent`,
+                borderRight: `${ARROW_SIZE}px solid`,
+                left: `-${ARROW_SIZE - 3}px`,
+            };
+        }
+        return base;
+    };
+
     return (
-        <div className={clsx('relative inline-flex', wrapperClassName)}>
-            <AnimatePresence>
-                {hovered && !disabled && (
-                    <motion.div
-                        ref={tooltipRef}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                            duration: 0.1,
-                        }}
-                        className="absolute text-center pointer-events-none z-50 shadow-xl text-sm"
-                        style={placements[placement].container}
-                    >
-                        <>
-                            <div className="p-2 w-32 bg-gray-600 text-white rounded-lg">
-                                {content}
-                            </div>
-                            <span
-                                style={placements[placement].arrow}
-                                className="w-0 h-0 absolute text-gray-600"
-                            />
-                        </>
-                    </motion.div>
+        <>
+            <div
+                ref={setReferenceElement}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className={clsx(wrapperClassName)}
+            >
+                {children}
+            </div>
+            {typeof document !== 'undefined' &&
+                createPortal(
+                    <AnimatePresence>
+                        {isHovered && !disabled && !!content && (
+                            <motion.div
+                                ref={setPopperElement}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{
+                                    duration: 0.1,
+                                }}
+                                className="text-center pointer-events-none z-[9999] shadow-xl text-sm"
+                                style={styles.popper}
+                                {...attributes.popper}
+                            >
+                                <div className="p-2 max-w-[15rem] bg-gray-900 text-white rounded-lg">
+                                    {content}
+                                </div>
+                                <span
+                                    ref={setArrowElement}
+                                    style={{
+                                        ...styles.arrow,
+                                        ...getArrowStyles(),
+                                    }}
+                                    className="text-gray-900"
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>,
+                    document.body
                 )}
-            </AnimatePresence>
-            {hoverable}
-        </div>
+        </>
     );
 };
