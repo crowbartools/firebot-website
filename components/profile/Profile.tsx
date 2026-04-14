@@ -181,7 +181,7 @@ export const Profile: React.FC<Props> = observer(({ channelName, binId }) => {
                                                     {profileStore.channelInfo
                                                         ?.isLive && (
                                                             <a
-                                                                href={`https://www.twitch.tv/${profileStore.channelInfo.displayName}`}
+                                                                href={`https://www.twitch.tv/${profileStore.channelInfo.username}`}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white font-bold py-1.5 px-6 rounded-xl transition-all duration-200 flex items-center gap-2 hover:scale-105 transform"
