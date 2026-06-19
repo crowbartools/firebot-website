@@ -81,6 +81,13 @@ export const people: Person[] = [
         generalizedRole: 'Expert',
     },
     {
+        id: '64767505',
+        name: 'BallzzPTA',
+        role: 'Support',
+        isTeamMember: true,
+        generalizedRole: 'Expert',
+    },
+    {
         id: '57499224',
         name: 'phroggie',
         role: 'Developer',
