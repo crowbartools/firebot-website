@@ -83,6 +83,9 @@ function validateSortBy(
         'language',
         'language:asc',
         'language:desc',
+        'username',
+        'username:asc',
+        'username:desc',
     ];
     return (
         sortBy == null ||
