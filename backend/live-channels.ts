@@ -120,7 +120,7 @@ const PAGE_SIZE = 20;
 type SortByType<T extends string> = T | `${T}:${'asc' | 'desc'}`;
 
 export type ChannelSortBy = SortByType<
-    'viewers' | 'stream_uptime' | 'language'
+    'viewers' | 'stream_uptime' | 'language' | 'username'
 >;
 export async function getLiveChannels(
     page: number,
@@ -187,6 +187,12 @@ export async function getLiveChannels(
                 return sortDirection === 'asc'
                     ? a.stream.viewer_count - b.stream.viewer_count
                     : b.stream.viewer_count - a.stream.viewer_count;
+            }
+
+            if (sortByKey === 'username') {
+                return sortDirection === 'asc'
+                    ? a.login.toLowerCase().localeCompare(b.login.toLowerCase())
+                    : b.login.toLowerCase().localeCompare(a.login.toLowerCase());
             }
         }
         return 0;
