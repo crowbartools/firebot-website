@@ -40,7 +40,7 @@ function validateChannelAndCategory(
     }: AdminSettings,
     channelId: string,
     categoryName: string,
-    streamTags: string[]
+    streamTags?: string[]
 ) {
     if (blacklistedChannelIds.includes(channelId)) {
         return false;
@@ -51,7 +51,9 @@ function validateChannelAndCategory(
     }
 
     if (
-        streamTags.some((t) => blacklistedTags.includes(t?.toLowerCase() ?? ''))
+        streamTags?.some((t) =>
+            blacklistedTags.includes(t?.toLowerCase() ?? '')
+        )
     ) {
         return false;
     }
@@ -192,13 +194,15 @@ export async function getLiveChannels(
             if (sortByKey === 'username') {
                 return sortDirection === 'asc'
                     ? a.login.toLowerCase().localeCompare(b.login.toLowerCase())
-                    : b.login.toLowerCase().localeCompare(a.login.toLowerCase());
+                    : b.login
+                          .toLowerCase()
+                          .localeCompare(a.login.toLowerCase());
             }
         }
         return 0;
     });
 
-    if (filters != null && Object.values(filters).some((f) => f != null)) {
+    if (filters != null && Object.values(filters)?.some((f) => f != null)) {
         const categoryIds: string[] = [];
         if (filters.category != null) {
             for (const categoryIdOrName of filters.category) {
@@ -242,7 +246,7 @@ export async function getLiveChannels(
                     c.stream.title
                         .toLowerCase()
                         .includes(filters.search.toLowerCase().trim()) ||
-                    c.stream.tags.some(
+                    c.stream.tags?.some(
                         (t) =>
                             t
                                 .toLowerCase()
@@ -303,7 +307,7 @@ export async function validateCache() {
                 adminSettings,
                 channelId,
                 stream.game_name,
-                stream.tags
+                stream.tags ?? []
             )
         ) {
             existing.userData.stream = stream;

@@ -199,7 +199,7 @@ class ProfileStore {
 
         this.commandSortTags =
             this.profileData.sortTags?.filter((st) =>
-                this.profileData.commands.allowedCmds.some((c) =>
+                this.profileData.commands.allowedCmds?.some((c) =>
                     c.sortTags?.includes(st.id)
                 )
             ) ?? [];

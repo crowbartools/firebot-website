@@ -61,7 +61,7 @@ function WatchPage() {
         setSearch(query || null);
     };
 
-    const hasChannels = data?.pages.some((page) => page.channels.length > 0);
+    const hasChannels = data?.pages?.some((page) => page.channels.length > 0);
 
     const gridRef = useRef<HTMLDivElement>(null);
 
