@@ -117,6 +117,61 @@ export async function getUsers(userIds: string[], includeStreams = false) {
     return users;
 }
 
+interface ChannelInfo {
+    userId: string;
+    username: string;
+    displayName: string;
+    profilePicUrl: string;
+    isLive: boolean;
+    description: string;
+    viewerCount: number;
+    streamTitle: string;
+}
+
+export async function getChannelInfoByUsername(
+    username: string
+): Promise<ChannelInfo | null> {
+    const token = await getAppAccessToken();
+    if (token == null) return null;
+
+    const {
+        data: { data: users },
+    } = await axios.get<{ data: Array<TwitchUser> }>(
+        `https://api.twitch.tv/helix/users?login=${username}`,
+        {
+            headers: getHeaders(token),
+        }
+    );
+
+    if (users.length === 0) {
+        return null;
+    }
+
+    const user = users[0];
+
+    const {
+        data: { data: streams },
+    } = await axios.get<{ data: Array<TwitchStream> }>(
+        `https://api.twitch.tv/helix/streams?user_id=${user.id}`,
+        {
+            headers: getHeaders(token),
+        }
+    );
+
+    const stream = streams[0];
+
+    return {
+        userId: user.id,
+        username: user.login,
+        displayName: user.display_name,
+        description: user.description,
+        profilePicUrl: user.profile_image_url,
+        isLive: !!stream,
+        viewerCount: stream?.viewer_count ?? 0,
+        streamTitle: stream?.title ?? '',
+    };
+}
+
 export async function searchChannels(query: string) {
     const token = await getAppAccessToken();
     if (token == null) return [];

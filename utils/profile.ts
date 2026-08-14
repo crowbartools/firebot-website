@@ -62,7 +62,7 @@ export async function getChannelInfo(
 
     try {
         const response = await axios.get<ChannelInfo>(
-            `https://api.firebot.app/v1/channel/${channelName}`
+            `/api/channel/${channelName}`
         );
 
         if (response.status === 200) {
@@ -106,7 +106,7 @@ export default function getMappedRoles(roleIds: string[]) {
                         case 'broadcaster':
                         case 'Streamer':
                         case 'Owner':
-                            return "Streamer";
+                            return 'Streamer';
                         case 'ChannelEditor':
                         case 'Mod':
                         case 'mod':
